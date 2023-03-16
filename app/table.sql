@@ -100,6 +100,12 @@ CREATE TABLE `Utilisateur` (
        `password` varchar(128) NOT NULL,
        `type` varchar(64) NOT NULL CHECK (type IN ('Candidat', 'Recruteur', 'Administrateur')),
        `demandeOrganisation` varchar(64)  CHECK (demandeOrganisation IN ('En cours', 'accepté', 'refusé')),
-       `siren` int(11) NOT NULL REFERENCES Organisation(siren),
-       PRIMARY KEY (mail)
+       `siren` int(11) REFERENCES Organisation(siren),
+       PRIMARY KEY (mail),
+
+       CHECK (
+           ((demandeOrganisation = 'En cours' OR demandeOrganisation = 'accepté' OR type = 'Recruteur') AND siren NOT NULL)
+           OR
+           ((demandeOrganisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren NULL)
+        )
 );
