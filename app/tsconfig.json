@@ -101,8 +101,6 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
   },
   "exclude": [
-      "client",
-      "dist",
       "node_modules"
     ]
 }
