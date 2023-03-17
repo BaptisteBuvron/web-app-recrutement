@@ -8,20 +8,6 @@ DROP TABLE IF EXISTS Utilisateur;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Candidature`
---
-
-CREATE TABLE `Candidature` (
-       `date_candidature` date NOT NULL,
-       `candidat` int(11) NOT NULL REFERENCES Utilisateur(mail),
-       `poste` int(11) NOT NULL REFERENCES OffreDePoste(numero),
-       PRIMARY KEY (candidat, poste),
-       CHECK (Utilisateur.type = 'Candidat')
-);
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `FicheDePoste`
 --
 
@@ -46,7 +32,7 @@ CREATE TABLE `FicheDePoste` (
 
 CREATE TABLE `OffreDePoste` (
         `numero` int(11) NOT NULL,
-        `etat` varchar(64) NOT NULL CHECK (etat IN ('non publiée', 'publiée', 'expiré'),
+        `etat` varchar(64) NOT NULL CHECK (etat IN ('non publiée', 'publiée', 'expiré')),
         `date_validite` date NOT NULL,
         `nb_piece` int(11) NOT NULL,
         `liste_piece` text NOT NULL,
@@ -104,8 +90,21 @@ CREATE TABLE `Utilisateur` (
        PRIMARY KEY (mail),
 
        CHECK (
-           ((demandeOrganisation = 'En cours' OR demandeOrganisation = 'accepté' OR type = 'Recruteur') AND siren NOT NULL)
+           ((demandeOrganisation = 'En cours' OR demandeOrganisation = 'accepté' OR type = 'Recruteur') AND siren IS NOT NULL)
            OR
-           ((demandeOrganisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren NULL)
+           ((demandeOrganisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
         )
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Candidature`
+--
+
+CREATE TABLE `Candidature` (
+       `date_candidature` date NOT NULL,
+       `candidat` int(11) NOT NULL REFERENCES Utilisateur(mail),
+       `poste` int(11) NOT NULL REFERENCES OffreDePoste(numero),
+       PRIMARY KEY (candidat, poste)
 );
