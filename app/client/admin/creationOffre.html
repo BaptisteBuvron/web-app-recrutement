@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Créer une offre</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Administrateur</a>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="index.html">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="utilisateurs.html">Utilisateurs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="demandes.html">Demandes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="offres.html">Offres d'emploi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="creationOffre.html">Création d'offre</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row">
+    <div class="card shadow-sm">
+      <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Image création d'entreprise</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+      <div class="card-body">
+        <h4 class="mb-3">Offre</h4>
+        <form class="needs-validation" novalidate="">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="offerName" class="form-label">Nom de l'offre</label>
+              <input type="text" class="form-control" id="offerName" placeholder="" value="" required="">
+              <div class="invalid-feedback">
+                Le nom de l'offre est requis
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <label for="entreprise" class="form-label">Entreprise</label>
+              <select class="form-select" id="entreprise" required="">
+                <option value="">choisir...</option>
+                <option>Boursorama States</option>
+                <option>Auchan finances</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label for="state" class="form-label">Région</label>
+              <select class="form-select" id="state" required="">
+                <option value="">choisir...</option>
+                <option>California</option>
+              </select>
+              <div class="invalid-feedback">
+                Please provide a valid state.
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label for="pieces" class="form-label">Pièces à déposer</label>
+              <input type="text" class="form-control" id="pieces" placeholder="" value="" required="">
+              <div class="invalid-feedback">
+                Le nom des pièces est requis
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h4 class="mb-3">Publication</h4>
+
+          <div class="my-3">
+            <div class="form-check">
+              <input id="immediatement" name="publication" type="radio" class="form-check-input" checked="" required="">
+              <label class="form-check-label" for="immediatement">Immédiatement</label>
+            </div>
+            <div class="form-check">
+              <input id="nonpublie" name="publication" type="radio" class="form-check-input" required="">
+              <label class="form-check-label" for="nonpublie">Enregistrer pour plus tard</label>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h4 class="mb-3">Fiche de poste</h4>
+
+          <div class="col-md-5">
+            <label for="fiche" class="form-label">Fiche de poste existante</label>
+            <select class="form-select" id="fiche" required="">
+              <option value="">choisir...</option>
+              <option>Fiche ingénieur en montagne</option>
+              <option>Fiche spécialite web</option>
+            </select>
+          </div>
+          <hr class="my-4">
+
+          <button class="w-100 btn btn-primary btn-lg" type="submit">Créer l'offre</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
