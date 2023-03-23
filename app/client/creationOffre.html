@@ -24,13 +24,7 @@
           <a class="nav-link" aria-current="page" href="index.html">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="utilisateurs.html">Utilisateurs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="demandes.html">Demandes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="offres.html">Offres d'emploi</a>
+          <a class="nav-link" href="candidature.html">Mes candidatures</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" href="creationOffre.html">Création d'offre</a>
@@ -75,11 +69,26 @@
                 Please provide a valid state.
               </div>
             </div>
+
+            <hr class="my-4">
             <div class="col-sm-6">
-              <label for="pieces" class="form-label">Pièces à déposer</label>
-              <input type="text" class="form-control" id="pieces" placeholder="" value="" required="">
-              <div class="invalid-feedback">
-                Le nom des pièces est requis
+              <h4 class="mb-3">Pièces à déposer</h4>
+              <!-- First checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cv" checked/>
+                <label class="form-check-label" for="cv">CV</label>
+              </div>
+
+              <!-- Second checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="motivation" checked/>
+                <label class="form-check-label" for="motivation">Lettre de motivation</label>
+              </div>
+
+              <!-- Third checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="portfolio"/>
+                <label class="form-check-label" for="portfolio">Portfolio</label>
               </div>
             </div>
           </div>
