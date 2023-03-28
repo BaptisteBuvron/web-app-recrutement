@@ -2,7 +2,7 @@
   "name": "web-app-recrutement",
   "version": "1.0.0",
   "description": "Application WEB système de recrutement dans le cadre de l'UV AI16",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
