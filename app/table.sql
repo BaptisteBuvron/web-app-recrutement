@@ -39,6 +39,7 @@ CREATE TABLE `Candidature` (
 
 INSERT INTO `Candidature` (`date_candidature`, `candidat`, `poste`) VALUES
 ('2023-03-30', 1, 1);
+('2023-03-30', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -63,7 +64,8 @@ CREATE TABLE `FicheDePoste` (
 --
 
 INSERT INTO `FicheDePoste` (`numero`, `status`, `responsable`, `type_metier`, `lieu`, `teletravail`, `nbheure`, `salaire`, `description`) VALUES
-(1, '1', 'Henri', 'ingénieur', 'dijon', 1, 35, '35k', 'Poste de développeur full stack chef de projet, etc ..\r\n');
+(1, '1', 'Henri', 'ingénieur', 'Dijon', 1, 35, '35k', 'Poste de développeur full stack chef de projet, etc ..\r\n'),
+(2, '1', 'Sébastien', 'Cadre Manager', 'Paris', 1, 35, '50-55k', 'Management equipe de 15 personnes\r\n');
 
 -- --------------------------------------------------------
 
@@ -86,7 +88,8 @@ CREATE TABLE `OffreDePoste` (
 --
 
 INSERT INTO `OffreDePoste` (`numero`, `etat`, `date_validite`, `nb_piece`, `liste_piece`, `siren`, `fiche`) VALUES
-(1, 'publiée', '2023-05-19', 2, 'CV LM', 123456, 1);
+(1, 'publiée', '2023-05-19', 2, 'CV LM', 123456, 1),
+(2, 'publiée', '2023-05-19', 2, 'CV LM', 3345, 2);
 
 -- --------------------------------------------------------
 
@@ -106,7 +109,8 @@ CREATE TABLE `Organisation` (
 --
 
 INSERT INTO `Organisation` (`siren`, `nom`, `type`, `siege`) VALUES
-(123456, 'La banque', 'SARL', 'La défense');
+(123456, 'La banque', 'SARL', 'La défense'),
+(3345, 'Carrefour', 'SCI', 'Reuil Malmaison');
 
 -- --------------------------------------------------------
 
@@ -126,8 +130,10 @@ CREATE TABLE `Piece` (
 --
 
 INSERT INTO `Piece` (`id`, `nom`, `fichier`, `candidature`) VALUES
-(1, 'CV', 'nomfichier', 1),
-(2, 'Lettre de motivation', 'nomfichier2', 1);
+(1, 'CV', 'CV_Soudarsane', 1),
+(2, 'Lettre de motivation', 'LM_Soudarsane', 1),
+(3, 'CV', 'CV_Rene', 2),
+(4, 'Lettre de motivation', 'LM_Rene', 2);
 
 -- --------------------------------------------------------
 
@@ -154,6 +160,7 @@ CREATE TABLE `Utilisateur` (
 
 INSERT INTO `Utilisateur` (`mail`, `nom`, `prenom`, `telephone`, `date_creation`, `statut`, `password`, `type`, `demandeOrganisation`, `siren`) VALUES
 ('tsoudar21@gmail.com', 'Til', 'Sou', '0652645299', '2023-03-30', 1, 'truc', 'Candidat', NULL, NULL);
+('rene@truc.com', 'Rene', 'Villiers', '0654245299', '2023-03-30', 1, 'machin', 'Candidat', NULL, NULL);
 
 --
 -- Index pour les tables déchargées

@@ -3,7 +3,10 @@ import {AdminController} from "../controllers/AdminController";
 
 export const adminRouter = Router();
 
-adminRouter.get("/truc", AdminController.index);
+adminRouter.get("/", AdminController.index);
+adminRouter.get("/utilisateurs", AdminController.utilisateurs);
+adminRouter.get("/demandes", AdminController.demandes);
+adminRouter.get("/offres", AdminController.offres);
 
 
 
