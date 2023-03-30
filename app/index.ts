@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express, {Express} from "express";
 import cors from "cors";
-import {defaultRoute} from "./routes/MainRouter";
+import {defaultRouter} from "./routes/MainRouter";
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 
-app.use("/", defaultRoute);
+app.use("/", defaultRouter);
 
 
 const port = process.env.PORT || 8000;
