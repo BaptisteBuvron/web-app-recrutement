@@ -32,6 +32,15 @@
             </select>
         </div>
         <div class="col-md-9">
+            <h4>Offres d'emploi</h4>
+            <% offers.forEach((offer) => {%>
+                <div class="border-1 border p-2 my-2">
+                <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span class="badge text-bg-secondary float-end">45000 €</span></h4>
+                <p><%= offer.ficheDePoste.description %></p>
+                <p>Organisation : <%= offer.ficheDePoste.siren %></p>
+                <a href="/application" class="btn btn-primary">Postuler</a>
+            </div>
+            <% }) %>
             <div class="border-1 border p-2 my-2">
                 <h4 class="">Développeur Front-end <span class="badge text-bg-secondary float-end">45000 €</span></h4>
                 <p>Nous cherchons un développeur Front-end pour rejoindre notre équipe de développement. Le candidat

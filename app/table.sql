@@ -21,11 +21,10 @@ CREATE TABLE `FicheDePoste` (
         `nbheure` int(11) NOT NULL,
         `salaire` varchar(64) NOT NULL,
         `description` text NOT NULL,
+        `siren` int(11) NOT NULL REFERENCES Organisation(siren),
+        UNIQUE (siren),
         PRIMARY KEY (numero)
 );
-INSERT INTO `FicheDePoste` (`numero`, `status`, `responsable`, `type_metier`, `lieu`, `teletravail`, `nbheure`, `salaire`, `description`) VALUES
-                                                                                                                                              (1, '1', 'Henri', 'ingénieur', 'Dijon', 1, 35, '35k', 'Poste de développeur full stack chef de projet, etc ..\r\n'),
-                                                                                                                                              (2, '1', 'Sébastien', 'Cadre Manager', 'Paris', 1, 35, '50-55k', 'Management equipe de 15 personnes\r\n');
 
 -- --------------------------------------------------------
 
@@ -39,14 +38,10 @@ CREATE TABLE `OffreDePoste` (
         `date_validite` date NOT NULL,
         `nb_piece` int(11) NOT NULL,
         `liste_piece` text NOT NULL,
-        `siren` int(11) NOT NULL REFERENCES Organisation(siren),
         `fiche` int(11) NOT NULL REFERENCES FicheDePoste(numero),
-        PRIMARY KEY (numero),
-        UNIQUE (siren)
+        PRIMARY KEY (numero)
 );
-INSERT INTO `OffreDePoste` (`numero`, `etat`, `date_validite`, `nb_piece`, `liste_piece`, `siren`, `fiche`) VALUES
-                                                                                                                (1, 'publiée', '2023-05-19', 2, 'CV LM', 123456, 1),
-                                                                                                                (2, 'publiée', '2023-05-19', 2, 'CV LM', 3345, 2);
+
 
 -- --------------------------------------------------------
 
@@ -119,9 +114,6 @@ CREATE TABLE `Utilisateur` (
            ((demandeOrganisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
         )
 );
-INSERT INTO `Utilisateur` (`mail`, `nom`, `prenom`, `telephone`, `date_creation`, `statut`, `password`, `type`, `demandeOrganisation`, `siren`) VALUES
-    ('tsoudar21@gmail.com', 'Til', 'Sou', '0652645299', '2023-03-30', 1, 'truc', 'Candidat', NULL, NULL);
-('rene@truc.com', 'Rene', 'Villiers', '0654245299', '2023-03-30', 1, 'machin', 'Candidat', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -135,14 +127,11 @@ CREATE TABLE `Candidature` (
        `poste` int(11) NOT NULL REFERENCES OffreDePoste(numero),
        PRIMARY KEY (candidat, poste)
 );
-INSERT INTO `Candidature` (`date_candidature`, `candidat`, `poste`) VALUES
-    ('2023-03-30', 1, 1);
-('2023-03-30', 2, 2);
-
 
 -- --------------------------------------------------------
 #Insertion des données
-INSERT INTO FicheDePoste VALUES (1, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description');
-INSERT INTO FicheDePoste VALUES (2, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description');
+INSERT INTO FicheDePoste VALUES (1, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456789);
+INSERT INTO FicheDePoste VALUES (2, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456788);
 
-INSERT INTO OffreDePoste VALUES (1, 'non publiée', '2020-12-31', 2, 'CV, LM', 123456789, 1);
+INSERT INTO OffreDePoste VALUES (1, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
+INSERT INTO OffreDePoste VALUES (2, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);

@@ -4,11 +4,13 @@ import {Offer} from "../entity/Offer";
 
 export class HomeController {
 
+    static offerRepository: OfferRepository = new OfferRepository();
 
 
     static index(req: express.Request, res: express.Response) {
         //Render ejs file
         //res.status(200).json('Hello World From the Typescript API!')
+
         OfferRepository.getAll().then((offers: Offer[]) => {
             res.render("index", { title: "Home", offers: offers });
         });
