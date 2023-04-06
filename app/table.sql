@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS Utilisateur;
 --
 
 CREATE TABLE `FicheDePoste` (
-        `numero` int(11) NOT NULL,
+        `numero` int(11) NOT NULL AUTO_INCREMENT,
         `status` varchar(64) NOT NULL,
         `responsable` varchar(64) NOT NULL,
         `type_metier` varchar(64) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `FicheDePoste` (
 --
 
 CREATE TABLE `OffreDePoste` (
-        `numero` int(11) NOT NULL,
+        `numero` int(11) NOT NULL AUTO_INCREMENT,
         `etat` varchar(64) NOT NULL CHECK (etat IN ('non publiée', 'publiée', 'expiré')),
         `date_validite` date NOT NULL,
         `nb_piece` int(11) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE `Organisation` (
 --
 
 CREATE TABLE `Piece` (
-     `id` int(11) NOT NULL,
+     `id` int(11) NOT NULL AUTO_INCREMENT,
      `nom` varchar(128) NOT NULL,
      `fichier` varchar(128) NOT NULL,
      `candidature` int(11) NOT NULL REFERENCES Candidature(candidat),
@@ -108,3 +108,11 @@ CREATE TABLE `Candidature` (
        `poste` int(11) NOT NULL REFERENCES OffreDePoste(numero),
        PRIMARY KEY (candidat, poste)
 );
+
+
+-- --------------------------------------------------------
+#Insertion des données
+INSERT INTO FicheDePoste VALUES (1, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description');
+INSERT INTO FicheDePoste VALUES (2, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description');
+
+INSERT INTO OffreDePoste VALUES (1, 'non publiée', '2020-12-31', 2, 'CV, LM', 123456789, 1);

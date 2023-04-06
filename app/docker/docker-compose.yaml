@@ -1,9 +1,9 @@
 version: '3.7'
 services:
-  mysql-dev:
+  mysql-recrutement:
     image: mysql:8
     container_name: mysql-dev
-    restart: no
+    restart: "no"
     environment:
       MYSQL_ROOT_PASSWORD: passwordroot
       MYSQL_DATABASE: recrutement

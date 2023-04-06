@@ -1,0 +1,34 @@
+
+<%- include('partials/header.ejs') %>
+
+
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row">
+        <div class="card shadow-sm">
+            <img src="https://www.thalesgroup.com/sites/default/files/database/assets/images/2018-07/BandeauGroupeAbout2018.jpg" class="bd-placeholder-img card-img-top">
+            <div class="card-body">
+                <h4 class="mb-3">Thales : Ingénieur Développement Logiciel</h4>
+                <form class="needs-validation" novalidate="">
+                    <div class="row g-3">
+                        <div class="mb-3">
+                            <label for="motivation" class="form-label">Parlez-nous de vous ?</label>
+                            <textarea class="form-control" id="motivation" name="motivation" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cv" class="form-label">CV</label>
+                            <input type="file" class="form-control" id="cv" name="cv" accept=".pdf">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lettre" class="form-label">Lettre de motivation</label>
+                            <input type="file" class="form-control" id="lettre" name="lettre" accept=".pdf">
+                    </div>
+                        <button class="w-100 btn btn-primary btn-lg" type="submit">Candidater</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
