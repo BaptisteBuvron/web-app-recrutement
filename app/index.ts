@@ -3,9 +3,9 @@ import express, {Express} from "express";
 import cors from "cors";
 import {defaultRouter} from "./routes/MainRouter";
 import {offerRouter} from "./routes/OfferRouter";
+import {adminRouter} from "./routes/AdminRouter";
 
 dotenv.config();
-
 
 const app: Express = express();
 
@@ -14,8 +14,10 @@ app.use(cors());
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
+
 app.use("/", defaultRouter);
 app.use("/offer", offerRouter);
+app.use("/admin", adminRouter);
 
 
 const port = process.env.PORT || 8000;
