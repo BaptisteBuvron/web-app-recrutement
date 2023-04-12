@@ -38,7 +38,7 @@
                 <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span class="badge text-bg-secondary float-end">45000 €</span></h4>
                 <p><%= offer.ficheDePoste.description %></p>
                 <p>Organisation : <%= offer.ficheDePoste.siren %></p>
-                <a href="/application" class="btn btn-primary">Postuler</a>
+                <a href="/application/<%= offer.numero %>" class="btn btn-primary">Postuler</a>
             </div>
             <% }) %>
             <div class="border-1 border p-2 my-2">

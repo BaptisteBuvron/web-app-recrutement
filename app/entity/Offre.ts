@@ -1,6 +1,6 @@
 import {FicheDePoste} from "./FicheDePoste";
 
-export class Offer {
+export class Offre {
     numero: number;
     etat: string;
     date_validite: Date;
