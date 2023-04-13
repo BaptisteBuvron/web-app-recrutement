@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS Utilisateur;
 -- --------------------------------------------------------
 
 --
--- Structure de la table `FicheDePoste`
+-- Structure de la table `JobDescription`
 --
 
 CREATE TABLE `FicheDePoste` (
@@ -18,7 +18,7 @@ CREATE TABLE `FicheDePoste` (
         `type_metier` varchar(64) NOT NULL,
         `lieu` varchar(64) NOT NULL,
         `teletravail` tinyint(1) NOT NULL,
-        `nbheure` int(11) NOT NULL,
+        `nb_heures` int(11) NOT NULL,
         `salaire` varchar(64) NOT NULL,
         `description` text NOT NULL,
         `siren` int(11) NOT NULL REFERENCES Organisation(siren),
@@ -83,11 +83,11 @@ CREATE TABLE `Piece` (
 -- Déchargement des données de la table `Piece`
 --
 
-INSERT INTO `Piece` (`id`, `nom`, `fichier`, `candidature`) VALUES
-(1, 'CV', 'CV_Soudarsane', 1),
-(2, 'Lettre de motivation', 'LM_Soudarsane', 1),
-(3, 'CV', 'CV_Rene', 2),
-(4, 'Lettre de motivation', 'LM_Rene', 2);
+INSERT INTO `Piece` (`nom`, `fichier`, `candidature`) VALUES
+('CV', 'CV_Soudarsane', 1),
+('Lettre de motivation', 'LM_Soudarsane', 1),
+('CV', 'CV_Rene', 2),
+('Lettre de motivation', 'LM_Rene', 2);
 
 -- --------------------------------------------------------
 
@@ -104,14 +104,14 @@ CREATE TABLE `Utilisateur` (
        `statut` tinyint(1) NOT NULL,
        `password` varchar(128) NOT NULL,
        `type` varchar(64) NOT NULL CHECK (type IN ('Candidat', 'Recruteur', 'Administrateur')),
-       `demandeOrganisation` varchar(64)  CHECK (demandeOrganisation IN ('En cours', 'accepté', 'refusé')),
+       demande_organisation varchar(64)  CHECK (demande_organisation IN ('En cours', 'accepté', 'refusé')),
        `siren` int(11) REFERENCES Organisation(siren),
        PRIMARY KEY (mail),
 
        CHECK (
-           ((demandeOrganisation = 'En cours' OR demandeOrganisation = 'accepté' OR type = 'Recruteur') AND siren IS NOT NULL)
+           ((demande_organisation = 'En cours' OR demande_organisation = 'accepté' OR type = 'Recruteur') AND siren IS NOT NULL)
            OR
-           ((demandeOrganisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
+           ((demande_organisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
         )
 );
 
@@ -130,8 +130,8 @@ CREATE TABLE `Candidature` (
 
 -- --------------------------------------------------------
 #Insertion des données
-INSERT INTO FicheDePoste VALUES (1, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456789);
-INSERT INTO FicheDePoste VALUES (2, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456788);
+INSERT INTO FicheDePoste VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456789);
+INSERT INTO FicheDePoste VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456788);
 
-INSERT INTO OffreDePoste VALUES (1, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
-INSERT INTO OffreDePoste VALUES (2, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);
+INSERT INTO OffreDePoste VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
+INSERT INTO OffreDePoste VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);

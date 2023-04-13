@@ -1,4 +1,4 @@
-import express, {Router} from "express";
+import {Router} from "express";
 import {HomeController} from "../controllers/HomeController";
 
 export const defaultRouter = Router();
@@ -8,5 +8,5 @@ defaultRouter.get("/applications", HomeController.applications);
 
 defaultRouter.get("/login", HomeController.login);
 defaultRouter.get("/register", HomeController.register);
-defaultRouter.get("/application", HomeController.application);
+defaultRouter.get("/application/:numero", HomeController.application);
 

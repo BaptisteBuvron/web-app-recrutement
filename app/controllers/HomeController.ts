@@ -1,34 +1,43 @@
 import express from "express";
 import {OfferRepository} from "../repository/OfferRepository";
-import {Offer} from "../entity/Offer";
+import {Offre} from "../entity/Offre";
 
 export class HomeController {
-
-    static offerRepository: OfferRepository = new OfferRepository();
-
 
     static index(req: express.Request, res: express.Response) {
         //Render ejs file
         //res.status(200).json('Hello World From the Typescript API!')
-
-        OfferRepository.getAll().then((offers: Offer[]) => {
-            res.render("index", { title: "Home", offers: offers });
+        OfferRepository.getAll().then((offers: Offre[]) => {
+            res.render("index", {title: "Home", offers: offers});
         });
     }
 
     static applications(req: express.Request, res: express.Response) {
-        res.render("applications", { title: "Mes candidatures" });
+        res.render("applications", {title: "Mes candidatures"});
     }
 
     static login(req: express.Request, res: express.Response) {
-        res.render("login", { title: "Login" });
+        res.render("login", {title: "Login"});
     }
 
     static register(req: express.Request, res: express.Response) {
-        res.render("register", { title: "register" });
+        res.render("register", {title: "register"});
     }
 
     static application(req: express.Request, res: express.Response) {
-        res.render("application", { title: "Candidater" });
+        let numero = req.params.numero;
+        if (!Number.isInteger(numero)) {
+            //TODO redirect
+        }
+        OfferRepository.getById(Number.parseInt(numero))
+            .then((offer: Offre) => {
+                    res.render("application", {title: "Candidater", offer: offer});
+                }
+            )
+            .catch(
+            (reason) => {
+                res.redirect('/');
+            }
+        )
     }
 }
