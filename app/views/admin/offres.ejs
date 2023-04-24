@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Offres</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-            crossorigin="anonymous"></script>
-</head>
-<body>
 
 <%- include('../partials/adminHeader.ejs') %>.
 
@@ -37,47 +25,22 @@
             <p class="text-muted">Salaire minimum : <span id="salary-value"></span></p>
         </div>
         <div class="col-md-9">
-            <div class="border-1 border p-2 my-2">
-                <h4 class="">Développeur Front-end <span class="badge text-bg-secondary float-end">45000 €</span></h4>
-                <p>Nous cherchons un développeur Front-end pour rejoindre notre équipe de développement. Le candidat
-                    idéal
-                    possède une solide expérience en HTML, CSS et JavaScript.</p>
-                <p>Organisation : Nom de l'organisation</p>
-                <a href="#" class="btn btn-primary">Détail</a>
-                <a href="#" class="btn btn-warning">Modifier</a>
-                <a href="#" class="btn btn-danger">Supprimer</a>
-            </div>
-            <div class="border-1 border p-2 my-2">
-                <h4 class="">Ingénieur DevOps <span class="badge text-bg-secondary float-end">45000 €</span></h4>
-                <p>Nous recherchons un ingénieur DevOps pour rejoindre notre équipe de
-                    développement. Le candidat idéal doit posséder une expérience approfondie en administration système,
-                    en déploiement d'applications et en gestion de serveurs</p>
-                <a href="#" class="btn btn-primary">Détail</a>
-                <a href="#" class="btn btn-warning">Modifier</a>
-                <a href="#" class="btn btn-danger">Supprimer</a>
-            </div>
-            <div class="border-1 border p-2 my-2">
-                <h4 class="">Analyste financier <span class="badge text-bg-secondary float-end">45000 €</span></h4>
-                <p>Nous cherchons un analyste financier pour rejoindre notre équipe
-                    financière. Le candidat idéal doit posséder une expérience en analyse financière, en modélisation
-                    financière et en gestion de portefeuille.</p>
-                <a href="#" class="btn btn-primary">Détail</a>
-                <a href="#" class="btn btn-warning">Modifier</a>
-                <a href="#" class="btn btn-danger">Supprimer</a>
-            </div>
+            <h4>Offres d'emploi</h4>
+            <% offers.forEach((offer) => {%>
+                <div class="border-1 border p-2 my-2">
+                    <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span class="badge text-bg-secondary float-end">45000 €</span></h4>
+                    <p><%= offer.ficheDePoste.description %></p>
+                    <p>Organisation : <%= offer.ficheDePoste.siren %></p>
+                    <a href="/admin/offre/<%= offer.numero %>" class="btn btn-primary">Détail</a>
+                    <a href="#" class="btn btn-warning">Modifier</a>
+                    <a href="#" class="btn btn-danger">Supprimer</a>
+                </div>
+            <% }) %>
         </div>
 
 
     </div>
 </div>
-<script>
 
-    //When the page is loaded, update the salary value
-    window.onload = updateSalaryValue;
-
-    function updateSalaryValue() {
-        document.getElementById("salary-value").innerHTML = document.getElementById("salary").value;
-    }
-</script>
 </body>
 </html>

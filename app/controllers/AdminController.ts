@@ -1,24 +1,43 @@
 import express from "express";
+import {OfferRepository} from "../repository/OfferRepository";
+import {Offre} from "../entity/Offre";
 
 export class AdminController {
-    public static index(req: express.Request, res: express.Response) {
+    static index(req: express.Request, res: express.Response) {
         //Render ejs file
         //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/index", { title: "home" });
+        res.render("admin/index", { title: "Home" });
     }
-    public static utilisateurs(req: express.Request, res: express.Response) {
+    static utilisateurs(req: express.Request, res: express.Response) {
         //Render ejs file
         //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/utilisateurs", { title: "utilisateurs" });
+        res.render("admin/utilisateurs", { title: "Utilisateurs" });
     }
-    public static demandes(req: express.Request, res: express.Response) {
+    static demandes(req: express.Request, res: express.Response) {
         //Render ejs file
         //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/demandes", { title: "demandes" });
+        res.render("admin/demandes", { title: "Demandes" });
     }
-    public static offres(req: express.Request, res: express.Response) {
+    static offres(req: express.Request, res: express.Response) {
         //Render ejs file
         //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/offres", { title: "offres" });
+        OfferRepository.getAll().then((offers: Offre[]) => {
+            console.log(offers);
+            res.render("admin/offres", {title: "Offres", offers: offers});
+        });
+    }
+    static offre(req: express.Request, res: express.Response) {
+        //Render ejs file
+        //res.status(200).json('Hello World From the Typescript API!')
+        let numero = req.params.numero;
+        OfferRepository.getById(Number.parseInt(numero)).then((offer: Offre) => {
+            console.log(offer);
+            res.render("admin/offre", {title: "Offres", offers: offer});
+        }).catch(
+            (reason) => {
+                res.redirect('/admin');
+            }
+        )
     }
 }
+

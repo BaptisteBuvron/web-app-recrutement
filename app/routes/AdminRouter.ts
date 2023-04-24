@@ -7,6 +7,7 @@ adminRouter.get("/", AdminController.index);
 adminRouter.get("/utilisateurs", AdminController.utilisateurs);
 adminRouter.get("/demandes", AdminController.demandes);
 adminRouter.get("/offres", AdminController.offres);
+adminRouter.get("/offre/:numero", AdminController.offre);
 
 
 
