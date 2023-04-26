@@ -11,7 +11,6 @@ export class FicheDePosteRepository {
                     return reject(err);
                 }
                 entity.id = result.insertId;
-                console.log(entity);
                 return resolve(entity);
             });
         });
@@ -21,12 +20,39 @@ export class FicheDePosteRepository {
         return Promise.resolve(false);
     }
 
-    getAll(): Promise<FicheDePoste[]> {
-        return Promise.resolve([]);
+    static getAll(): Promise<FicheDePoste[]> {
+        const query = `SELECT *
+                       FROM FicheDePoste`;
+        return new Promise<FicheDePoste[]>((resolve, reject) => {
+            pool.query(query, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                let ficheDePostes: FicheDePoste[] = [];
+                for (let i = 0; i < result.length; i++) {
+                    ficheDePostes.push(new FicheDePoste(result[i].numero, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren));
+                }
+                return resolve(ficheDePostes);
+            });
+        });
     }
 
-    getById(id: number): Promise<FicheDePoste | null> {
-        throw new Error("Method not implemented.");
+    static getById(id: number): Promise<FicheDePoste> {
+        const query = `SELECT *
+                       FROM FicheDePoste
+                       WHERE numero = ?`;
+        return new Promise<FicheDePoste>((resolve, reject) => {
+            pool.query(query, id, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                if (result.length == 0) {
+                    return reject(null);
+                }
+                let ficheDePoste = new FicheDePoste(result[0].numero, result[0].status, result[0].responsable, result[0].type_metier, result[0].lieu, result[0].teletravail, result[0].nb_heures, result[0].salaire, result[0].description, result[0].siren);
+                return resolve(ficheDePoste);
+            });
+        });
     }
 
     update(id: number, entity: FicheDePoste): Promise<FicheDePoste | null> {
