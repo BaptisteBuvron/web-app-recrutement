@@ -26,14 +26,16 @@ export class FicheController {
                 req.body.salaire,
                 req.body.description,
                 siren);
-            console.log(ficheDePoste);
 
             //TODO save the ficheDePoste in the database
             FicheDePosteRepository.create(ficheDePoste).then((ficheDePoste) => {
-                console.log(ficheDePoste);
-            });
+                return res.redirect("/fiche/creation");
+            })
+                .catch((err) => {
+                    console.log(err);
+                    return res.redirect("/fiche/creation");
+                });
 
-            res.redirect("/fiche/creation");
         } else {
             //TODO get the siren from the recruiter
             res.render("fiche/creation", {title: "Créer une fiche de poste"});
