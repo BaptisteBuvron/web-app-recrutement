@@ -36,8 +36,8 @@
                     <th scope="row"><%= user.organisation %></th>
                     <td><button type="button" class="btn btn-outline-primary btn-sm">Détails</button></td>
                     <td>
-                        <a href="/admin/AccepterDemande/<%= user.mail %>" type="button" class="btn btn-danger btn-sm">Refuser</a>
-                        <a href="/admin/AccepterDemande/<%= user.mail %>" type="button" class="btn btn-success btn-sm">Accepter</a>
+                        <a href="/admin/refuserDemande/<%= user.mail %>" type="button" class="btn btn-danger btn-sm">Refuser</a>
+                        <a href="/admin/accepterDemande/<%= user.mail %>" type="button" class="btn btn-success btn-sm">Accepter</a>
                     </td>
                 </tr>
                 <% }) %>

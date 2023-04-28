@@ -59,7 +59,21 @@ export class UserRepository implements IRepository<User> {
     }
 
     static setDemandAccepted(mail:string): Promise<[User]> {
-        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'accepte', type='Recruteur' WHERE mail=?`;
+        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'accepté', type='Recruteur' WHERE mail=?`;
+        return new Promise<[User]>(
+            (resolve, reject) =>
+                pool.query(query, [mail], (err, result) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        return resolve(result);
+                    }
+                )
+        );
+    }
+
+    static setDemandRefused(mail:string): Promise<[User]> {
+        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'refusé', type='Candidat', siren=null WHERE mail=?`;
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, [mail], (err, result) => {

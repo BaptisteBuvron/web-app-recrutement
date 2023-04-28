@@ -109,9 +109,9 @@ CREATE TABLE `Utilisateur` (
        PRIMARY KEY (mail),
 
        CHECK (
-           ((demande_organisation = 'En cours' OR demande_organisation = 'accepte' OR type = 'Recruteur') AND siren IS NOT NULL)
+           ((demande_organisation = 'En cours' OR demande_organisation = 'accepté' OR type = 'Recruteur') AND siren IS NOT NULL)
            OR
-           ((demande_organisation = 'refuse' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
+           ((demande_organisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
         )
 );
 
