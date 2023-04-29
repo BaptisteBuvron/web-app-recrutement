@@ -32,14 +32,14 @@ CREATE TABLE `FicheDePoste` (
 -- Structure de la table `OffreDePoste`
 --
 
-CREATE TABLE `OffreDePoste` (
-        `numero` int(11) NOT NULL AUTO_INCREMENT,
-        `etat` varchar(64) NOT NULL CHECK (etat IN ('non publiée', 'publiée', 'expiré')),
-        `date_validite` date NOT NULL,
-        `nb_piece` int(11) NOT NULL,
-        `liste_piece` text NOT NULL,
-        `fiche` int(11) NOT NULL REFERENCES FicheDePoste(numero),
-        PRIMARY KEY (numero)
+CREATE TABLE `OffreDePoste`(
+                               `numero`        int(11)     NOT NULL AUTO_INCREMENT,
+                               `etat`          varchar(64) NOT NULL CHECK (etat IN ('non publiée', 'publiée', 'expirée')),
+                               `date_validite` date        NOT NULL,
+                               `nb_piece`      int(11)     NOT NULL,
+                               `liste_piece`   text        NOT NULL,
+                               `fiche`         int(11)     NOT NULL REFERENCES FicheDePoste (numero),
+                               PRIMARY KEY (numero)
 );
 
 

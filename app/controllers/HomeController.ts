@@ -1,15 +1,15 @@
 import express from "express";
 import {OfferRepository} from "../repository/OfferRepository";
-import {Offre} from "../entity/Offre";
 import {OrganisationRepository} from "../repository/OrganisationRepository";
 import {Organisation} from "../entity/Organisation";
+import {OffreDePoste} from "../entity/OffreDePoste";
 
 export class HomeController {
 
     static index(req: express.Request, res: express.Response) {
         //Render ejs file
         //res.status(200).json('Hello World From the Typescript API!')
-        OfferRepository.getAll().then((offers: Offre[]) => {
+        OfferRepository.getAll().then((offers: OffreDePoste[]) => {
             res.render("index", {title: "Home", offers: offers});
         });
     }
@@ -32,7 +32,7 @@ export class HomeController {
             //TODO redirect
         }
         OfferRepository.getById(Number.parseInt(numero))
-            .then((offer: Offre) => {
+            .then((offer: OffreDePoste) => {
                     res.render("application", {title: "Candidater", offer: offer});
                 }
             )

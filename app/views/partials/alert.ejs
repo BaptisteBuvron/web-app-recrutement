@@ -1,0 +1,8 @@
+<% if (typeof alerts !== 'undefined' && alerts.length > 0) {
+
+alerts.forEach((alert) => { %>
+    <div class="alert alert-<%= alert.type %>" role="alert">
+        <%= alert.message %></div>
+
+<% })
+} %>
