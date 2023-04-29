@@ -6,9 +6,23 @@ export class OfferRepository {
     static tableName = "OffreDePoste";
 
     static getAll(): Promise<[OffreDePoste]> {
-        const query = `SELECT *
+        const query = `SELECT OffreDePoste.numero as offre_numero,
+                              FicheDePoste.numero as fiche_numero,
+                              OffreDePoste.etat,
+                              OffreDePoste.date_validite,
+                              OffreDePoste.nb_piece,
+                              OffreDePoste.liste_piece,
+                              FicheDePoste.status,
+                              FicheDePoste.responsable,
+                              FicheDePoste.type_metier,
+                              FicheDePoste.lieu,
+                              FicheDePoste.teletravail,
+                              FicheDePoste.nb_heures,
+                              FicheDePoste.salaire,
+                              FicheDePoste.description,
+                              FicheDePoste.siren
                        FROM ${OfferRepository.tableName}
-                                LEFT JOIN FicheDePoste ON FicheDePoste.numero = OffreDePoste.fiche`;
+                                LEFT JOIN FicheDePoste ON OffreDePoste.fiche = FicheDePoste.numero`;
         return new Promise<[OffreDePoste]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
@@ -17,8 +31,8 @@ export class OfferRepository {
                     }
                     let ficheDePoste;
                     for (let i = 0; i < result.length; i++) {
-                        ficheDePoste = new FicheDePoste(result[i].fiche, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren);
-                        result[i] = new OffreDePoste(result[i].numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, ficheDePoste);
+                        ficheDePoste = new FicheDePoste(result[i].fiche_numero, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren);
+                        result[i] = new OffreDePoste(result[i].offre_numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, ficheDePoste);
                     }
                         return resolve(result);
                     }
