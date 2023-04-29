@@ -1,0 +1,70 @@
+<%- include('partials/header.ejs') %>.
+<div class="container border rounded-3 bg-light p-3">
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <a class="nav-link active" data-bs-toggle="tab" href="#select-tab"><h3>Entreprise existante</h3></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#input-tab"><h3>Nouvelle entreprise</h3></a>
+    </li>
+  </ul>
+  <div class="tab-content mb-2">
+    <div class="tab-pane fade show active" id="select-tab">
+      <h5 class="mb-4">Choisissez l'entreprise pour laquelle vous demandez à être recruteur</h5>
+      <form class="needs-validation" action="/recruiter" method="POST">
+        <div class="form-group row">
+          <div class="input-group col-sm-8">
+            <select class="form-control" id="siren" name="siren">
+              <% organisations.forEach((organisation) => {%>
+              <option value="<%= organisation.siren %>"><%= organisation.nom %></option>
+              <% }) %>
+            </select>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">Valider</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="input-tab">
+      <form class="needs-validation" action="/recruiter" method="POST">
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom de l'entreprise</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom">
+        </div>
+        <div class="mb-3">
+            <label for="siren" class="form-label">Siren</label>
+            <input type="text" class="form-control" id="siren" name="siren" placeholder="983434688">
+        </div>
+        <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <input type="text" class="form-control" id="type" name="type" placeholder="SARL">
+        </div>
+        <div class="mb-3">
+            <label for="siege" class="form-label">Siège</label>
+            <input type="text" class="form-control" id="siege" name=siege placeholder="Siège">
+        </div>
+        <button type="submit" class="btn btn-primary">Valider</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"></script>
+<script>
+  function showInputTab() {
+    $('a[href="#select-tab"]').removeClass('active');
+    $('a[href="#input-tab"]').addClass('active');
+    $('#select-tab').removeClass('active show');
+    $('#input-tab').addClass('active show');
+  }
+
+  function showSelectTab() {
+    $('a[href="#input-tab"]').removeClass('active');
+    $('a[href="#select-tab"]').addClass('active');
+    $('#input-tab').removeClass('active show');
+    $('#select-tab').addClass('active show');
+  }
+</script>
+

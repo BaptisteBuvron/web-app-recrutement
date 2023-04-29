@@ -1,24 +1,54 @@
 import express from "express";
+import {OfferRepository} from "../repository/OfferRepository";
+import {Offre} from "../entity/Offre";
+import {UserRepository} from "../repository/UserRepository";
+import {User} from "../entity/User";
 
 export class AdminController {
-    public static index(req: express.Request, res: express.Response) {
-        //Render ejs file
-        //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/index", { title: "home" });
+    static index(req: express.Request, res: express.Response) {
+        res.render("admin/index", { title: "Home" });
     }
-    public static utilisateurs(req: express.Request, res: express.Response) {
-        //Render ejs file
-        //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/utilisateurs", { title: "utilisateurs" });
+
+    static utilisateurs(req: express.Request, res: express.Response) {
+        res.render("admin/utilisateurs", { title: "Utilisateurs" });
     }
-    public static demandes(req: express.Request, res: express.Response) {
-        //Render ejs file
-        //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/demandes", { title: "demandes" });
+
+    static demandes(req: express.Request, res: express.Response) {
+        UserRepository.getRecruiterDemand().then((users: User[]) => {
+            console.log(users);
+            res.render("admin/demandes", {title: "Demandes", users: users});
+        });
     }
-    public static offres(req: express.Request, res: express.Response) {
-        //Render ejs file
-        //res.status(200).json('Hello World From the Typescript API!')
-        res.render("admin/offres", { title: "offres" });
+
+    static accepterDemande(req: express.Request, res: express.Response) {
+        let mail = req.params.mail;
+        /*UserRepository.setDemandAccepted(mail).then((mail) => {
+            console.log(mail);
+        });*/
+        res.redirect("/admin/demandes");
+    }
+
+    static refuserDemande(req: express.Request, res: express.Response) {
+        let mail = req.params.mail;
+        /*UserRepository.setDemandRefused(mail).then((mail) => {
+            console.log(mail);
+        });*/
+        res.redirect("/admin/demandes");
+    }
+
+    static offres(req: express.Request, res: express.Response) {
+        OfferRepository.getAll().then((offers: Offre[]) => {
+            console.log(offers);
+            res.render("admin/offres", {title: "Offres", offers: offers});
+        });
+    }
+
+    static offre(req: express.Request, res: express.Response) {
+        let numero = req.params.numero;
+        OfferRepository.getById(Number.parseInt(numero)).then((offer: Offre) => {
+            console.log(offer);
+            res.render("admin/offre", {title: "Offres", offers: offer});
+        })
     }
 }
+
