@@ -3,11 +3,15 @@ import {FicheDePosteRepository} from "../repository/FicheDePosteRepository";
 import {OffreDePoste} from "../entity/OffreDePoste";
 import {OfferRepository} from "../repository/OfferRepository";
 import {FicheDePoste} from "../entity/FicheDePoste";
+import {Alert} from "../utils/Alert";
 
 export class OfferController {
 
 
-    public static creation(req: express.Request, res: express.Response) {
+    public static async creation(req: express.Request, res: express.Response) {
+
+        const alerts: Alert[] = [];
+        console.log(req.method);
 
         if (req.method === "POST") {
             //TODO validation data
@@ -26,7 +30,7 @@ export class OfferController {
                 listePiece += "lettreMotivation,";
             }
 
-            FicheDePosteRepository.getById(req.body.ficheDePoste).then((ficheDePoste: FicheDePoste) => {
+            await FicheDePosteRepository.getById(req.body.ficheDePoste).then(async (ficheDePoste: FicheDePoste) => {
                 let offreDePoste: OffreDePoste = new OffreDePoste(
                     0,
                     req.body.etat,
@@ -35,25 +39,31 @@ export class OfferController {
                     listePiece,
                     ficheDePoste);
                 //TODO save the ficheDePoste in the database
-                OfferRepository.create(offreDePoste).then((offreDePoste) => {
-                    return res.redirect("/offre/creation");
+                await OfferRepository.create(offreDePoste).then((offreDePoste) => {
+                    let alert = new Alert("success", "L'offre a été créée.");
+                    alerts.push(alert);
                 }).catch((err) => {
                     console.log(err);
-                    return res.redirect("/offre/creation");
+                    let alert = new Alert("danger", "L'offre n'a pas été créée.");
+                    alerts.push(alert);
                 });
             })
                 .catch((err) => {
                     console.log(err);
-                    return res.redirect("/offre/creation");
-                });
+                    let alert = new Alert("danger", "La fiche de poste n'existe pas.");
+                    alerts.push(alert);
+                })
 
 
-        } else {
-            //TODO selectionner seulement les fiches de postes de l'organisation du recruteur
-            FicheDePosteRepository.getAll().then((ficheDePostes) => {
-                return res.render("offre/creation", {title: "Créer une offre", ficheDePostes: ficheDePostes});
-            });
         }
+        //TODO selectionner seulement les fiches de postes de l'organisation du recruteur
+        FicheDePosteRepository.getAll().then((ficheDePostes) => {
+            return res.render("offre/creation", {
+                title: "Créer une offre",
+                ficheDePostes: ficheDePostes,
+                alerts: alerts
+            });
+        });
 
 
     }
