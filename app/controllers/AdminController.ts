@@ -1,6 +1,6 @@
 import express from "express";
 import {OfferRepository} from "../repository/OfferRepository";
-import {Offre} from "../entity/Offre";
+import {OffreDePoste} from "../entity/OffreDePoste";
 import {UserRepository} from "../repository/UserRepository";
 import {User} from "../entity/User";
 
@@ -37,7 +37,7 @@ export class AdminController {
     }
 
     static offres(req: express.Request, res: express.Response) {
-        OfferRepository.getAll().then((offers: Offre[]) => {
+        OfferRepository.getAll().then((offers: OffreDePoste[]) => {
             console.log(offers);
             res.render("admin/offres", {title: "Offres", offers: offers});
         });
@@ -45,7 +45,7 @@ export class AdminController {
 
     static offre(req: express.Request, res: express.Response) {
         let numero = req.params.numero;
-        OfferRepository.getById(Number.parseInt(numero)).then((offer: Offre) => {
+        OfferRepository.getById(Number.parseInt(numero)).then((offer: OffreDePoste) => {
             console.log(offer);
             res.render("admin/offre", {title: "Offres", offers: offer});
         })
