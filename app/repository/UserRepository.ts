@@ -44,7 +44,8 @@ export class UserRepository implements IRepository<User> {
 
     static getRecruiterDemand(): Promise<[User]> {
         const query = `SELECT u.mail, u.nom, u.prenom, o.siren, o.nom  as organisation
-                       FROM ${UserRepository.tableName} u INNER JOIN ${OrganisationRepository.tableName} o using(siren)`;
+                       FROM ${UserRepository.tableName} u INNER JOIN ${OrganisationRepository.tableName} o using(siren)
+                       WHERE u.demande_organisation = 'En cours'`;
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
@@ -59,7 +60,7 @@ export class UserRepository implements IRepository<User> {
     }
 
     static setDemandAccepted(mail:string): Promise<[User]> {
-        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'accepté', type='Recruteur' WHERE mail=?`;
+        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'accepted', type='Recruteur' WHERE mail=?`;
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, [mail], (err, result) => {
@@ -73,7 +74,7 @@ export class UserRepository implements IRepository<User> {
     }
 
     static setDemandRefused(mail:string): Promise<[User]> {
-        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'refusé', type='Candidat', siren=null WHERE mail=?`;
+        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'refused', type='Candidat', siren=null WHERE mail=?`;
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, [mail], (err, result) => {
