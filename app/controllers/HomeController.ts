@@ -3,6 +3,7 @@ import {OfferRepository} from "../repository/OfferRepository";
 import {OrganisationRepository} from "../repository/OrganisationRepository";
 import {Organisation} from "../entity/Organisation";
 import {OffreDePoste} from "../entity/OffreDePoste";
+import {UserRepository} from "../repository/UserRepository";
 
 export class HomeController {
 
@@ -45,6 +46,8 @@ export class HomeController {
 
     static recruiter(req: express.Request, res: express.Response) {
         if (req.method === "POST") {
+            let siren = req.body.siren;
+            let mail = "tsoudar21@gmail.com"; //TO DO get mail from session variable
             if(req.body.siege){
                 let organisation: Organisation = new Organisation(
                     req.body.siren,
@@ -54,13 +57,15 @@ export class HomeController {
                 );
                 OrganisationRepository.create(organisation).then((organisation) => {
                     console.log(organisation);
-                    //Rajouter le SIREN dans le profil de l'utilisateur
+                    UserRepository.setSiren(siren, mail).then((siren) => {
+                        console.log(siren);
+                    });
                 });
             }else{
-                let siren = req.body.siren;
-                //console.log(req.body.siren);
-                //Si l'utilisateur choisit une entreprise déjà existante
-                //Rajouter le SIREN dans le profil de l'utilisateur
+                console.log(siren);
+                UserRepository.setSiren(siren, mail).then((siren) => {
+                    console.log(siren);
+                });
             }
 
             res.redirect("/recruiter");

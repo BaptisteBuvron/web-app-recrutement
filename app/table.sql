@@ -21,7 +21,7 @@ CREATE TABLE `FicheDePoste` (
         `nb_heures` int(11) NOT NULL,
         `salaire` varchar(64) NOT NULL,
         `description` text NOT NULL,
-        `siren` int(11) NOT NULL REFERENCES Organisation(siren),
+        `siren` varchar(11) NOT NULL REFERENCES Organisation(siren),
         UNIQUE (siren),
         PRIMARY KEY (numero)
 );
@@ -51,7 +51,7 @@ CREATE TABLE `OffreDePoste`(
 
 CREATE TABLE `Organisation`
 (
-    `siren` int(11)      NOT NULL,
+    `siren` varchar(11)      NOT NULL,
     `nom`   varchar(64)  NOT NULL,
     `type`  varchar(64)  NOT NULL,
     `siege` varchar(128) NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `Utilisateur` (
        `password` varchar(128) NOT NULL,
        `type` varchar(64) NOT NULL CHECK (type IN ('Candidat', 'Recruteur', 'Administrateur')),
        demande_organisation varchar(64)  CHECK (demande_organisation IN ('En cours', 'accepted', 'refused')),
-       `siren` int(11) REFERENCES Organisation(siren),
+       `siren` varchar (11) REFERENCES Organisation(siren),
        PRIMARY KEY (mail),
 
        CHECK (

@@ -86,4 +86,18 @@ export class UserRepository implements IRepository<User> {
                 )
         );
     }
+
+    static setSiren(siren:string, mail:string): Promise<[User]> {
+        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'En cours', siren = ? WHERE mail=?`;
+        return new Promise<[User]>(
+            (resolve, reject) =>
+                pool.query(query, [siren, mail], (err, result) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        return resolve(result);
+                    }
+                )
+        );
+    }
 }
