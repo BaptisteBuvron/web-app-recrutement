@@ -8,14 +8,10 @@ export class HomeController {
 
     static index(req: express.Request, res: express.Response) {
         //Render ejs file
-        //res.status(200).json('Hello World From the Typescript API!')
+        //For testing mock getAll() method
         OfferRepository.getAll().then((offers: OffreDePoste[]) => {
             res.render("index", {title: "Home", offers: offers});
         });
-    }
-
-    static applications(req: express.Request, res: express.Response) {
-        res.render("applications", {title: "Mes candidatures"});
     }
 
     static login(req: express.Request, res: express.Response) {
@@ -26,22 +22,6 @@ export class HomeController {
         res.render("register", {title: "register"});
     }
 
-    static application(req: express.Request, res: express.Response) {
-        let numero = req.params.numero;
-        if (!Number.isInteger(numero)) {
-            //TODO redirect
-        }
-        OfferRepository.getById(Number.parseInt(numero))
-            .then((offer: OffreDePoste) => {
-                    res.render("application", {title: "Candidater", offer: offer});
-                }
-            )
-            .catch(
-            (reason) => {
-                res.redirect('/');
-            }
-        )
-    }
 
     static recruiter(req: express.Request, res: express.Response) {
         if (req.method === "POST") {

@@ -6,6 +6,7 @@ import {offerRouter} from "./routes/OfferRouter";
 import {adminRouter} from "./routes/AdminRouter";
 import {ficheRouter} from "./routes/FicheRouter";
 import bodyParser from "body-parser";
+import {candidatureRouter} from "./routes/CandidatureRouter";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/", defaultRouter);
 app.use("/offre", offerRouter);
 app.use("/fiche", ficheRouter);
 app.use("/admin", adminRouter);
+app.use("/", candidatureRouter);
 
 
 const port = process.env.PORT || 8000;
