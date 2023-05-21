@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS Utilisateur;
 -- Structure de la table `JobDescription`
 --
 
+
 CREATE TABLE `FicheDePoste`
 (
     `numero`      int(11)     NOT NULL AUTO_INCREMENT,
@@ -53,7 +54,7 @@ CREATE TABLE `OffreDePoste`
 
 CREATE TABLE `Organisation`
 (
-    `siren` int(11)      NOT NULL,
+    `siren` varchar(11)      NOT NULL,
     `nom`   varchar(64)  NOT NULL,
     `type`  varchar(64)  NOT NULL,
     `siege` varchar(128) NOT NULL,
@@ -97,6 +98,7 @@ VALUES ('CV', 'CV_Soudarsane', 1),
 --
 -- Structure de la table `Utilisateur`
 --
+
 
 CREATE TABLE `Utilisateur`
 (
@@ -149,12 +151,11 @@ CREATE TABLE `Candidature`
 
 -- --------------------------------------------------------
 #Insertion des données
-INSERT INTO FicheDePoste
-VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456789);
-INSERT INTO FicheDePoste
-VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456788);
 
-INSERT INTO OffreDePoste
-VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
-INSERT INTO OffreDePoste
-VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);
+INSERT INTO FicheDePoste VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456789);
+INSERT INTO FicheDePoste VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', 123456788);
+
+INSERT INTO OffreDePoste VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
+INSERT INTO OffreDePoste VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);
+
+INSERT INTO Utilisateur VALUES ('tsoudar21@gmail.com', 'Tillai', 'Soudarsane', '0652645299', '2020-10-10', 1, 'mdp', 'Candidat', NULL, 123456);

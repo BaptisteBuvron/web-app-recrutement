@@ -3,6 +3,8 @@ import {OfferRepository} from "../repository/OfferRepository";
 import {OrganisationRepository} from "../repository/OrganisationRepository";
 import {Organisation} from "../entity/Organisation";
 import {OffreDePoste} from "../entity/OffreDePoste";
+import {UserRepository} from "../repository/UserRepository";
+import {Alert} from "../utils/Alert";
 
 export class HomeController {
 
@@ -23,8 +25,11 @@ export class HomeController {
     }
 
 
-    static recruiter(req: express.Request, res: express.Response) {
+    static async recruiter(req: express.Request, res: express.Response) {
+        const alerts: Alert[] = [];
         if (req.method === "POST") {
+            let siren = req.body.siren;
+            let mail = "tsoudar21@gmail.com"; //TO DO get mail from session variable
             if(req.body.siege){
                 let organisation: Organisation = new Organisation(
                     req.body.siren,
@@ -32,23 +37,39 @@ export class HomeController {
                     req.body.type,
                     req.body.siege
                 );
-                OrganisationRepository.create(organisation).then((organisation) => {
-                    console.log(organisation);
-                    //Rajouter le SIREN dans le profil de l'utilisateur
-                });
-            }else{
-                let siren = req.body.siren;
-                //console.log(req.body.siren);
-                //Si l'utilisateur choisit une entreprise déjà existante
-                //Rajouter le SIREN dans le profil de l'utilisateur
-            }
+                await OrganisationRepository.create(organisation).then((organisation) => {
+                    let alert = new Alert("success", "L'organisation a été créée.");
+                    alerts.push(alert);
+                })
+                    .catch((err) => {
+                        let alert = new Alert("danger", "L'organisation n'a pas été créée.");
+                        alerts.push(alert);
+                        console.log(err);
+                        return res.redirect("/recruiter");
+                    });
 
-            res.redirect("/recruiter");
-        }else{
-            OrganisationRepository.getAll().then((organisations: Organisation[]) => {
-                res.render("recruiter", {title: "Recruteur", organisations: organisations});
-            });
+
+                await UserRepository.setSiren(siren, mail).then((siren) => {
+                    let alert = new Alert("success", "Votre demande à rejoindre cette organisation est bien prise en compte.");
+                    alerts.push(alert);
+                })
+                    .catch((err) => {
+                        let alert = new Alert("danger", "Attention, votre demande n'a pas été prise en compte.");
+                        alerts.push(alert);
+                        console.log(err);
+                        return res.redirect("/recruiter");
+                    });
+            }else{
+                await UserRepository.setSiren(siren, mail).then((siren) => {
+                    let alert = new Alert("success", "Votre demande à rejoindre cette organisation est bien prise en compte.");
+                    alerts.push(alert);
+                });
+            }
         }
+
+        OrganisationRepository.getAll().then((organisations: Organisation[]) => {
+            res.render("recruiter", {title: "Recruteur", organisations: organisations, alerts: alerts});
+        });
     }
 }
 
