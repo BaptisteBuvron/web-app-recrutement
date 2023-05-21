@@ -21,7 +21,7 @@ CREATE TABLE `FicheDePoste` (
         `nb_heures` int(11) NOT NULL,
         `salaire` varchar(64) NOT NULL,
         `description` text NOT NULL,
-        `siren` int(11) NOT NULL REFERENCES Organisation(siren),
+        `siren` varchar(11) NOT NULL REFERENCES Organisation(siren),
         UNIQUE (siren),
         PRIMARY KEY (numero)
 );
@@ -51,7 +51,7 @@ CREATE TABLE `OffreDePoste`(
 
 CREATE TABLE `Organisation`
 (
-    `siren` int(11)      NOT NULL,
+    `siren` varchar(11)      NOT NULL,
     `nom`   varchar(64)  NOT NULL,
     `type`  varchar(64)  NOT NULL,
     `siege` varchar(128) NOT NULL,
@@ -104,14 +104,14 @@ CREATE TABLE `Utilisateur` (
        `statut` tinyint(1) NOT NULL,
        `password` varchar(128) NOT NULL,
        `type` varchar(64) NOT NULL CHECK (type IN ('Candidat', 'Recruteur', 'Administrateur')),
-       demande_organisation varchar(64)  CHECK (demande_organisation IN ('En cours', 'accepté', 'refusé')),
-       `siren` int(11) REFERENCES Organisation(siren),
+       demande_organisation varchar(64)  CHECK (demande_organisation IN ('En cours', 'accepted', 'refused')),
+       `siren` varchar (11) REFERENCES Organisation(siren),
        PRIMARY KEY (mail),
 
        CHECK (
-           ((demande_organisation = 'En cours' OR demande_organisation = 'accepté' OR type = 'Recruteur') AND siren IS NOT NULL)
+           ((demande_organisation = 'En cours' OR demande_organisation = 'accepted' OR type = 'Recruteur') AND siren IS NOT NULL)
            OR
-           ((demande_organisation = 'refusé' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
+           ((demande_organisation = 'refused' OR type = 'Administrateur' OR type = 'Candidat') AND siren IS NULL)
         )
 );
 
@@ -135,3 +135,5 @@ INSERT INTO FicheDePoste VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Pari
 
 INSERT INTO OffreDePoste VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
 INSERT INTO OffreDePoste VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);
+
+INSERT INTO Utilisateur VALUES ('tsoudar21@gmail.com', 'Tillai', 'Soudarsane', '0652645299', '2020-10-10', 1, 'mdp', 'Candidat', NULL, 123456);

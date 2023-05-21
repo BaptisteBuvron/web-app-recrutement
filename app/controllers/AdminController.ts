@@ -22,17 +22,17 @@ export class AdminController {
 
     static accepterDemande(req: express.Request, res: express.Response) {
         let mail = req.params.mail;
-        /*UserRepository.setDemandAccepted(mail).then((mail) => {
+        UserRepository.setDemandAccepted(mail).then((mail) => {
             console.log(mail);
-        });*/
+        });
         res.redirect("/admin/demandes");
     }
 
     static refuserDemande(req: express.Request, res: express.Response) {
         let mail = req.params.mail;
-        /*UserRepository.setDemandRefused(mail).then((mail) => {
+        UserRepository.setDemandRefused(mail).then((mail) => {
             console.log(mail);
-        });*/
+        });
         res.redirect("/admin/demandes");
     }
 
