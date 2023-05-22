@@ -1,30 +1,11 @@
-import {IRepository} from "./IRepository";
 import {User} from "../entity/User";
 import {pool} from "../database";
 import {OrganisationRepository} from "./OrganisationRepository";
 
 const db = pool;
 
-export class UserRepository implements IRepository<User> {
+export class UserRepository {
     static tableName = "Utilisateur";
-
-    getAll(): Promise<[User]> {
-        const query = `SELECT *
-                       FROM ${UserRepository.tableName}`;
-        return new Promise<[User]>(
-            (resolve, reject) =>
-
-                db.query(query, (err, result) => {
-                        if (err) {
-                            throw err;
-                        }
-                        resolve(result);
-                    }
-                )
-        )
-            ;
-
-    }
 
     getById(id: number): Promise<null> {
         throw new Error("Method not implemented.");
@@ -42,9 +23,11 @@ export class UserRepository implements IRepository<User> {
         throw new Error("Method not implemented.");
     }
 
+
     static getRecruiterDemand(): Promise<[User]> {
-        const query = `SELECT u.mail, u.nom, u.prenom, o.siren, o.nom  as organisation
-                       FROM ${UserRepository.tableName} u INNER JOIN ${OrganisationRepository.tableName} o using(siren)
+        const query = `SELECT u.email, u.nom, u.prenom, o.siren, o.nom as organisation
+                       FROM ${UserRepository.tableName} u
+                                INNER JOIN ${OrganisationRepository.tableName} o using (siren)
                        WHERE u.demande_organisation = 'En cours'`;
         return new Promise<[User]>(
             (resolve, reject) =>
@@ -59,11 +42,14 @@ export class UserRepository implements IRepository<User> {
         //Modifier la table utilisateur : profil recruteur et siren à mettre à jour
     }
 
-    static setDemandAccepted(mail:string): Promise<[User]> {
-        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'accepted', type='Recruteur' WHERE mail=?`;
+    static setDemandAccepted(email: string): Promise<[User]> {
+        const query = `UPDATE ${UserRepository.tableName}
+                       SET demande_organisation = 'accepted',
+                           type='Recruteur'
+                       WHERE email = ?`;
         return new Promise<[User]>(
             (resolve, reject) =>
-                pool.query(query, [mail], (err, result) => {
+                pool.query(query, [email], (err, result) => {
                         if (err) {
                             return reject(err);
                         }
@@ -73,11 +59,15 @@ export class UserRepository implements IRepository<User> {
         );
     }
 
-    static setDemandRefused(mail:string): Promise<[User]> {
-        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'refused', type='Candidat', siren=null WHERE mail=?`;
+    static setDemandRefused(email: string): Promise<[User]> {
+        const query = `UPDATE ${UserRepository.tableName}
+                       SET demande_organisation = 'refused',
+                           type='Candidat',
+                           siren=null
+                       WHERE email = ?`;
         return new Promise<[User]>(
             (resolve, reject) =>
-                pool.query(query, [mail], (err, result) => {
+                pool.query(query, [email], (err, result) => {
                         if (err) {
                             return reject(err);
                         }
@@ -87,11 +77,14 @@ export class UserRepository implements IRepository<User> {
         );
     }
 
-    static setSiren(siren:string, mail:string): Promise<[User]> {
-        const query = `UPDATE ${UserRepository.tableName} SET demande_organisation = 'En cours', siren = ? WHERE mail=?`;
+    static setSiren(siren: string, email: string): Promise<[User]> {
+        const query = `UPDATE ${UserRepository.tableName}
+                       SET demande_organisation = 'En cours',
+                           siren                = ?
+                       WHERE email = ?`;
         return new Promise<[User]>(
             (resolve, reject) =>
-                pool.query(query, [siren, mail], (err, result) => {
+                pool.query(query, [siren, email], (err, result) => {
                         if (err) {
                             return reject(err);
                         }
