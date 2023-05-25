@@ -44,8 +44,8 @@ export class UserRepository {
 
     static setDemandAccepted(email: string): Promise<[User]> {
         const query = `UPDATE ${UserRepository.tableName}
-                       SET demande_organisation = 'accepted',
-                           type='Recruteur'
+                       SET demande_organisation = 'acceptation',
+                           role='Recruteur'
                        WHERE email = ?`;
         return new Promise<[User]>(
             (resolve, reject) =>
@@ -61,8 +61,8 @@ export class UserRepository {
 
     static setDemandRefused(email: string): Promise<[User]> {
         const query = `UPDATE ${UserRepository.tableName}
-                       SET demande_organisation = 'refused',
-                           type='Candidat',
+                       SET demande_organisation = 'refus',
+                           role='Candidat',
                            siren=null
                        WHERE email = ?`;
         return new Promise<[User]>(

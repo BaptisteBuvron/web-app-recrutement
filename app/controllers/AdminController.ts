@@ -47,7 +47,7 @@ export class AdminController {
         let numero = req.params.numero;
         OfferRepository.getById(Number.parseInt(numero)).then((offer: OffreDePoste) => {
             console.log(offer);
-            res.render("admin/offre", {title: "Offres", offers: offer});
+            res.render("admin/offre", {title: "Offre", offer: offer});
         })
     }
 }

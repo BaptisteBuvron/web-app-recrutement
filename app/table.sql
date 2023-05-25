@@ -110,15 +110,15 @@ CREATE TABLE `Utilisateur`
     `statut`             tinyint(1)   NOT NULL,
     `password`           varchar(128) NOT NULL,
     `role`               varchar(64)  NOT NULL CHECK (role IN ('Candidat', 'Recruteur', 'Administrateur')),
-    demande_organisation varchar(64) CHECK (demande_organisation IN ('En cours', 'accepté', 'refusé')),
+    demande_organisation varchar(64) CHECK (demande_organisation IN ('En cours', 'acceptation', 'refus')),
     `siren`              int(11) REFERENCES Organisation (siren),
     PRIMARY KEY (email),
 
     CHECK (
-            ((demande_organisation = 'En cours' OR demande_organisation = 'accepté' OR role = 'Recruteur') AND
+            ((demande_organisation = 'En cours' OR demande_organisation = 'acceptation' OR role = 'Recruteur') AND
              siren IS NOT NULL)
             OR
-            ((demande_organisation = 'refusé' OR role = 'Administrateur' OR role = 'Candidat') AND siren IS NULL)
+            ((demande_organisation = 'refus' OR role = 'Administrateur' OR role = 'Candidat') AND siren IS NULL)
         )
 );
 
