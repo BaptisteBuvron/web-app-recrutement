@@ -12,10 +12,10 @@ export class FicheDePoste
     salaire: string;
     description: string;
     siren: string;
-    organisation: Organisation;
+    organisation?: Organisation;
 
 
-    constructor(id: number, status: string, responsable: string, typeMetier: string, lieu: string, teletravail: boolean, nbHeures: number, salaire: string, description: string, siren: string, organisation: Organisation) {
+    constructor(id: number, status: string, responsable: string, typeMetier: string, lieu: string, teletravail: boolean, nbHeures: number, salaire: string, description: string, siren: string, organisation?: Organisation) {
         this.id = id;
         this.status = status;
         this.responsable = responsable;
@@ -26,7 +26,8 @@ export class FicheDePoste
         this.salaire = salaire;
         this.description = description;
         this.siren = siren;
-        this.organisation = organisation;
+        if(organisation)
+            this.organisation = organisation;
     }
 
 

@@ -27,7 +27,8 @@ export class FicheController {
                 nbHeures,
                 req.body.salaire,
                 req.body.description,
-                siren);
+                siren,
+                );
             await FicheDePosteRepository.create(ficheDePoste).then((ficheDePoste) => {
                 let alert = new Alert("success", "La fiche de poste a été créée.");
                 alerts.push(alert);
