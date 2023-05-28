@@ -24,10 +24,10 @@ export class OfferRepository {
                               FicheDePoste.siren,
                               Organisation.nom,
                               Organisation.type,
-                              Organisation.siege,
+                              Organisation.siege
                        FROM ${OfferRepository.tableName}
-                                LEFT JOIN FicheDePoste ON OffreDePoste.fiche = FicheDePoste.numero
-                                INNER JOIN Organisation ON Organisation.siren = FicheDePoste.siren`;
+                       LEFT JOIN FicheDePoste ON OffreDePoste.fiche = FicheDePoste.numero
+                       INNER JOIN Organisation ON Organisation.siren = FicheDePoste.siren`;
         return new Promise<[OffreDePoste]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
