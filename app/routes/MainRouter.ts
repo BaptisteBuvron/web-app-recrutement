@@ -1,72 +1,83 @@
 import {Router} from "express";
 import {HomeController} from "../controllers/HomeController";
-const jwt = require("jsonwebtoken");
+const session = require("express-session");
+const FileStore = require("session-file-store")(session);
 const fs = require("fs");
-// @ts-ignore
-import * as fakeLocal from "../fakeLocal.json";
 const passport = require('passport');
 const {v4:uuidv4} = require("uuid");
 const localStrategy = require("passport-local").Strategy
-// @ts-ignore
 const users = require("../users.json")
 //import * as utilisateurs from "../users.json";
 const bcrypt = require("bcrypt")
-const JWTstrategy = require("passport-jwt").Strategy
 const secureRoutes = require("./SecureRoutes");
 
 export const defaultRouter = Router();
 
 defaultRouter.use("/user", secureRoutes);
-
-
-defaultRouter.use(passport.initialize());
-
 defaultRouter.get("/", HomeController.index);
 defaultRouter.get("/login", HomeController.login);
 defaultRouter.get("/register", HomeController.register);
+defaultRouter.get("/recruiter", HomeController.recruiter);
+defaultRouter.post("/recruiter", HomeController.recruiter);
 
-function getJwt(){
-    console.log("in getJwt");
-    return fakeLocal.Authorization?.substring(7);
-}
+
+
+defaultRouter.use(
+    session({
+        genid: (req) => {
+            console.log("1. in genid req.sessionID: ", req.sessionID);
+            return uuidv4();
+        },
+        store: new FileStore(),
+        secret: "a private key",
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+
+defaultRouter.use(passport.initialize());
+defaultRouter.use(passport.session());
+
+passport.serializeUser((user, done) => {
+    console.log("in serialize user: ", user);
+    done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+    console.log("in deserialize user: ", user);
+    done(null, user);
+});
 
 passport.use(
-    new JWTstrategy(
-        {
-            secretOrKey: "TOP_SECRET",
-            jwtFromRequest: getJwt,
-        },
+    "register",
+    new localStrategy(
+        {usernameField: "email", passwordField: "password"},
         // @ts-ignore
-        async (token, done) => {
-            console.log("in jwt strat. token: ", token);
+        async (email, password, done)=>{
+            try{
+                if(password.length <= 4 || !email){
+                    done(null, false, {
+                        message: "Your credentials do not match our criteria",
+                    })
+                }else{
+                    const hashedPass = await bcrypt.hash(password, 10);
+                    let newUser = {email, password: hashedPass, id: uuidv4()};
+                    console.log(users);
+                    //console.log(utilisateurs);
+                    users.push(newUser);
 
-            // 0. Don't even make it through the getJwt function check. NO token
-            // prints unauthorized.
+                    // @ts-ignore
+                    await fs.writeFile("users.json", JSON.stringify(users), (err)=>{
+                        if(err) return done(err);
+                        console.log("updated the fake database");
+                    });
 
-            // 0B. Invalid token: again doesn't make it into this function. Prints unauthorized
-
-            // 1. Makes it into this function but gets App error (displays error message.) no redirecting.
-            // We simulate an "application error" occurring in this function with an email of "tokenerror".
-            //
-            if (token?.user?.email == "tokenerror") {
-                let testError = new Error(
-                    "something bad happened. we've simulated an application error in the JWTstrategy callback for users with an email of 'tokenerror'."
-                );
-                return done(testError, false);
+                    return done(null, newUser, {message:"Signed up successfully!"});
+                }
+            }catch (err){
+                return done(err);
             }
-
-            if (token?.user?.email == "emptytoken") {
-                // 2. Some other reason for user to not exist. pass false as user:
-                // displays "unauthorized". Doesn't allow the app to hit the next function in the chain.
-                // We are simulating an empty user / no user coming from the JWT.
-                return done(null, false); // unauthorized
-            }
-
-            // 3. Successfully decoded and validated user:
-            // (adds the req.user, req.login, etc... properties to req. Then calls the next function in the chain.)
-            return done(null, token.user);
-    }
-    )
+        })
 );
 
 passport.use(
@@ -87,6 +98,7 @@ passport.use(
                     );
                 }
                 const user = users.find((user) => user.email === email);
+                console.log(users);
 
                 if (!user) {
                     return done(null, false, { message: "User not found!" });
@@ -121,26 +133,9 @@ defaultRouter.post(
             if (!user) {
                 return res.redirect(`/failed?message=${info.message}`);
             }
-
-            // It doesn't seem like the req.login() does anything for us when using JWT.
-            // I could be wrong though. You'll have to play around with it yourself.
-            // req.login(user, { session: false }, async (error) => {
-            // console.log("using req.login...");
-
-            const body = { _id: user.id, email: user.email };
-
-            const token = jwt.sign({ user: body }, "TOP_SECRET");
-
-            await fs.writeFile(
-                "fakeLocal.json",
-                JSON.stringify({ Authorization: `Bearer ${token}` }),
-                (err) => {
-                    if (err) throw err; // we might need to put this in a try catch, but we'll ignore it since it's unrelated to passport and auth.
-                }
-            );
-
-            return res.redirect(`success?message=${info.message}`);
-            // }); // this is the closing brackets for the req.login
+            req.login(user, async (error) => {
+                return res.redirect(`success?message=${info.message}`);
+            });
         })(req, res, next);
     },
     (req, res, next) => {
@@ -148,45 +143,9 @@ defaultRouter.post(
     }
 );
 
-
-
-
-passport.use(
-    "register",
-    new localStrategy(
-        {usernameField: "email", passwordField: "password"},
-        // @ts-ignore
-        async (email, password, done)=>{
-            try{
-                if(password.length <= 4 || !email){
-                    done(null, false, {
-                        message: "Your credentials do not match our criteria",
-                    })
-                }else{
-                    const hashedPass = await bcrypt.hash(password, 10);
-                    let newUser = {email, password: hashedPass, id: uuidv4()};
-                    console.log(users);
-                    //console.log(utilisateurs);
-                    users.push(newUser);
-
-                    // @ts-ignore
-                    await fs.writeFile("users.json", JSON.stringify(users), (err)=>{
-                        if(err) return done(err);
-                        console.log("updated the fake database");
-                    });
-
-                    return done(null, newUser, {message:"Signed up successfully!"});
-                }
-            }catch (err){
-                return done(err);
-            }
-    })
-);
-
 defaultRouter.post("/register", async(req, res, next)=>{
     // @ts-ignore
     passport.authenticate("register", async function(error, user, info){
-        console.log("user:", user);
         if(error){
             return next(error.message);
         }
@@ -194,64 +153,47 @@ defaultRouter.post("/register", async(req, res, next)=>{
         if(!user){
             res.redirect(`/failed?message=${info.message}`);
         }
-
-        const body = { _id: user.id, email: user.email };
-
-        console.log("body : ", body);
-
-        const token = jwt.sign({user: body}, "TOP_SECRET");
-
-        await fs.writeFile(
-            "./fakeLocal.json",
-            JSON.stringify({ Authorization: `Bearer ${token}`}),
-            // @ts-ignore
-            (err)=>{
-                if (err) throw err;
+        req.login(user, async (error) => {
+            if (error) {
+                return next(error);
             }
-        );
-
-        res.redirect(`/success?message=${info.message}`);
+            return res.redirect(`/success?message=${info.message}`);
+        });
     })(req, res, next)
 });
 
+defaultRouter.get("/success", (req, res) => {
+    console.log("req.query: ", req.query);
+    console.log("req.isAuthenticated: ", req.isAuthenticated());
 
-
-defaultRouter.get("/success", (req, res, next)=>{
-    res.send(`success ${req.query?.message}`);
+    res.send(`You're in! ${req.query.message}`);
 });
+
 defaultRouter.get("/failed", (req, res, next)=>{
     res.send(`failed ${req.query?.message}`);
 });
 defaultRouter.get("/users", (req, res, next)=>{
-    console.log(users);
-    res.send("users");
+    res.send("users: ", users);
 });
 
-defaultRouter.get(
-    "/secureroute",
-    passport.authenticate("jwt", {session: false}),
-    async(req, res)=>{
-        console.log("------ beginning of /secureroute -----");
-        console.log("req.isAuthenticated: ", req.isAuthenticated());
-        console.log("req.user: ", req.user); // does this for me.
-        console.log("req.login: ", req.login);
-        console.log("req.logout: ", req.logout);
-        res.send(`welcome to the top secret place ${req.user.email}`);
+defaultRouter.get("/secureroute", (req, res)=>{
+        if (req.isAuthenticated()) {
+            res.send(`welcome to the top secret place ${req.user.email}`);
+            res.send("req.isAuthenticated: ", req.isAuthenticated());
+            res.send("req.user: ", req.user); // does this for me.
+            res.send("req.login: ", req.login);
+            res.send("req.logout: ", req.logout);
+        } else {
+            res.send("Must log in first. visit /login");
+        }
     }
 )
 
 defaultRouter.get("/logout", async (req, res) => {
-    await fs.writeFile(
-        "fakeLocal.json",
-        JSON.stringify({ Authorization: `` }),
-        (err) => {
-            if (err) throw err;
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
         }
-    );
-
-    res.redirect("/login");
+        res.redirect("/");
+    });
 });
-
-defaultRouter.get("/recruiter", HomeController.recruiter);
-defaultRouter.post("/recruiter", HomeController.recruiter);
-
