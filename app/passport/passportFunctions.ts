@@ -6,7 +6,6 @@ const users = require("./users.json");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 
-
 passport.serializeUser((user, done) => {
     console.log("in serialize user: ", user);
     done(null, user);
