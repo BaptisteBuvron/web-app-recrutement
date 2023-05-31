@@ -5,9 +5,8 @@ import {HomeController} from "../controllers/HomeController";
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
-const passport = require("passport");
+const { passport, loggedIn } = require("../passport/passportFunctions");
 const users = require("../passport/users.json");
-
 
 export const defaultRouter = Router();
 
@@ -23,7 +22,6 @@ defaultRouter.use(
         saveUninitialized: false,
     })
 );
-
 defaultRouter.use(passport.initialize());
 defaultRouter.use(passport.session());
 
@@ -32,18 +30,9 @@ defaultRouter.get("/login", HomeController.login);
 defaultRouter.get("/register", HomeController.register);
 defaultRouter.post("/recruiter", HomeController.recruiter);
 defaultRouter.get("/recruiter",HomeController.recruiter);
-
-defaultRouter.get("/secureroute", (req, res)=>{
-        if (req.isAuthenticated()) {
-            res.send("req.isAuthenticated: ", req.isAuthenticated());
-            res.send("req.user: ", req.user); // does this for me.
-            res.send("req.login: ", req.login);
-            res.send("req.logout: ", req.logout);
-        } else {
-            res.send("Must log in first. visit /login");
-        }
-    }
-)
+defaultRouter.get("/secureroute", loggedIn, function(req, res, next) {
+    res.send("securisé");
+});
 
 defaultRouter.post(
     "/login",
