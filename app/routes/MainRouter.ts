@@ -20,6 +20,9 @@ defaultRouter.use(
         secret: "a private key",
         resave: false,
         saveUninitialized: false,
+        cookie: {
+            maxAge: 30000
+        }
     })
 );
 defaultRouter.use(passport.initialize());
@@ -30,9 +33,6 @@ defaultRouter.get("/login", HomeController.login);
 defaultRouter.get("/register", HomeController.register);
 defaultRouter.post("/recruiter", HomeController.recruiter);
 defaultRouter.get("/recruiter",HomeController.recruiter);
-defaultRouter.get("/secureroute", loggedIn, function(req, res, next) {
-    res.send("securisé");
-});
 
 defaultRouter.post(
     "/login",
@@ -87,10 +87,6 @@ defaultRouter.get("/success", (req, res) => {
 
 defaultRouter.get("/failed", (req, res, next)=>{
     res.send(`failed ${req.query?.message}`);
-});
-defaultRouter.get("/users", (req, res, next)=>{
-    console.log(users);
-    res.send("voir logs");
 });
 
 defaultRouter.get("/logout", async (req, res) => {

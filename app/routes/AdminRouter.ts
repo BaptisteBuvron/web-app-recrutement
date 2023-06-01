@@ -1,7 +1,6 @@
 // @ts-nocheck
 import {Router} from "express";
 import {AdminController} from "../controllers/AdminController";
-import {defaultRouter} from "./MainRouter";
 
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
@@ -11,23 +10,11 @@ const users = require("../passport/users.json");
 
 export const adminRouter = Router();
 
-defaultRouter.use(
-    session({
-        genid: (req) => {
-            console.log("1. in genid req.sessionID: ", req.sessionID);
-            return uuidv4();
-        },
-        store: new FileStore(),
-        secret: "a private key",
-        resave: false,
-        saveUninitialized: false,
-    })
-);
-defaultRouter.use(passport.initialize());
-defaultRouter.use(passport.session());
+adminRouter.use(passport.initialize());
+adminRouter.use(passport.session());
 
 //Vérification de la connexion pour toutes les routes
-defaultRouter.use(loggedIn);
+adminRouter.use(loggedIn);
 
 adminRouter.get("/", AdminController.index);
 adminRouter.get("/utilisateurs", AdminController.utilisateurs);

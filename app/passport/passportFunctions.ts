@@ -1,4 +1,7 @@
 // @ts-nocheck
+import {User} from "../entity/User";
+import {UserRepository} from "../repository/UserRepository";
+
 const passport = require('passport');
 const localStrategy = require("passport-local").Strategy;
 const {v4:uuidv4} = require("uuid");
@@ -22,26 +25,23 @@ passport.use(
     new localStrategy(
         {usernameField: "email", passwordField: "password"},
         // @ts-ignore
-        async (email, password, done)=>{
+        async (email, password, done, res)=>{
             try{
                 if(password.length <= 4 || !email){
                     done(null, false, {
-                        message: "Your credentials do not match our criteria",
+                        message: "Vos informations ne correspondent pas à nos critères",
                     })
                 }else{
                     const hashedPass = await bcrypt.hash(password, 10);
-                    let newUser = {email, password: hashedPass, id: uuidv4()};
-                    console.log(users);
-                    //console.log(utilisateurs);
-                    users.push(newUser);
-
-                    // @ts-ignore
-                    await fs.writeFile("users.json", JSON.stringify(users), (err)=>{
-                        if(err) return done(err);
-                        console.log("updated the fake database");
-                    });
-
-                    return done(null, newUser, {message:"Signed up successfully!"});
+                    let user: User = new User(email, 'Doe', 'John', '123456789', new Date(), true, hashedPass, 'Candidat', null, null);
+                    UserRepository.create(user)
+                        .then(() => {
+                            return done(null, user, { message: "Inscription effectuée !" });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            //return res.redirect("/register");
+                        });
                 }
             }catch (err){
                 return done(err);
@@ -53,40 +53,39 @@ passport.use(
     "login",
     new localStrategy(
         { usernameField: "email", passwordField: "password" },
-        async (email, password, done) => {
-            console.log("login named.");
-            // done(null, userObject, { message: "Optional success/fail message"});
-            // done(err) // Application Error
-            // done(null, false, {message: "Unauthorized login credentials!"}) // User input error when 2nd param is false
-            console.log(users);
-            console.log(email);
+        async (email, password, done, res) => {
             try {
                 if (email === "apperror") {
                     throw new Error(
                         "Oh no! The application crashed! We have reported the issue. You can change next(error) to next(error.message) to hide the stack trace"
                     );
                 }
-                const user = users.find((user) => user.email === email);
-                console.log(users);
+                UserRepository.getById(email)
+                    .then(async(user) => {
+                        if (!user) {
+                            return done(null, false, { message: "User not found!" });
+                        }
+                        let userLogged: User = new User(user[0].email, user[0].nom, user[0].prenom, user[0].telephone, user[0].date_creation, user[0].statut, user[0].password, user[0].role, user[0].demande_organisation, user[0].siren);
+                        const passwordMatches = await bcrypt.compare(password, userLogged.passwordHash);
 
-                if (!user) {
-                    return done(null, false, { message: "User not found!" });
-                }
+                        if (!passwordMatches) {
+                            return done(null, false, { message: "Mot de passe incorect" });
+                        }
 
-                const passwordMatches = await bcrypt.compare(password, user.password);
-
-                if (!passwordMatches) {
-                    return done(null, false, { message: "Invalid credentials" });
-                }
-
-                return done(null, user, { message: "Hey congrats you are logged in!" });
+                        return done(null, user, { message: "Vous êtes connecté!" });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        //return res.redirect("/login");
+                    });
             } catch (error) {
-                return done(error); // application error!
+                return done(error);
             }
         }
     )
 );
 
+// Middleware pour vérifier la connexion de l'utilisateur
 function loggedIn(req, res, next) {
     if (req.user) {
         next();
@@ -95,7 +94,18 @@ function loggedIn(req, res, next) {
     }
 }
 
+// Middleware pour vérifier la connexion + le rôle de l'utilisateur
+function checkRole(role) {
+    return function (req, res, next) {
+        if (req.isAuthenticated() && req.user.role === role) {
+            return next();
+        }
+        res.redirect('/login');
+    };
+}
+
 module.exports = {
     passport,
-    loggedIn
+    loggedIn,
+    checkRole
 };

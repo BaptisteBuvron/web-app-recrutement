@@ -26,8 +26,7 @@ export class FicheDePoste
         this.salaire = salaire;
         this.description = description;
         this.siren = siren;
-        if(organisation)
-            this.organisation = organisation;
+        this.organisation = organisation;
     }
 
 
