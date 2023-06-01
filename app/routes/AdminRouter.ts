@@ -1,12 +1,7 @@
-// @ts-nocheck
 import {Router} from "express";
 import {AdminController} from "../controllers/AdminController";
 
-const { v4: uuidv4 } = require("uuid");
-const session = require("express-session");
-const FileStore = require("session-file-store")(session);
-const { passport, loggedIn } = require("../passport/passportFunctions");
-const users = require("../passport/users.json");
+const { passport, loggedIn, checkRole } = require("../passport/passportFunctions");
 
 export const adminRouter = Router();
 
@@ -14,7 +9,8 @@ adminRouter.use(passport.initialize());
 adminRouter.use(passport.session());
 
 //Vérification de la connexion pour toutes les routes
-adminRouter.use(loggedIn);
+adminRouter.use(checkRole("Admin"));
+//adminRouter.get("/demandes", loggedIn(), AdminController.demandes);
 
 adminRouter.get("/", AdminController.index);
 adminRouter.get("/utilisateurs", AdminController.utilisateurs);

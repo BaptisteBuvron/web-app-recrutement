@@ -5,7 +5,6 @@ import {UserRepository} from "../repository/UserRepository";
 const passport = require('passport');
 const localStrategy = require("passport-local").Strategy;
 const {v4:uuidv4} = require("uuid");
-const users = require("./users.json");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 
@@ -86,18 +85,22 @@ passport.use(
 );
 
 // Middleware pour vérifier la connexion de l'utilisateur
-function loggedIn(req, res, next) {
-    if (req.user) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
+function loggedIn() {
+    return function (req, res, next) {
+       if (req.isAuthenticated()) {
+            next();
+        } else {
+            res.redirect('/login');
+        }
+    };
 }
 
 // Middleware pour vérifier la connexion + le rôle de l'utilisateur
 function checkRole(role) {
     return function (req, res, next) {
-        if (req.isAuthenticated() && req.user.role === role) {
+        console.log(role);
+        console.log(req.user[0]);
+        if (req.isAuthenticated() && req.user[0].role === role) {
             return next();
         }
         res.redirect('/login');

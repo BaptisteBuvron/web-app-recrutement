@@ -5,8 +5,7 @@ import {HomeController} from "../controllers/HomeController";
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
-const { passport, loggedIn } = require("../passport/passportFunctions");
-const users = require("../passport/users.json");
+const { passport, loggedIn, checkRole} = require("../passport/passportFunctions");
 
 export const defaultRouter = Router();
 
@@ -21,7 +20,7 @@ defaultRouter.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 30000
+            maxAge: 600000
         }
     })
 );
@@ -31,17 +30,13 @@ defaultRouter.use(passport.session());
 defaultRouter.get("/", HomeController.index);
 defaultRouter.get("/login", HomeController.login);
 defaultRouter.get("/register", HomeController.register);
-defaultRouter.post("/recruiter", HomeController.recruiter);
-defaultRouter.get("/recruiter",HomeController.recruiter);
+defaultRouter.post("/recruiter", checkRole("Candidat"), HomeController.recruiter);
+defaultRouter.get("/recruiter", checkRole("Candidat"), HomeController.recruiter);
 
 defaultRouter.post(
     "/login",
     function (req, res, next) {
         passport.authenticate("login", async (err, user, info) => {
-            console.log("err: ", err);
-            console.log("user: ", user);
-            console.log("info: ", info);
-
             if (err) {
                 return next(err);
             }
@@ -50,12 +45,9 @@ defaultRouter.post(
                 return res.redirect(`/failed?message=${info.message}`);
             }
             req.login(user, async (error) => {
-                return res.redirect(`success?message=${info.message}`);
+                return res.redirect(`/`);
             });
         })(req, res, next);
-    },
-    (req, res, next) => {
-        res.send("Hello"); // able to add functions after the authenticate call now.
     }
 );
 
@@ -73,16 +65,9 @@ defaultRouter.post("/register", async(req, res, next)=>{
             if (error) {
                 return next(error);
             }
-            return res.redirect(`/success?message=${info.message}`);
+            return res.redirect(`/`);
         });
     })(req, res, next)
-});
-
-defaultRouter.get("/success", (req, res) => {
-    console.log("req.query: ", req.query);
-    console.log("req.isAuthenticated: ", req.isAuthenticated());
-
-    res.send(`You're in! ${req.query.message}`);
 });
 
 defaultRouter.get("/failed", (req, res, next)=>{
