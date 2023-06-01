@@ -30,6 +30,7 @@ export class OfferController {
                 listePiece += "lettreMotivation,";
             }
 
+
             await FicheDePosteRepository.getById(req.body.ficheDePoste).then(async (ficheDePoste: FicheDePoste) => {
                 let offreDePoste: OffreDePoste = new OffreDePoste(
                     0,

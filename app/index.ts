@@ -7,6 +7,7 @@ import {adminRouter} from "./routes/AdminRouter";
 import {ficheRouter} from "./routes/FicheRouter";
 import bodyParser from "body-parser";
 import {candidatureRouter} from "./routes/CandidatureRouter";
+import {recruterRouter} from "./routes/RecruterRouter";
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use("/", defaultRouter);
@@ -24,6 +25,7 @@ app.use("/offre", offerRouter);
 app.use("/fiche", ficheRouter);
 app.use("/admin", adminRouter);
 app.use("/", candidatureRouter);
+app.use("/recruteur", recruterRouter);
 
 
 const port = process.env.PORT || 8000;

@@ -1,0 +1,42 @@
+<%- include('../partials/recruteurHeader.ejs') %>
+
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <h1 class="display-5 fw-bold lh-1 mb-3">Gestion recrutement</h1>
+        <div id="chartContainer"></div>
+    </div>
+</div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+    window.onload = function () {
+        var candidaturesData = [
+            {offre: "Offre 1", candidatures: 10},
+            {offre: "Offre 2", candidatures: 5},
+            {offre: "Offre 3", candidatures: 8},
+            {offre: "Offre 4", candidatures: 3},
+            {offre: "Offre 5", candidatures: 12}
+        ];
+
+        var dataPoints = candidaturesData.map(function (item) {
+            return {label: item.offre, y: item.candidatures};
+        });
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "Nombre de candidatures par offre d'emploi"
+            },
+            axisY: {
+                title: "Nombre de candidatures",
+                includeZero: true
+            },
+            data: [{
+                type: "column",
+                yValueFormatString: "#,###",
+                dataPoints: dataPoints
+            }]
+        });
+        chart.render();
+    };
+</script>
