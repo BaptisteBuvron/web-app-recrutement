@@ -25,12 +25,12 @@ export class HomeController {
     }
 
 
-    static async recruiter(req: express.Request, res: express.Response) {
+    static async demandeRecruteur(req: express.Request, res: express.Response) {
         const alerts: Alert[] = [];
         if (req.method === "POST") {
             let siren = req.body.siren;
             let mail = "tsoudar21@gmail.com"; //TO DO get mail from session variable
-            if(req.body.siege){
+            if (req.body.siege) {
                 let organisation: Organisation = new Organisation(
                     req.body.siren,
                     req.body.nom,
@@ -45,7 +45,7 @@ export class HomeController {
                         let alert = new Alert("danger", "L'organisation n'a pas été créée.");
                         alerts.push(alert);
                         console.log(err);
-                        return res.redirect("/recruiter");
+                        return res.redirect("/devenir-recruteur");
                     });
 
 
@@ -57,7 +57,7 @@ export class HomeController {
                         let alert = new Alert("danger", "Attention, votre demande n'a pas été prise en compte.");
                         alerts.push(alert);
                         console.log(err);
-                        return res.redirect("/recruiter");
+                        return res.redirect("/devenir-recruteur");
                     });
             }else{
                 await UserRepository.setSiren(siren, mail).then((siren) => {
@@ -68,7 +68,7 @@ export class HomeController {
         }
 
         OrganisationRepository.getAll().then((organisations: Organisation[]) => {
-            res.render("recruiter", {title: "Recruteur", organisations: organisations, alerts: alerts});
+            res.render("demandeRecruteur", {title: "Recruteur", organisations: organisations, alerts: alerts});
         });
     }
 }
