@@ -8,7 +8,7 @@ import {Candidature} from "../entity/Candidature";
 import {StatutCandidatureEnum} from "../utils/StatutCandidatureEnum";
 
 export class CandidatureController {
-    static candidature(req: express.Request, res: express.Response) {
+    static candidater(req: express.Request, res: express.Response) {
 
         //TODO Vérifier que l'utilisateur est bien un candidat
 
@@ -16,9 +16,9 @@ export class CandidatureController {
         let numero: number = Number.parseInt(req.params.numero);
         OfferRepository.getById(numero)
             .then(async (offer: OffreDePoste) => {
-                    if (req.method === "POST") {
-                        //TODO validation data
-                        if (req.body.motivation.length <= 20) {
+                if (req.method === "POST") {
+                    //TODO validation data
+                    if (req.body.motivation.length <= 20) {
                             let alert = new Alert("danger", "La motivation doit faire plus de 20 caractères.");
                             alerts.push(alert);
                         } else {
@@ -37,7 +37,7 @@ export class CandidatureController {
 
                         }
                     }
-                    res.render("candidature", {title: "Candidater", offer: offer, alerts: alerts});
+                res.render("candidater", {title: "Candidater", offer: offer, alerts: alerts});
 
                 }
             )

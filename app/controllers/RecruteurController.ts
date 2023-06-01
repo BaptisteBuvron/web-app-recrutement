@@ -20,6 +20,5 @@ export class RecruteurController {
             alerts.push(new Alert("danger", "Erreur lors de la récupération des candidatures"));
             res.redirect("/recruteur");
         });
-
     }
 }
