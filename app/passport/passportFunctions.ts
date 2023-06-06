@@ -1,6 +1,7 @@
 // @ts-nocheck
 import {User} from "../entity/User";
 import {UserRepository} from "../repository/UserRepository";
+import {Alert} from "../utils/Alert";
 
 const passport = require('passport');
 const localStrategy = require("passport-local").Strategy;
@@ -26,9 +27,9 @@ passport.use(
         // @ts-ignore
         async (email, password, done, res)=>{
             try{
-                if(password.length <= 4 || !email){
+                if(password.length <= 6 || !email){
                     done(null, false, {
-                        message: "Vos informations ne correspondent pas à nos critères",
+                        message: "Veuillez saisir un mot de passe de 7 caractères minimum",
                     })
                 }else{
                     const hashedPass = await bcrypt.hash(password, 10);
@@ -38,8 +39,8 @@ passport.use(
                             return done(null, user, { message: "Inscription effectuée !" });
                         })
                         .catch((err) => {
-                            console.log(err);
-                            //return res.redirect("/register");
+                            //console.log(err);
+                            return res.redirect("/register");
                         });
                 }
             }catch (err){
@@ -56,26 +57,25 @@ passport.use(
             try {
                 if (email === "apperror") {
                     throw new Error(
-                        "Oh no! The application crashed! We have reported the issue. You can change next(error) to next(error.message) to hide the stack trace"
+                        "Erreur application"
                     );
                 }
                 UserRepository.getById(email)
                     .then(async(user) => {
-                        if (!user) {
-                            return done(null, false, { message: "User not found!" });
+                        if (user.length==0) {
+                            return done(null, false, { message: "Vérifiez vos identifiants et mot de passe" });
                         }
                         let userLogged: User = new User(user[0].email, user[0].nom, user[0].prenom, user[0].telephone, user[0].date_creation, user[0].statut, user[0].password, user[0].role, user[0].demande_organisation, user[0].siren);
                         const passwordMatches = await bcrypt.compare(password, userLogged.passwordHash);
 
                         if (!passwordMatches) {
-                            return done(null, false, { message: "Mot de passe incorect" });
+                            return done(null, false, { message: "Mot de passe incorrect" });
                         }
 
                         return done(null, user, { message: "Vous êtes connecté!" });
                     })
                     .catch((err) => {
                         console.log(err);
-                        //return res.redirect("/login");
                     });
             } catch (error) {
                 return done(error);
@@ -86,18 +86,32 @@ passport.use(
 
 // Middleware pour vérifier la connexion de l'utilisateur
 function loggedIn() {
-    console.log("aaa");
+    return function (req, res, next) {
+        console.log(req);
+       if (req.isAuthenticated()) {
+            next();
+        } else {
+            let message = "Vous n'êtes pas connecté";
+            res.redirect(`/login?message=${message}`, {title: "Connexion"});
+        }
+    };
 }
 
 // Middleware pour vérifier la connexion + le rôle de l'utilisateur
 function checkRole(role) {
     return function (req, res, next) {
-        console.log(role);
-        console.log(req.user[0]);
         if (req.isAuthenticated() && req.user[0].role === role) {
             return next();
         }
-        res.redirect('/login');
+        let message;
+        if (!(req.isAuthenticated())) {
+            message ="Vous n'êtes pas connecté";
+        }
+        else if (!(req.user[0].role === role)) {
+            message = "Vous n'avez pas les accès nécéssaires pour cet onglet";
+        }
+        res.redirect(`/login?message=${message}`, {title: "Connexion"});
+
     };
 }
 

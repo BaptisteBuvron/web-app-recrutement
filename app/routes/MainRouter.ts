@@ -1,6 +1,7 @@
 // @ts-nocheck
 import {Router} from "express";
 import {HomeController} from "../controllers/HomeController";
+import {Alert} from "../utils/Alert";
 
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
@@ -42,7 +43,7 @@ defaultRouter.post(
             }
 
             if (!user) {
-                return res.redirect(`/failed?message=${info.message}`);
+                return res.redirect(`/login?message=${info.message}`);
             }
             req.login(user, async (error) => {
                 return res.redirect(`/`);
@@ -59,7 +60,7 @@ defaultRouter.post("/register", async(req, res, next)=>{
         }
 
         if(!user){
-            res.redirect(`/failed?message=${info.message}`);
+            res.redirect(`/register?message=${info.message}`);
         }
         req.login(user, async (error) => {
             if (error) {
