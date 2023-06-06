@@ -86,13 +86,7 @@ passport.use(
 
 // Middleware pour vérifier la connexion de l'utilisateur
 function loggedIn() {
-    return function (req, res, next) {
-       if (req.isAuthenticated()) {
-            next();
-        } else {
-            res.redirect('/login');
-        }
-    };
+    console.log("aaa");
 }
 
 // Middleware pour vérifier la connexion + le rôle de l'utilisateur

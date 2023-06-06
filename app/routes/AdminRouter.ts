@@ -9,7 +9,7 @@ adminRouter.use(passport.initialize());
 adminRouter.use(passport.session());
 
 //Vérification de la connexion pour toutes les routes
-adminRouter.use(checkRole("Admin"));
+adminRouter.use(checkRole("Administrateur"));
 //adminRouter.get("/demandes", loggedIn(), AdminController.demandes);
 
 adminRouter.get("/", AdminController.index);
