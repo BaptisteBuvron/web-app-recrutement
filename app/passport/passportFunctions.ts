@@ -60,6 +60,9 @@ passport.use(
                         "Erreur application"
                     );
                 }
+                if (!email || !password) {
+                    return done(null, false, { message: "Identifiant ou mot de passe manquant" });
+                }
                 UserRepository.getById(email)
                     .then(async(user) => {
                         if (user.length==0) {

@@ -17,7 +17,6 @@ export class HomeController {
     }
 
     static login(req: express.Request, res: express.Response) {
-        console.log(`failed ${req.query?.message}`);
         res.render("login", {title: "Connexion", messages:req.query?.message});
     }
 
