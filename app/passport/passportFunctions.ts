@@ -23,9 +23,11 @@ passport.deserializeUser((user, done) => {
 passport.use(
     "register",
     new localStrategy(
-        {usernameField: "email", passwordField: "password"},
+        {usernameField: "email", passwordField: "password", passReqToCallback: true},
         // @ts-ignore
-        async (email, password, done, res)=>{
+        async (req, email, password, done, res)=>{
+            const { nom, prenom, telephone} = req.body;
+            console.log(nom);
             try{
                 if(password.length <= 6 || !email){
                     done(null, false, {
@@ -33,14 +35,14 @@ passport.use(
                     })
                 }else{
                     const hashedPass = await bcrypt.hash(password, 10);
-                    let user: User = new User(email, 'Doe', 'John', '123456789', new Date(), true, hashedPass, 'Candidat', null, null);
+                    let user: User = new User(email, nom, prenom, telephone, new Date(), true, hashedPass, 'Candidat', null, null);
                     UserRepository.create(user)
                         .then(() => {
                             return done(null, user, { message: "Inscription effectuée !" });
                         })
                         .catch((err) => {
-                            //console.log(err);
-                            return res.redirect("/register");
+                            return done(null, false, { message: "Inscription impossible" });
+                            console.log(err);
                         });
                 }
             }catch (err){
@@ -103,14 +105,15 @@ function loggedIn() {
 // Middleware pour vérifier la connexion + le rôle de l'utilisateur
 function checkRole(role) {
     return function (req, res, next) {
-        if (req.isAuthenticated() && req.user[0].role === role) {
+        //console.log(req.user[0].role);
+        if (req.isAuthenticated() && req.user.role === role) {
             return next();
         }
         let message;
         if (!(req.isAuthenticated())) {
             message ="Vous n'êtes pas connecté";
         }
-        else if (!(req.user[0].role === role)) {
+        else if (!(req.user.role === role)) {
             message = "Vous n'avez pas les accès nécéssaires pour cet onglet";
         }
         res.redirect(`/login?message=${message}`, {title: "Connexion"});
