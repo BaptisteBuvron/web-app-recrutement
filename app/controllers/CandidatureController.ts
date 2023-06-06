@@ -67,16 +67,9 @@ export class CandidatureController {
 
                 }
             )
-            .catch(
-                (reason) => {
-                    res
-                        .redirect(
-                            "/"
-                        );
-                }
-            )
-        ;
-
+            .catch((reason) => {
+                res.redirect("/");
+            });
     }
 
 
