@@ -18,11 +18,11 @@ export class HomeController {
 
     static login(req: express.Request, res: express.Response) {
         console.log(`failed ${req.query?.message}`);
-        res.render("login", {title: "Login", messages:req.query?.message});
+        res.render("login", {title: "Connexion", messages:req.query?.message});
     }
 
     static register(req: express.Request, res: express.Response) {
-        res.render("register", {title: "register"});
+        res.render("register", {title: "Inscription", messages:req.query?.message});
     }
 
 

@@ -46,7 +46,17 @@ defaultRouter.post(
                 return res.redirect(`/login?message=${info.message}`);
             }
             req.login(user, async (error) => {
-                return res.redirect(`/`);
+                let role = user[0].role;
+                let url;
+                if (role == "Administrateur") {
+                    url="admin";
+                } else if(role == "Recruteur"){
+                    url="offre";
+                }else{
+                    url="";
+                }
+
+                return res.redirect(`/${url}`);
             });
         })(req, res, next);
     }
@@ -69,10 +79,6 @@ defaultRouter.post("/register", async(req, res, next)=>{
             return res.redirect(`/`);
         });
     })(req, res, next)
-});
-
-defaultRouter.get("/failed", (req, res, next)=>{
-    res.send(`failed ${req.query?.message}`);
 });
 
 defaultRouter.get("/logout", async (req, res) => {
