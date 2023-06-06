@@ -21,14 +21,16 @@
             <h4>Filtres</h4>
             <hr>
             <h5>Salaire</h5>
-            <input type="range" class="form-range" id="salary" min="0" max="100000" step="1000" oninput="updateSalaryValue()">
+            <input type="range" class="form-range" id="salary" min="0" max="10000" step="100"
+                   oninput="updateSalaryValue()">
             <p class="text-muted">Salaire minimum : <span id="salary-value"></span></p>
             <h5>Région</h5>
-            <select class="form-select" id="region">
-                <option value="">Toutes les régions</option>
-                <option value="Paris">Paris</option>
-                <option value="Lyon">Lyon</option>
-                <option value="Marseille">Marseille</option>
+            <select class="form-select" id="region" name="region" onchange="updateRegionValue()">
+                <option value="all">Toutes les régions</option>
+                <% regions.forEach((region) => {
+                %>
+                    <option value="<%= region %>"><%= region %></option>
+                <% }) %>
             </select>
         </div>
         <div class="col-md-9">
@@ -47,14 +49,6 @@
 
     </div>
 </div>
-<script>
-
-    //When the page is loaded, update the salary value
-    window.onload = updateSalaryValue;
-
-    function updateSalaryValue() {
-        document.getElementById("salary-value").innerHTML = document.getElementById("salary").value;
-    }
-</script>
+<script src="js/filter.js"></script>
 </body>
 </html>

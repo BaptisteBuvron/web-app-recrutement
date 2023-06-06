@@ -5,15 +5,19 @@ import {Organisation} from "../entity/Organisation";
 import {OffreDePoste} from "../entity/OffreDePoste";
 import {UserRepository} from "../repository/UserRepository";
 import {Alert} from "../utils/Alert";
+import {FicheDePosteRepository} from "../repository/FicheDePosteRepository";
 
 export class HomeController {
 
     static index(req: express.Request, res: express.Response) {
         //Render ejs file
         //For testing mock getAll() method
-        OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-            res.render("index", {title: "Home", offers: offers});
+        FicheDePosteRepository.getDistinctRegion().then((regions: string[]) => {
+            OfferRepository.getAll().then((offers: OffreDePoste[]) => {
+                res.render("index", {title: "Home", offers: offers, regions: regions});
+            });
         });
+
     }
 
     static login(req: express.Request, res: express.Response) {
@@ -59,7 +63,7 @@ export class HomeController {
                         console.log(err);
                         return res.redirect("/devenir-recruteur");
                     });
-            }else{
+            } else {
                 await UserRepository.setSiren(siren, mail).then((siren) => {
                     let alert = new Alert("success", "Votre demande à rejoindre cette organisation est bien prise en compte.");
                     alerts.push(alert);

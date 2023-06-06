@@ -1,12 +1,13 @@
 import {OffreDePoste} from "../entity/OffreDePoste";
 import {pool} from "../database";
 import {FicheDePoste} from "../entity/FicheDePoste";
+import {FilterOffer} from "../utils/FilterOffer";
 
 export class OfferRepository {
     static tableName = "OffreDePoste";
 
-    static getAll(): Promise<[OffreDePoste]> {
-        const query = `SELECT OffreDePoste.numero as offre_numero,
+    static getAll(filterOffer?: FilterOffer): Promise<[OffreDePoste]> {
+        let query = `SELECT OffreDePoste.numero as offre_numero,
                               FicheDePoste.numero as fiche_numero,
                               OffreDePoste.etat,
                               OffreDePoste.date_validite,
@@ -23,17 +24,23 @@ export class OfferRepository {
                               FicheDePoste.siren
                        FROM ${OfferRepository.tableName}
                                 LEFT JOIN FicheDePoste ON OffreDePoste.fiche = FicheDePoste.numero`;
+        if (filterOffer) {
+            query += ` WHERE FicheDePoste.salaire >= ${filterOffer.minSalary}`;
+            if (filterOffer.region) {
+                query += ` AND FicheDePoste.lieu = '${filterOffer.region}'`;
+            }
+        }
         return new Promise<[OffreDePoste]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    let ficheDePoste;
-                    for (let i = 0; i < result.length; i++) {
-                        ficheDePoste = new FicheDePoste(result[i].fiche_numero, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren);
-                        result[i] = new OffreDePoste(result[i].offre_numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, ficheDePoste);
-                    }
+                        if (err) {
+                            return reject(err);
+                        }
+                        let ficheDePoste;
+                        for (let i = 0; i < result.length; i++) {
+                            ficheDePoste = new FicheDePoste(result[i].fiche_numero, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren);
+                            result[i] = new OffreDePoste(result[i].offre_numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, ficheDePoste);
+                        }
                         return resolve(result);
                     }
                 )
@@ -64,6 +71,7 @@ export class OfferRepository {
             }
         );
     }
+
 
     static create(entity: OffreDePoste): Promise<OffreDePoste> {
         const query = `INSERT INTO ${OfferRepository.tableName} (etat, date_validite, nb_piece, liste_piece, fiche)
