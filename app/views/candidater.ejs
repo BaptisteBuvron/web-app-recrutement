@@ -8,7 +8,8 @@
                  class="bd-placeholder-img card-img-top">
             <div class="card-body">
                 <h4 class="mb-3"><%= offer.ficheDePoste.siren %> : <%= offer.ficheDePoste.typeMetier %></h4>
-                <form class="needs-validation" novalidate="" method="post" action="/canditature/<%= offer.numero %>">
+                <form class="needs-validation" method="post" enctype="multipart/form-data"
+                      action="/canditature/<%= offer.numero %>">
                     <div class="row g-3">
                         <div class="mb-3">
                             <label for="motivation" class="form-label">Parlez-nous de vous ?</label>

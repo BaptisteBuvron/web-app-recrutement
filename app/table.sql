@@ -142,7 +142,7 @@ CREATE TABLE `Piece`
 (
     `id`       int(11)      NOT NULL AUTO_INCREMENT,
     `nom`      varchar(128) NOT NULL,
-    `fichier`  varchar(128) NOT NULL,
+    `url`      varchar(128) NOT NULL,
     `candidat` varchar(128) NOT NULL,
     `offre`    int(11)      NOT NULL,
     FOREIGN KEY (candidat, offre) REFERENCES Candidature (candidat, offre),
@@ -153,11 +153,6 @@ CREATE TABLE `Piece`
 -- Déchargement des données de la table `Piece`
 --
 
-/*INSERT INTO `Piece` (`nom`, `fichier`, `candidature`)
-VALUES ('CV', 'CV_Soudarsane', 1),
-       ('Lettre de motivation', 'LM_Soudarsane', 1),
-       ('CV', 'CV_Rene', 2),
-       ('Lettre de motivation', 'LM_Rene', 2);*/
 
 
 -- --------------------------------------------------------
