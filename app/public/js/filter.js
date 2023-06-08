@@ -1,5 +1,4 @@
-//When the page is loaded, update the salary value
-window.onload = updateSalaryValue;
+
 
 function updateSalaryValue() {
     document.getElementById("salary-value").innerHTML = document.getElementById("salary").value;
@@ -15,17 +14,24 @@ function filterOffer() {
     let salary = document.getElementById("salary").value;
     let region = document.getElementById("region").value;
     //do not add region if == "all"
-    if (region == "all") {
+    if (region === "all") {
         region = ""
     } else {
         region = "&region=" + region;
     }
     let filter = "salary=" + salary + region;
-    console.log(filter)
     //Get all the offers from the /api/offers route and adding the filter parameters
-    fetch("/api/offers?" + filter).then(r => r.json()).then(data => {
-        console.log(generateOffers(data));
-    });
+    fetch("/api/offers?" + filter).then(r => r.json()).then(offers => {
+            let offersDiv = document.getElementById("offers");
+            if (offers.length === 0) {
+                offersDiv.innerHTML = "Aucune offre ne correspond à vos critères";
+                return;
+            }
+            offersDiv.innerHTML = "";
+            offersDiv.append(...generateOffers(offers));
+        }
+    );
+
 
 }
 
@@ -59,9 +65,6 @@ function generateOfferPrototype(offer) {
 
 function generateOffers(offers) {
     return offers.map(offer => {
-        console.log(
-            generateOfferPrototype(offer)
-        );
-
+        return generateOfferPrototype(offer);
     });
 }

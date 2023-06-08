@@ -1,6 +1,6 @@
 export class FilterOffer {
 
-    minSalary?: number;
+    minSalary?: number = 0;
     region?: string;
 
     constructor(minSalary?: number, region?: string) {
