@@ -1,0 +1,19 @@
+<%- include('../partials/recruteurHeader.ejs') %>
+
+<div class="container">
+    <div class="row col-9 m-auto">
+        <h1 class="display-5 fw-bold lh-1 mb-3">Les offres de votre entreprise</h1>
+        <% offers.forEach((offer) => { %>
+            <div class="border-1 border p-2 my-2">
+                <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span
+                            class="badge text-bg-secondary float-end">45000 €</span>
+                </h4>
+                <p><%= offer.ficheDePoste.description %></p>
+                <p>Organisation : <%= offer.ficheDePoste.siren %></p>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+</body>
+</html>

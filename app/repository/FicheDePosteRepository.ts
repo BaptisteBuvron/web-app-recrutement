@@ -55,6 +55,24 @@ export class FicheDePosteRepository {
         });
     }
 
+    static getBySiren(siren: string): Promise<FicheDePoste[]> {
+        const query = `SELECT *
+                       FROM FicheDePoste
+                       WHERE siren = ?`;
+        return new Promise<FicheDePoste[]>((resolve, reject) => {
+            pool.query(query, siren, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                let ficheDePostes: FicheDePoste[] = [];
+                for (let i = 0; i < result.length; i++) {
+                    ficheDePostes.push(new FicheDePoste(result[i].numero, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren));
+                }
+                return resolve(ficheDePostes);
+            });
+        });
+    }
+
     static getDistinctRegion(): Promise<string[]> {
         const query = `SELECT DISTINCT lieu
                        FROM FicheDePoste`;
