@@ -1,12 +1,11 @@
 // @ts-nocheck
 import {Router} from "express";
 import {HomeController} from "../controllers/HomeController";
-import {Alert} from "../utils/Alert";
 
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
-const { passport, loggedIn, checkRole} = require("../passport/passportFunctions");
+const { passport, loggedInNoRedirection, checkRole} = require("../passport/passportFunctions");
 
 export const defaultRouter = Router();
 
@@ -28,7 +27,10 @@ defaultRouter.use(
 defaultRouter.use(passport.initialize());
 defaultRouter.use(passport.session());
 
-defaultRouter.get("/", HomeController.index);
+defaultRouter.get("/", (req, res) => {
+    HomeController.index(req, res, loggedInNoRedirection(req, res));
+});
+
 defaultRouter.get("/login", HomeController.login);
 defaultRouter.get("/register", HomeController.register);
 defaultRouter.post("/recruiter", checkRole("Candidat"), HomeController.recruiter);

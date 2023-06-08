@@ -93,7 +93,7 @@ passport.use(
 function loggedIn() {
     return function (req, res, next) {
         console.log(req);
-       if (req.isAuthenticated()) {
+        if (req.isAuthenticated()) {
             next();
         } else {
             let message = "Vous n'êtes pas connecté";
@@ -102,21 +102,35 @@ function loggedIn() {
     };
 }
 
+// Middleware pour vérifier la connexion de l'utilisateur sans redirection
+// Middleware pour vérifier la connexion de l'utilisateur sans redirection
+function loggedInNoRedirection(req, res) {
+    console.log("dans la fonction");
+    if (req.isAuthenticated()) {
+        console.log("vrai");
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 // Middleware pour vérifier la connexion + le rôle de l'utilisateur
 function checkRole(role) {
     return function (req, res, next) {
-        //console.log(req.user[0].role);
-        if (req.isAuthenticated() && req.user.role === role) {
+        //console.log("A", req.user[0].role);
+        //console.log("B",req.user.role);
+        if (req.isAuthenticated() && req.user[0].role === role) {
             return next();
         }
         let message;
         if (!(req.isAuthenticated())) {
             message ="Vous n'êtes pas connecté";
         }
-        else if (!(req.user.role === role)) {
+        else if (!(req.user[0].role === role)) {
             message = "Vous n'avez pas les accès nécéssaires pour cet onglet";
         }
-        res.redirect(`/login?message=${message}`, {title: "Connexion"});
+        res.redirect(`/login?message=${message}`);
 
     };
 }
@@ -124,5 +138,6 @@ function checkRole(role) {
 module.exports = {
     passport,
     loggedIn,
-    checkRole
+    checkRole,
+    loggedInNoRedirection
 };

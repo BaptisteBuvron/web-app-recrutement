@@ -8,11 +8,11 @@ import {Alert} from "../utils/Alert";
 
 export class HomeController {
 
-    static index(req: express.Request, res: express.Response) {
+    static index(req: express.Request, res: express.Response, logged : boolean) {
         //Render ejs file
         //For testing mock getAll() method
         OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-            res.render("index", {title: "Home", offers: offers});
+            res.render("index", {title: "Home", offers: offers, logged: logged });
         });
     }
 
