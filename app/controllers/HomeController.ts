@@ -5,14 +5,16 @@ import {Organisation} from "../entity/Organisation";
 import {OffreDePoste} from "../entity/OffreDePoste";
 import {UserRepository} from "../repository/UserRepository";
 import {Alert} from "../utils/Alert";
+const {loggedInNoRedirection} = require("../passport/passportFunctions");
+
 
 export class HomeController {
 
-    static index(req: express.Request, res: express.Response, logged : boolean) {
+    static index(req: express.Request, res: express.Response) {
         //Render ejs file
         //For testing mock getAll() method
         OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-            res.render("index", {title: "Home", offers: offers, logged: logged });
+            res.render("index", {title: "Home", offers: offers, user: loggedInNoRedirection(req, res)});
         });
     }
 
@@ -68,7 +70,7 @@ export class HomeController {
         }
 
         OrganisationRepository.getAll().then((organisations: Organisation[]) => {
-            res.render("recruiter", {title: "Recruteur", organisations: organisations, alerts: alerts});
+            res.render("recruiter", {title: "Recruteur", organisations: organisations, alerts: alerts, user: loggedInNoRedirection(req, res)});
         });
     }
 }

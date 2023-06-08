@@ -103,12 +103,9 @@ function loggedIn() {
 }
 
 // Middleware pour vérifier la connexion de l'utilisateur sans redirection
-// Middleware pour vérifier la connexion de l'utilisateur sans redirection
-function loggedInNoRedirection(req, res) {
-    console.log("dans la fonction");
+export function loggedInNoRedirection(req, res) {
     if (req.isAuthenticated()) {
-        console.log("vrai");
-        return true;
+        return req.user[0];
     } else {
         return false;
     }
