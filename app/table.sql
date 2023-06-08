@@ -45,7 +45,7 @@ CREATE TABLE `FicheDePoste`
     `lieu`        varchar(64) NOT NULL,
     `teletravail` tinyint(1)  NOT NULL,
     `nb_heures`   int(11)     NOT NULL,
-    `salaire`     varchar(64) NOT NULL,
+    `salaire`     int(11)     NOT NULL,
     `description` text        NOT NULL,
     `siren`       varchar(11) NOT NULL,
     FOREIGN KEY (siren) REFERENCES Organisation (siren),
@@ -159,9 +159,9 @@ CREATE TABLE `Piece`
 #Insertion des données
 
 INSERT INTO FicheDePoste
-VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', '123456');
+VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, 2000, 'Description', '123456');
 INSERT INTO FicheDePoste
-VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, '2000', 'Description', '3345');
+VALUES (0, 'En cours', 'Joe Doe', 'Développeur', 'Paris', 1, 35, 2000, 'Description', '3345');
 
 INSERT INTO OffreDePoste
 VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);

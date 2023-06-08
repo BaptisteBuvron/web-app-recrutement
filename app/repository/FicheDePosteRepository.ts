@@ -55,6 +55,23 @@ export class FicheDePosteRepository {
         });
     }
 
+    static getDistinctRegion(): Promise<string[]> {
+        const query = `SELECT DISTINCT lieu
+                       FROM FicheDePoste`;
+        return new Promise<string[]>((resolve, reject) => {
+            pool.query(query, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                let regions: string[] = [];
+                for (let i = 0; i < result.length; i++) {
+                    regions.push(result[i].lieu);
+                }
+                return resolve(regions);
+            });
+        });
+    }
+
     update(id: number, entity: FicheDePoste): Promise<FicheDePoste | null> {
         throw new Error("Method not implemented.");
     }

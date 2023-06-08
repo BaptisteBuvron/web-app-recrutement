@@ -8,6 +8,7 @@ import {ficheRouter} from "./routes/FicheRouter";
 import bodyParser from "body-parser";
 import {candidatureRouter} from "./routes/CandidatureRouter";
 import {recruterRouter} from "./routes/RecruterRouter";
+import {apiRouter} from "./routes/ApiRouter";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/fiche", ficheRouter);
 app.use("/admin", adminRouter);
 app.use("/", candidatureRouter);
 app.use("/recruteur", recruterRouter);
+app.use("/api", apiRouter);
 
 
 const port = process.env.PORT || 8000;
