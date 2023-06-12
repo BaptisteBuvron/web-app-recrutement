@@ -2,6 +2,7 @@ import express from "express";
 import {FicheDePoste} from "../entity/FicheDePoste";
 import {FicheDePosteRepository} from "../repository/FicheDePosteRepository";
 import {Alert} from "../utils/Alert";
+import {loggedInNoRedirection} from "../passport/passportFunctions";
 
 export class FicheController {
 
@@ -27,7 +28,8 @@ export class FicheController {
                 nbHeures,
                 req.body.salaire,
                 req.body.description,
-                siren);
+                siren,
+                );
             await FicheDePosteRepository.create(ficheDePoste).then((ficheDePoste) => {
                 let alert = new Alert("success", "La fiche de poste a été créée.");
                 alerts.push(alert);
@@ -40,7 +42,7 @@ export class FicheController {
 
         }
         //TODO get the siren from the recruiter
-        res.render("fiche/creation", {title: "Créer une fiche de poste", alerts: alerts});
+        res.render("fiche/creation", {title: "Créer une fiche de poste", alerts: alerts, user: loggedInNoRedirection(req, res)});
 
     }
 }

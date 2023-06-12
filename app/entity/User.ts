@@ -10,8 +10,9 @@ export class User {
     demande_organisation: string;
     //TODO replace siren by organisation
     siren: string;
+    id?: string;
 
-    constructor(email: string, nom: string, prenom: string, telephone: string, dateCreation: Date, statut: boolean, passwordHash: string, role: string, demande_organisation: string, siren: string) {
+    constructor(email: string, nom: string, prenom: string, telephone: string, dateCreation: Date, statut: boolean, passwordHash: string, role: string, demande_organisation: string, siren: string, id?: string) {
         this.email = email;
         this.nom = nom;
         this.prenom = prenom;
@@ -22,6 +23,9 @@ export class User {
         this.role = role;
         this.demande_organisation = demande_organisation;
         this.siren = siren;
+        this.id=id;
     }
+
+
 
 }

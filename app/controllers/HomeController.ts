@@ -6,6 +6,8 @@ import {OffreDePoste} from "../entity/OffreDePoste";
 import {UserRepository} from "../repository/UserRepository";
 import {Alert} from "../utils/Alert";
 import {FicheDePosteRepository} from "../repository/FicheDePosteRepository";
+const {loggedInNoRedirection} = require("../passport/passportFunctions");
+
 
 export class HomeController {
 
@@ -14,18 +16,18 @@ export class HomeController {
         //For testing mock getAll() method
         FicheDePosteRepository.getDistinctRegion().then((regions: string[]) => {
             OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-                res.render("index", {title: "Home", offers: offers, regions: regions});
+                res.render("index", {title: "Home", offers: offers, regions: regions, user: loggedInNoRedirection(req, res)});
             });
         });
 
     }
 
     static login(req: express.Request, res: express.Response) {
-        res.render("login", {title: "Login"});
+        res.render("login", {title: "Connexion", messages:req.query?.message});
     }
 
     static register(req: express.Request, res: express.Response) {
-        res.render("register", {title: "register"});
+        res.render("register", {title: "Inscription", messages:req.query?.message});
     }
 
 
@@ -72,7 +74,7 @@ export class HomeController {
         }
 
         OrganisationRepository.getAll().then((organisations: Organisation[]) => {
-            res.render("demandeRecruteur", {title: "Recruteur", organisations: organisations, alerts: alerts});
+            res.render("demandeRecruteur", {title: "Recruteur", organisations: organisations, alerts: alerts, user: loggedInNoRedirection(req, res)});
         });
     }
 }

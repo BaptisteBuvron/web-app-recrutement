@@ -109,3 +109,5 @@ dist
 
 docker/mysql
 /node_modules
+
+/sessions
