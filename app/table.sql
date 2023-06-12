@@ -71,14 +71,6 @@ CREATE TABLE `OffreDePoste`
 );
 
 
-
--- --------------------------------------------------------
-
---
--- Structure de la table `Piece`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -97,7 +89,7 @@ CREATE TABLE `Utilisateur`
     `password`           varchar(128) NOT NULL,
     `role`               varchar(64)  NOT NULL CHECK (role IN ('Candidat', 'Recruteur', 'Administrateur')),
     demande_organisation varchar(64) CHECK (demande_organisation IN ('En cours', 'acceptation', 'refus')),
-    `siren`              int(11) REFERENCES Organisation (siren),
+    `siren`              varchar(11),
     FOREIGN KEY (siren) REFERENCES Organisation (siren),
     PRIMARY KEY (email),
 
@@ -138,6 +130,14 @@ CREATE TABLE `Candidature`
     PRIMARY KEY (candidat, offre)
 );
 
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Piece`
+--
+
+
 CREATE TABLE `Piece`
 (
     `id`       int(11)      NOT NULL AUTO_INCREMENT,
@@ -167,6 +167,3 @@ INSERT INTO OffreDePoste
 VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
 INSERT INTO OffreDePoste
 VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);
-
-INSERT INTO Utilisateur
-VALUES ('tsoudar21@gmail.com', 'Tillai', 'Soudarsane', '0652645299', '2020-10-10', 1, 'mdp', 'Candidat', NULL, 123456);
