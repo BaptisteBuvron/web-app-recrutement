@@ -1,13 +1,10 @@
 // @ts-nocheck
 import {User} from "../entity/User";
 import {UserRepository} from "../repository/UserRepository";
-import {Alert} from "../utils/Alert";
 
 const passport = require('passport');
 const localStrategy = require("passport-local").Strategy;
-const {v4:uuidv4} = require("uuid");
 const bcrypt = require("bcrypt");
-const fs = require("fs");
 
 passport.serializeUser((user, done) => {
     console.log("in serialize user: ", user);
