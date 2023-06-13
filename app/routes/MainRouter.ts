@@ -43,7 +43,7 @@ defaultRouter.post(
             if (!user) {
                 return res.redirect(`/login?message=${info.message}`);
             }
-            req.login(user, async () => {
+            req.login(user[0], async () => {
                 let role = user[0].role;
                 let url;
                 if (role == "Administrateur") {

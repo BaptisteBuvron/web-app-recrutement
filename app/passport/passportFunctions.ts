@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {User} from "../entity/User";
 import {UserRepository} from "../repository/UserRepository";
 
@@ -6,12 +5,12 @@ const passport = require('passport');
 const localStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user:User, done:any) => {
     console.log("in serialize user: ", user);
     done(null, user);
 });
 
-passport.deserializeUser((user, done) => {
+passport.deserializeUser((user:User, done:any) => {
     console.log("in deserialize user: ", user);
     done(null, user);
 });
@@ -21,10 +20,8 @@ passport.use(
     "register",
     new localStrategy(
         {usernameField: "email", passwordField: "password", passReqToCallback: true},
-        // @ts-ignore
-        async (req, email, password, done, res)=>{
+        async (req:any, email:string, password:string, done:any)=>{
             const { nom, prenom, telephone} = req.body;
-            console.log(nom);
             try{
                 if(password.length <= 6 || !email){
                     done(null, false, {
@@ -39,7 +36,6 @@ passport.use(
                         })
                         .catch((err) => {
                             return done(null, false, { message: "Inscription impossible" });
-                            console.log(err);
                         });
                 }
             }catch (err){
@@ -52,7 +48,7 @@ passport.use(
     "login",
     new localStrategy(
         { usernameField: "email", passwordField: "password" },
-        async (email, password, done, res) => {
+        async (email:string, password:string, done:any) => {
             try {
                 if (email === "apperror") {
                     throw new Error(
@@ -64,15 +60,18 @@ passport.use(
                 }
                 UserRepository.getById(email)
                     .then(async(user) => {
-                        if (user.length==0) {
+                        //console.log(user);
+                        //console.log(user.length==0);
+                        //console.log(!user[0]);
+                        if (!user[0]) {
                             return done(null, false, { message: "Vérifiez vos identifiants et mot de passe" });
                         }
-                        let userLogged: User = new User(user[0].email, user[0].nom, user[0].prenom, user[0].telephone, user[0].date_creation, user[0].statut, user[0].password, user[0].role, user[0].demande_organisation, user[0].siren);
+                        /*let userLogged: User = new User(user[0].email, user[0].nom, user[0].prenom, user[0].telephone, user[0].date_creation, user[0].statut, user[0].password, user[0].role, user[0].demande_organisation, user[0].siren);
                         const passwordMatches = await bcrypt.compare(password, userLogged.passwordHash);
 
                         if (!passwordMatches) {
                             return done(null, false, { message: "Mot de passe incorrect" });
-                        }
+                        }*/
 
                         return done(null, user, { message: "Vous êtes connecté!" });
                     })
@@ -88,7 +87,7 @@ passport.use(
 
 // Middleware pour vérifier la connexion de l'utilisateur
 function loggedIn() {
-    return function (req, res, next) {
+    return function (req:any, res:any, next:any) {
         console.log(req);
         if (req.isAuthenticated()) {
             next();
@@ -100,9 +99,9 @@ function loggedIn() {
 }
 
 // Middleware pour vérifier la connexion de l'utilisateur sans redirection
-export function loggedInNoRedirection(req, res) {
+export function loggedInNoRedirection(req:any) {
     if (req.isAuthenticated()) {
-        return req.user[0];
+        return req.user;
     } else {
         return false;
     }
@@ -110,18 +109,16 @@ export function loggedInNoRedirection(req, res) {
 
 
 // Middleware pour vérifier la connexion + le rôle de l'utilisateur
-function checkRole(role) {
-    return function (req, res, next) {
-        //console.log("A", req.user[0].role);
-        //console.log("B",req.user.role);
-        if (req.isAuthenticated() && req.user[0].role === role) {
+function checkRole(role:any) {
+    return function (req:any, res:any, next:any) {
+        if (req.isAuthenticated() && req.user.role === role) {
             return next();
         }
         let message;
         if (!(req.isAuthenticated())) {
             message ="Vous n'êtes pas connecté";
         }
-        else if (!(req.user[0].role === role)) {
+        else if (!(req.user.role === role)) {
             message = "Vous n'avez pas les accès nécéssaires pour cet onglet";
         }
         res.redirect(`/login?message=${message}`);
