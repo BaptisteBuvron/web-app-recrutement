@@ -4,13 +4,13 @@ import {HomeController} from "../controllers/HomeController";
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
-const { passport, loggedInNoRedirection, checkRole} = require("../passport/passportFunctions");
+const { passport, checkRole} = require("../passport/passportFunctions");
 
 export const defaultRouter = Router();
 
 defaultRouter.use(
     session({
-        genid: (req) => {
+        genid: (req:any) => {
             console.log("1. in genid req.sessionID: ", req.sessionID);
             return uuidv4();
         },
@@ -19,7 +19,7 @@ defaultRouter.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 600000
+            maxAge: 1200000
         }
     })
 );
@@ -35,7 +35,7 @@ defaultRouter.post("/devenir-recruteur", checkRole("Candidat"), HomeController.d
 defaultRouter.post(
     "/login",
     function (req, res, next) {
-        passport.authenticate("login", async (err, user, info) => {
+        passport.authenticate("login", async (err:any, user:any, info:any) => {
             if (err) {
                 return next(err);
             }
@@ -43,7 +43,7 @@ defaultRouter.post(
             if (!user) {
                 return res.redirect(`/login?message=${info.message}`);
             }
-            req.login(user, async (error) => {
+            req.login(user, async () => {
                 let role = user[0].role;
                 let url;
                 if (role == "Administrateur") {
@@ -61,8 +61,7 @@ defaultRouter.post(
 );
 
 defaultRouter.post("/register", async(req, res, next)=>{
-    // @ts-ignore
-    passport.authenticate("register", async function(error, user, info){
+    passport.authenticate("register", async function(error:any, user:any, info:any){
         if(error){
             return next(error.message);
         }
@@ -70,7 +69,7 @@ defaultRouter.post("/register", async(req, res, next)=>{
         if(!user){
             res.redirect(`/register?message=${info.message}`);
         }
-        req.login(user, async (error) => {
+        req.login(user, async (error:any) => {
             if (error) {
                 return next(error);
             }
@@ -80,9 +79,9 @@ defaultRouter.post("/register", async(req, res, next)=>{
 });
 
 defaultRouter.get("/logout", async (req, res) => {
-    req.logout(function (err) {
+    req.logout(function (err:any) {
         if (err) {
-            return next(err);
+            return err;
         }
         res.redirect("/login");
     });
