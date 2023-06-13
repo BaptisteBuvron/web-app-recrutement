@@ -11,24 +11,27 @@
           <div class="row g-3">
             <div class="col-sm-6">
               <label for="offerName" class="form-label">Nom de l'offre</label>
-
+              <p><%= offer.ficheDePoste.typeMetier %></p>
             </div>
 
             <div class="col-md-5">
               <label for="entreprise" class="form-label">Entreprise</label>
-
+              <p><%= offer.ficheDePoste.organisation.nom %></p>
             </div>
 
             <div class="col-md-4">
               <label for="state" class="form-label">Région</label>
-
+              <p><%= offer.ficheDePoste.organisation.siege %></p>
             </div>
 
             <hr class="my-4">
             <div class="col-sm-6">
               <h4 class="mb-3">Pièces à déposer</h4>
 
-                <label class="" for="motivation">Lettre de motivation</label>
+              <% var list = offer.listePiece.split(',') %>
+              <% list.forEach((element) => {%>
+                    <p>•<%= element %></p>
+              <% })%>
 
             </div>
           </div>
@@ -36,16 +39,39 @@
           <hr class="my-4">
 
           <h4 class="mb-3">Publication</h4>
-
+          <p><%= offer.dateValidite %></p>
 
           <hr class="my-4">
 
           <h4 class="mb-3">Fiche de poste</h4>
 
-          <div class="col-md-5">
-            <label for="fiche" class="form-label">Fiche de poste</label>
 
-          </div>
+          <div class="row g-3">
+              <div class="col-sm-6">
+                <label for="offerName" class="form-label">Responsable</label>
+                <p><%= offer.ficheDePoste.typeMetier %></p>
+              </div>
+
+              <div class="col-md-5">
+                <label for="entreprise" class="form-label">Lieu</label>
+                <p><%= offer.ficheDePoste.organisation.nom %></p>
+              </div>
+
+              <div class="col-md-4">
+                <label for="state" class="form-label">Télétravail</label>
+                <p><%= offer.ficheDePoste.organisation.siege %></p>
+              </div>
+
+              <div class="col-md-4">
+                 <label for="state" class="form-label">Heures</label>
+                 <p><%= offer.ficheDePoste.organisation.siege %></p>
+              </div>
+              <div class="col-md-4">
+                  <label for="state" class="form-label">Salaire</label>
+                  <p><%= offer.ficheDePoste.organisation.siege %></p>
+              </div>
+            </div>
+
           <hr class="my-4">
 
         <div class="d-flex gap-2 justify-content-center py-2">

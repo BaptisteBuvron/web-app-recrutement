@@ -7,12 +7,33 @@ const db = pool;
 export class UserRepository {
     static tableName = "Utilisateur";
 
-    getById(id: number): Promise<null> {
-        throw new Error("Method not implemented.");
+    static getById(email:string): Promise<[User]> {
+        const query = `SELECT *
+                       FROM ${UserRepository.tableName} u
+                       WHERE u.email = ?`;
+        return new Promise<[User]>(
+            (resolve, reject) =>
+                pool.query(query,[email], (err, result) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        return resolve(result);
+                    }
+                )
+        );
+        //Modifier la table utilisateur : profil recruteur et siren à mettre à jour
     }
 
-    create(entity: User): Promise<User> {
-        throw new Error("Method not implemented.");
+    static create(entity: User): Promise<User> {
+        const query = `INSERT INTO ${UserRepository.tableName} (email, nom, prenom, telephone, date_creation, statut, password, role, demande_organisation, siren) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        return new Promise<User>((resolve, reject) => {
+            pool.query(query, [entity.email, entity.nom, entity.prenom, entity.telephone, entity.dateCreation, entity.statut, entity.passwordHash, entity.role, entity.demande_organisation, entity.siren], (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(result);
+            });
+        });
     }
 
     update(id: number, entity: User): Promise<User | null> {
@@ -44,8 +65,8 @@ export class UserRepository {
 
     static setDemandAccepted(email: string): Promise<[User]> {
         const query = `UPDATE ${UserRepository.tableName}
-                       SET demande_organisation = 'accepted',
-                           type='Recruteur'
+                       SET demande_organisation = 'acceptation',
+                           role='Recruteur'
                        WHERE email = ?`;
         return new Promise<[User]>(
             (resolve, reject) =>
@@ -61,8 +82,8 @@ export class UserRepository {
 
     static setDemandRefused(email: string): Promise<[User]> {
         const query = `UPDATE ${UserRepository.tableName}
-                       SET demande_organisation = 'refused',
-                           type='Candidat',
+                       SET demande_organisation = 'refus',
+                           role='Candidat',
                            siren=null
                        WHERE email = ?`;
         return new Promise<[User]>(

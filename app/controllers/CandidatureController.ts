@@ -8,6 +8,7 @@ import {Candidature} from "../entity/Candidature";
 import {StatutCandidatureEnum} from "../utils/StatutCandidatureEnum";
 import {Piece} from "../entity/Piece";
 import {PieceRepository} from "../repository/FichierRepository";
+import {loggedInNoRedirection} from "../passport/passportFunctions";
 
 export class CandidatureController {
     static candidater(req: express.Request, res: express.Response) {
@@ -63,7 +64,7 @@ export class CandidatureController {
 
                         }
                     }
-                    res.render("candidater", {title: "Candidater", offer: offer, alerts: alerts});
+                    res.render("candidater", {title: "Candidater", offer: offer, alerts: alerts, user: loggedInNoRedirection(req, res)});
 
                 }
             )
@@ -77,7 +78,7 @@ export class CandidatureController {
         //TODO Vérifier que l'utilisateur est bien un candidat
         let user: User = new User('candidat1@example.com', 'Doe', 'John', '123456789', new Date(), true, 'password123', 'Candidat', 'En attente', '1566');
         CandidatureRepository.getByUser(user).then((candidatures) => {
-            res.render("candidatures", {title: "Mes candidatures", candidatures: candidatures});
+            res.render("candidatures", {title: "Mes candidatures", candidatures: candidatures, user: loggedInNoRedirection(req, res)});
 
         }).catch((err) => {
             console.log(err);
