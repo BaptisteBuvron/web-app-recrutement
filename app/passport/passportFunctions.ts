@@ -20,7 +20,7 @@ passport.use(
     "register",
     new localStrategy(
         {usernameField: "email", passwordField: "password", passReqToCallback: true},
-        async (req:any, email:string, password:string, done:any)=>{
+        async (req:any, email:string, password:string, done:any, res:any)=>{
             const { nom, prenom, telephone} = req.body;
             try{
                 if(password.length <= 6 || !email){
@@ -48,7 +48,7 @@ passport.use(
     "login",
     new localStrategy(
         { usernameField: "email", passwordField: "password" },
-        async (email:string, password:string, done:any) => {
+        async (email:string, password:string, done:any, res:any) => {
             try {
                 if (email === "apperror") {
                     throw new Error(
@@ -99,7 +99,7 @@ function loggedIn() {
 }
 
 // Middleware pour vérifier la connexion de l'utilisateur sans redirection
-export function loggedInNoRedirection(req:any) {
+export function loggedInNoRedirection(req:any, res:any) {
     if (req.isAuthenticated()) {
         return req.user;
     } else {
