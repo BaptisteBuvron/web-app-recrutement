@@ -7,11 +7,12 @@ export class User {
     statut: boolean;
     passwordHash: string;
     role: string;
-    demande_organisation: string;
+    demande_organisation: string | null;
     //TODO replace siren by organisation
-    siren: string;
+    siren: string|null;
+    id?: string;
 
-    constructor(email: string, nom: string, prenom: string, telephone: string, dateCreation: Date, statut: boolean, passwordHash: string, role: string, demande_organisation: string, siren: string) {
+    constructor(email: string, nom: string, prenom: string, telephone: string, dateCreation: Date, statut: boolean, passwordHash: string, role: string, demande_organisation: string|null, siren: string|null, id?: string) {
         this.email = email;
         this.nom = nom;
         this.prenom = prenom;
@@ -22,6 +23,9 @@ export class User {
         this.role = role;
         this.demande_organisation = demande_organisation;
         this.siren = siren;
+        this.id=id;
     }
+
+
 
 }

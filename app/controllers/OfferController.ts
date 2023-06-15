@@ -4,6 +4,7 @@ import {OffreDePoste} from "../entity/OffreDePoste";
 import {OfferRepository} from "../repository/OfferRepository";
 import {FicheDePoste} from "../entity/FicheDePoste";
 import {Alert} from "../utils/Alert";
+import {loggedInNoRedirection} from "../passport/passportFunctions";
 
 export class OfferController {
 
@@ -68,7 +69,8 @@ export class OfferController {
             return res.render("offre/creation", {
                 title: "Créer une offre",
                 ficheDePostes: ficheDePostes,
-                alerts: alerts
+                alerts: alerts,
+                user: loggedInNoRedirection(req, res)
             });
         });
 

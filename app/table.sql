@@ -71,14 +71,6 @@ CREATE TABLE `OffreDePoste`
 );
 
 
-
--- --------------------------------------------------------
-
---
--- Structure de la table `Piece`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -96,16 +88,16 @@ CREATE TABLE `Utilisateur`
     `statut`             tinyint(1)   NOT NULL,
     `password`           varchar(128) NOT NULL,
     `role`               varchar(64)  NOT NULL CHECK (role IN ('Candidat', 'Recruteur', 'Administrateur')),
-    demande_organisation varchar(64) CHECK (demande_organisation IN ('En cours', 'accepté', 'refusé')),
+    demande_organisation varchar(64) CHECK (demande_organisation IN ('En cours', 'acceptation', 'refus')),
     `siren`              varchar(11),
     FOREIGN KEY (siren) REFERENCES Organisation (siren),
     PRIMARY KEY (email),
 
     CHECK (
-            ((demande_organisation = 'En cours' OR demande_organisation = 'accepté' OR role = 'Recruteur') AND
+            ((demande_organisation = 'En cours' OR demande_organisation = 'acceptation' OR role = 'Recruteur') AND
              siren IS NOT NULL)
             OR
-            ((demande_organisation = 'refusé' OR role = 'Administrateur' OR role = 'Candidat') AND siren IS NULL)
+            ((demande_organisation = 'refus' OR role = 'Administrateur' OR role = 'Candidat') AND siren IS NULL)
         )
 );
 
@@ -138,6 +130,14 @@ CREATE TABLE `Candidature`
     PRIMARY KEY (candidat, offre)
 );
 
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `Piece`
+--
+
+
 CREATE TABLE `Piece`
 (
     `id`       int(11)      NOT NULL AUTO_INCREMENT,
@@ -167,6 +167,3 @@ INSERT INTO OffreDePoste
 VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 1);
 INSERT INTO OffreDePoste
 VALUES (0, 'non publiée', '2020-12-31', 2, 'CV, LM', 2);
-
-INSERT INTO Utilisateur
-VALUES ('tsoudar21@gmail.com', 'Tillai', 'Soudarsane', '0652645299', '2020-10-10', 1, 'mdp', 'Candidat', NULL, 123456);

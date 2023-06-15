@@ -3,6 +3,7 @@ import {pool} from "../database";
 import {User} from "../entity/User";
 import {OffreDePoste} from "../entity/OffreDePoste";
 import {FicheDePoste} from "../entity/FicheDePoste";
+import {Organisation} from "../entity/Organisation";
 
 export class CandidatureRepository {
     static create(candidature: Candidature): Promise<Candidature> {
@@ -37,10 +38,14 @@ export class CandidatureRepository {
                               FDP.nb_heures,
                               FDP.salaire,
                               FDP.description,
-                              FDP.siren
+                              FDP.siren,
+                              O.nom as nom_organisation,
+                              O.type as type_organisation,
+                              O.siege as siege_organisation
                        FROM Candidature
                                 LEFT JOIN OffreDePoste ODP on Candidature.offre = ODP.numero
                                 LEFT JOIN FicheDePoste FDP on ODP.fiche = FDP.numero
+                                INNER JOIN Organisation O ON O.siren = FDP.siren
                        WHERE candidat = ?`;
         return new Promise<Candidature[]>((resolve, reject) => {
             pool.query(query, [user.email], (err, result) => {
@@ -49,7 +54,8 @@ export class CandidatureRepository {
                 }
                 let candidatures: Candidature[] = [];
                 for (let i = 0; i < result.length; i++) {
-                    let fiche = new FicheDePoste(result[i].fiche_numero, result[i].fiche_statut, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren);
+                    let organisation = new Organisation(result[0].siren, result[0].nom_organisation, result[0].type_organisation, result[0].siege_organisation);
+                    let fiche = new FicheDePoste(result[i].fiche_numero, result[i].fiche_statut, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren, organisation);
                     let offre = new OffreDePoste(result[i].offre_numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, fiche);
 
                     candidatures.push(new Candidature(
