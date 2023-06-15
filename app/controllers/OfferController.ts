@@ -59,6 +59,12 @@ export class OfferController {
 
         }
         //TODO selectionner seulement les fiches de postes de l'organisation du recruteur
+        let ficheDePostes: FicheDePoste[] = await FicheDePosteRepository.getAll();
+        if (ficheDePostes.length === 0) {
+            let alert = new Alert("danger", "Vous n'avez pas encore créé de fiche de poste.");
+            alerts.push(alert);
+            return res.redirect("/fiche-de-poste/creation");
+        }
         FicheDePosteRepository.getAll().then((ficheDePostes) => {
             return res.render("offre/creation", {
                 title: "Créer une offre",
