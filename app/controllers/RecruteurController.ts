@@ -1,12 +1,13 @@
 import express from "express";
 import {CandidatureRepository} from "../repository/CandidatureRepository";
 import {Alert} from "../utils/Alert";
+import {loggedInNoRedirection} from "../passport/passportFunctions";
 
 export class RecruteurController {
     static index(req: express.Request, res: express.Response) {
         //Get candidatures by siren
 
-        res.render("recruteur/index", {title: "Home"});
+        res.render("recruteur/index", {title: "Home", user: loggedInNoRedirection(req, res)});
     }
 
     static candidatures(req: express.Request, res: express.Response) {

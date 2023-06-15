@@ -1,5 +1,7 @@
 import {Router} from "express";
 import {HomeController} from "../controllers/HomeController";
+import multer, {Multer} from "multer";
+import {CandidatureController} from "../controllers/CandidatureController";
 
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
@@ -23,14 +25,38 @@ defaultRouter.use(
         }
     })
 );
+
+const upload: Multer = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, callback) => {
+            callback(null, './uploads'); // Destination folder
+        },
+        filename: (req, file, callback) => {
+            const uniqueID = uuidv4(); // Generate a unique ID
+            const originalFileName = file.originalname;
+            const fileName = `${uniqueID}_${originalFileName}`; // Append unique ID to the original filename
+            callback(null, fileName);
+        },
+    }),
+});
+
 defaultRouter.use(passport.initialize());
 defaultRouter.use(passport.session());
-
 defaultRouter.get("/", HomeController.index);
 defaultRouter.get("/login", HomeController.login);
 defaultRouter.get("/register", HomeController.register);
 defaultRouter.get("/devenir-recruteur", checkRole("Candidat"), HomeController.demandeRecruteur);
 defaultRouter.post("/devenir-recruteur", checkRole("Candidat"), HomeController.demandeRecruteur);
+
+defaultRouter.get("/candidatures", checkRole("Candidat"), CandidatureController.candidatures);
+defaultRouter.get("/canditature/:numero", checkRole("Candidat"), CandidatureController.candidater);
+defaultRouter.post("/canditature/:numero", checkRole("Candidat"), upload.fields([
+    {name: 'cv', maxCount: 1},
+    {name: 'lettre', maxCount: 1}
+]), CandidatureController.candidater);
+
+
+
 
 defaultRouter.post(
     "/login",
@@ -49,7 +75,7 @@ defaultRouter.post(
                 if (role == "Administrateur") {
                     url="admin";
                 } else if(role == "Recruteur"){
-                    url="offre";
+                    url="recruteur";
                 }else{
                     url="";
                 }

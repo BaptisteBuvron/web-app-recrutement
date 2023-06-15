@@ -6,9 +6,9 @@ import {offerRouter} from "./routes/OfferRouter";
 import {adminRouter} from "./routes/AdminRouter";
 import {ficheRouter} from "./routes/FicheRouter";
 import bodyParser from "body-parser";
-import {candidatureRouter} from "./routes/CandidatureRouter";
 import {recruterRouter} from "./routes/RecruterRouter";
 import {apiRouter} from "./routes/ApiRouter";
+const {passport} = require("./passport/passportFunctions");
 
 dotenv.config();
 
@@ -26,7 +26,6 @@ app.use("/", defaultRouter);
 app.use("/offre", offerRouter);
 app.use("/fiche", ficheRouter);
 app.use("/admin", adminRouter);
-app.use("/", candidatureRouter);
 app.use("/recruteur", recruterRouter);
 app.use("/api", apiRouter);
 
