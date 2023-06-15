@@ -1,6 +1,5 @@
 import express from "express";
 import {FicheController} from "../controllers/FicheController";
-import {candidatureRouter} from "./CandidatureRouter";
 const { passport, loggedIn, checkRole } = require("../passport/passportFunctions");
 
 export const ficheRouter = express.Router();
