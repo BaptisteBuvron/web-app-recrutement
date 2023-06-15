@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {HomeController} from "../controllers/HomeController";
+import {createCSRFToken} from "../middlewares/CSRFMiddlewares";
 
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
@@ -25,6 +26,7 @@ defaultRouter.use(
 );
 defaultRouter.use(passport.initialize());
 defaultRouter.use(passport.session());
+defaultRouter.use(createCSRFToken)
 
 defaultRouter.get("/", HomeController.index);
 defaultRouter.get("/login", HomeController.login);
