@@ -1,3 +1,5 @@
+import {User} from "../entity/User";
+
 export {};
 
 declare global {
@@ -5,6 +7,8 @@ declare global {
         interface Request {
             logout: any;
             login: any;
+            session: any;
+            user: User;
         }
     }
 }
