@@ -21,24 +21,25 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link <%= (title == 'Home') ? 'active' :'' %>" aria-current="page" href="/admin">Accueil</a>
+                    <a class="nav-link <%= (title == 'Home') ? 'active' : '' %>" aria-current="page" href="/admin">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <%= (title == 'Utilisateurs') ? 'active' :'' %>" href="/admin/utilisateurs">Utilisateurs</a>
+                    <a class="nav-link <%= (title == 'Utilisateurs') ? 'active' : '' %>" href="/admin/utilisateurs">Utilisateurs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <%= (title == 'Demandes') ? 'active' :'' %>" href="/admin/demandes">Demandes</a>
+                    <a class="nav-link <%= (title == 'Demandes') ? 'active' : '' %>" href="/admin/demandes">Demandes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <%= (title == 'Offres') ? 'active' :'' %>" href="/admin/offres">Offres d'emploi</a>
+                    <a class="nav-link <%= (title == 'Offres') ? 'active' : '' %>" href="/admin/offres">Offres
+                        d'emploi</a>
                 </li>
             </ul>
         </div>
         <ul class="navbar-nav mb-2 my-lg-0">
             <% if(typeof user !== 'undefined' && user){ %>
-                 <li class="m-2"><%= user.nom%> <%= user.prenom%> </li>
-                 <a href="/logout" class="btn btn-primary">Déconnexion</a>
-            <% }%>
-        <ul>
-        </div>
+                <li class="m-2"><%= user.nom %> <%= user.prenom %> </li>
+                <a href="/logout" class="btn btn-primary">Déconnexion</a>
+            <% } %>
+        </ul>
+    </div>
 </nav>
