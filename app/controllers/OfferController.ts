@@ -20,6 +20,7 @@ export class OfferController {
             let csrfToken = req.body._csrf;
             if (!csrfValidation(req, csrfToken)) {
                 alerts.push(new Alert("danger", "Erreur CSRF"));
+                //TODO message d'erreur
                 return res.redirect("/logout");
             }
             //TODO validation data

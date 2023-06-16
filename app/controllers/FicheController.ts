@@ -13,8 +13,8 @@ export class FicheController {
             let teletravail: boolean = req.body.teletravail === "on";
             //TODO get the siren from the recruiter
             //random number 9 digits
-            let random = Math.floor(Math.random() * 1000000000);
-            let siren: string = String(random);
+
+            let siren: string = req.user.siren as string;
             let nbHeures: number = parseInt(req.body.nbHeures);
 
 
