@@ -23,9 +23,15 @@ passport.use(
         async (req:any, email:string, password:string, done:any, res:any)=>{
             const { nom, prenom, telephone} = req.body;
             try{
-                if(password.length <= 6 || !email){
+                const regex = /^(?=.*[a-z].*[a-z])(?=.*[A-Z].*[A-Z])(?=.*\d.*\d)(?=.*[$@!%*?&#].*[$@!%*?&#])[A-Za-z\d$@!%*?&#]{12,}$/;
+
+                if(!email){
                     done(null, false, {
-                        message: "Veuillez saisir un mot de passe de 7 caractères minimum",
+                        message: "Veuillez saisir une adresse email",
+                    })
+                }else if(!regex.test(password)){
+                    done(null, false, {
+                        message: "Veuillez saisir un mot de passe de 12 caractères minimum comprenant des majuscules, des minuscules, des chiffres et des caractères spéciaux",
                     })
                 }else{
                     const hashedPass = await bcrypt.hash(password, 10);
@@ -60,9 +66,6 @@ passport.use(
                 }
                 UserRepository.getById(email)
                     .then(async(user) => {
-                        //console.log(user);
-                        //console.log(user.length==0);
-                        //console.log(!user[0]);
                         if (!user[0]) {
                             return done(null, false, { message: "Vérifiez vos identifiants et mot de passe" });
                         }
