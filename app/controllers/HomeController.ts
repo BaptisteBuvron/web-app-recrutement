@@ -6,6 +6,7 @@ import {OffreDePoste} from "../entity/OffreDePoste";
 import {UserRepository} from "../repository/UserRepository";
 import {Alert} from "../utils/Alert";
 import {FicheDePosteRepository} from "../repository/FicheDePosteRepository";
+
 const {loggedInNoRedirection} = require("../passport/passportFunctions");
 
 
@@ -35,7 +36,7 @@ export class HomeController {
         const alerts: Alert[] = [];
         if (req.method === "POST") {
             let siren = req.body.siren;
-            let mail = "tsoudar21@gmail.com"; //TO DO get mail from session variable
+            let mail = req.user.email//TO DO get mail from session variable
             if (req.body.siege) {
                 let organisation: Organisation = new Organisation(
                     req.body.siren,

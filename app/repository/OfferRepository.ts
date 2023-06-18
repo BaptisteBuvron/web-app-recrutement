@@ -29,15 +29,18 @@ export class OfferRepository {
                        FROM ${OfferRepository.tableName}
                                 LEFT JOIN FicheDePoste ON OffreDePoste.fiche = FicheDePoste.numero
                                 INNER JOIN Organisation ON Organisation.siren = FicheDePoste.siren`;
+        let params: (string | number | undefined)[] = [];
         if (filterOffer) {
-            query += ` WHERE FicheDePoste.salaire >= ${filterOffer.minSalary}`;
+            query += ` WHERE FicheDePoste.salaire >= ?`;
+            params.push(filterOffer.minSalary);
             if (filterOffer.region) {
-                query += ` AND FicheDePoste.lieu = '${filterOffer.region}'`;
+                query += ` AND FicheDePoste.lieu = ?'`;
+                params.push(filterOffer.region);
             }
         }
         return new Promise<[OffreDePoste]>(
             (resolve, reject) =>
-                pool.query(query, (err, result) => {
+                pool.query(query, params, (err, result) => {
                     if (err) {
                         return reject(err);
                     }
