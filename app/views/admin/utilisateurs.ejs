@@ -48,6 +48,17 @@
                 </tr>
                 </thead>
                 <tbody>
+
+                <% users.forEach((user) => {%>
+                <tr>
+                    <th scope="row"><%= user.mail %></th>
+                    <td><%= user.nom %></td>
+                    <td><%= user.prenom %></td>
+                    <td><%= user.siren %></td>
+                    <td><span class="badge text-bg-success float"><%= user.role %></span></td>
+                    <td><button type="button" class="btn btn-outline-primary btn-sm">Détails</button></td>
+                </tr>
+                <% }) %>
                 <tr>
                     <th scope="row">1</th>
                     <td>CASSIN</td>

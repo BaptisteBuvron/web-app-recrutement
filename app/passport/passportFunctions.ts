@@ -6,12 +6,12 @@ const localStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 
 passport.serializeUser((user:User, done:any) => {
-    console.log("in serialize user: ", user);
+    //console.log("in serialize user: ", user);
     done(null, user);
 });
 
 passport.deserializeUser((user:User, done:any) => {
-    console.log("in deserialize user: ", user);
+    //console.log("in deserialize user: ", user);
     done(null, user);
 });
 

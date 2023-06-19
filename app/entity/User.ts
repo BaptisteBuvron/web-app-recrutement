@@ -1,3 +1,5 @@
+import {Organisation} from "./Organisation";
+
 export class User {
     email: string;
     nom: string;
@@ -9,10 +11,10 @@ export class User {
     role: string;
     demande_organisation: string | null;
     //TODO replace siren by organisation
-    siren: string|null;
+    organisation: Organisation|null;
     id?: string;
 
-    constructor(email: string, nom: string, prenom: string, telephone: string, dateCreation: Date, statut: boolean, passwordHash: string, role: string, demande_organisation: string|null, siren: string|null, id?: string) {
+    constructor(email: string, nom: string, prenom: string, telephone: string, dateCreation: Date, statut: boolean, passwordHash: string, role: string, demande_organisation: string|null, organisation: Organisation|null, id?: string) {
         this.email = email;
         this.nom = nom;
         this.prenom = prenom;
@@ -22,7 +24,7 @@ export class User {
         this.passwordHash = passwordHash;
         this.role = role;
         this.demande_organisation = demande_organisation;
-        this.siren = siren;
+        this.organisation = organisation;
         this.id=id;
     }
 

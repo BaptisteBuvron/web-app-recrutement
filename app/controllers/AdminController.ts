@@ -11,12 +11,15 @@ export class AdminController {
     }
 
     static utilisateurs(req: express.Request, res: express.Response) {
-        res.render("admin/utilisateurs", { title: "Utilisateurs", user: loggedInNoRedirection(req, res)});
+        UserRepository.getAll().then((users: User[]) => {
+            console.log(users);
+            res.render("admin/utilisateurs", { title: "Utilisateurs", users, user: loggedInNoRedirection(req, res)});
+        });
     }
 
     static demandes(req: express.Request, res: express.Response) {
         UserRepository.getRecruiterDemand().then((users: User[]) => {
-            console.log(users);
+            //console.log(users);
             res.render("admin/demandes", {title: "Demandes", users: users, user: loggedInNoRedirection(req, res)});
         });
     }

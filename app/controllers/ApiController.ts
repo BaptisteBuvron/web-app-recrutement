@@ -2,6 +2,8 @@ import {OfferRepository} from "../repository/OfferRepository";
 import {OffreDePoste} from "../entity/OffreDePoste";
 import express from "express";
 import {FilterOffer} from "../utils/FilterOffer";
+import {UserRepository} from "../repository/UserRepository";
+import {User} from "../entity/User";
 
 export class ApiController {
     static getOffers(req: express.Request, res: express.Response) {
@@ -14,6 +16,14 @@ export class ApiController {
         }
         OfferRepository.getAll(filterOffer).then((offers: OffreDePoste[]) => {
             res.json(offers);
+        });
+    }
+
+    static getUser(req: express.Request, res: express.Response) {
+        console.log("there");
+        let email = req.query.email;
+        UserRepository.getById(String(email)).then((user: User[]) => {
+            res.json(user);
         });
     }
 }
