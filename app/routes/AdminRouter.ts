@@ -14,7 +14,12 @@ adminRouter.use(checkRole("Administrateur"));
 
 adminRouter.get("/", AdminController.index);
 adminRouter.get("/utilisateurs", AdminController.utilisateurs);
+adminRouter.get("/utilisateur/:email", AdminController.utilisateur);
+adminRouter.get("/modifierUtilisateur/:email", AdminController.modifierUtilisateur);
+adminRouter.post("/modifierUtilisateur/:email", AdminController.modifierUtilisateur);
+
 adminRouter.get("/demandes", AdminController.demandes);
+adminRouter.get("/demande/:email", AdminController.demande);
 adminRouter.get("/accepterDemande/:email", AdminController.accepterDemande);
 adminRouter.get("/refuserDemande/:email", AdminController.refuserDemande);
 adminRouter.get("/offres", AdminController.offres);

@@ -78,7 +78,7 @@ export class OfferController {
                 title: "Créer une offre",
                 ficheDePostes: ficheDePostes,
                 alerts: alerts,
-                user: loggedInNoRedirection(req, res),
+                userLogged: loggedInNoRedirection(req, res),
                 csrfToken: req.session.csrfSecret
             });
         });

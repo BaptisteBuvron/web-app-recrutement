@@ -1,0 +1,92 @@
+<%- include('../partials/adminHeader.ejs') %>.
+
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row">
+    <div class="card shadow-sm">
+      <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Image création d'entreprise</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+      <div class="card-body">
+        <h3 class="mb-3 text-center">Utilisateur</h3>
+        <form class="needs-validation" novalidate="">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-bold">Nom Prénom</label>
+              <p><%= user.nom %> <%= user.prenom %></p>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label fw-bold">Entreprise</label>
+              <p><%= user.organisation.nom %></p>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Région</label>
+              <p><%= user.organisation.ville %></p>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Téléphone</label>
+              <p><%= user.telephone %></p>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Date</label>
+              <p><%= user.dateCreation %></p>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Statut</label>
+              <p class="<%= user.statut === 1 ? 'text-success' : 'text-danger' %>"><%= user.statut === 1 ? 'Actif' : 'Inactif' %></p>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Rôle</label>
+              <p><%= user.role %></p>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Demande à rejoindre une organisation</label>
+              <p><%= user.demande_organisation %></p>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <% if (user.organisation) { %>
+            <h3 class="mb-3 text-center">Organisation</h3>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label fw-bold">Entreprise</label>
+                <p><%= user.organisation.nom %></p>
+              </div>
+
+                <div class="col-sm-4">
+                  <label class="form-label fw-bold">Siège social</label>
+                  <p><%= user.organisation.siege %></p>
+                </div>
+
+                <div class="col-sm-2">
+                  <label class="form-label fw-bold">Type</label>
+                  <p><%= user.organisation.type %></p>
+                </div>
+
+                <div class="col-md-2">
+                  <label class="form-label fw-bold">Siren</label>
+                  <p><%= user.organisation.siren %></p>
+                </div>
+            </div>
+
+          <% } %>
+
+          <hr class="my-4">
+
+          <div class="d-flex gap-2 justify-content-center py-2">
+            <a href="/admin/demandes" class="btn btn-primary">Retour</a>
+            <a href="/admin/supprimerUtilisateur/<%= user.email %>" class="btn btn-danger">Supprimer</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

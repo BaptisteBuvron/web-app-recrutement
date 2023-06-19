@@ -20,7 +20,7 @@ defaultRouter.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 1200000
+            maxAge: 3600000
         }
     })
 );
@@ -45,8 +45,8 @@ defaultRouter.post(
             if (!user) {
                 return res.redirect(`/login?message=${info.message}`);
             }
-            req.login(user[0], async () => {
-                let role = user[0].role;
+            req.login(user, async () => {
+                let role = user.role;
                 let url;
                 if (role == "Administrateur") {
                     url="admin";

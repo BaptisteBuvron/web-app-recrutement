@@ -66,15 +66,15 @@ passport.use(
                 }
                 UserRepository.getById(email)
                     .then(async(user) => {
-                        if (!user[0]) {
+                        if (!user) {
                             return done(null, false, { message: "Vérifiez vos identifiants et mot de passe" });
                         }
-                        /*let userLogged: User = new User(user[0].email, user[0].nom, user[0].prenom, user[0].telephone, user[0].date_creation, user[0].statut, user[0].password, user[0].role, user[0].demande_organisation, user[0].siren);
+                        let userLogged: User = new User(user.email, user.nom, user.prenom, user.telephone, user.dateCreation, user.statut, user.passwordHash, user.role, user.demande_organisation, user.organisation);
                         const passwordMatches = await bcrypt.compare(password, userLogged.passwordHash);
 
                         if (!passwordMatches) {
                             return done(null, false, { message: "Mot de passe incorrect" });
-                        }*/
+                        }
 
                         return done(null, user, { message: "Vous êtes connecté!" });
                     })

@@ -18,12 +18,4 @@ export class ApiController {
             res.json(offers);
         });
     }
-
-    static getUser(req: express.Request, res: express.Response) {
-        console.log("there");
-        let email = req.query.email;
-        UserRepository.getById(String(email)).then((user: User[]) => {
-            res.json(user);
-        });
-    }
 }
