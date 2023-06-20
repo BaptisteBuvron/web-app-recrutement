@@ -1,0 +1,71 @@
+<% if (user) { %>
+    <% if (user.role === 'Recruteur') { %>
+        <%- include('partials/recruteurheader.ejs') %>
+    <% } else { %>
+        <%- include('partials/header.ejs') %>
+    <% } %>
+<% } %>
+
+
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row">
+        <div class="card shadow-sm">
+            <img src="https://www.thalesgroup.com/sites/default/files/database/assets/images/2018-07/BandeauGroupeAbout2018.jpg"
+                 class="bd-placeholder-img card-img-top">
+            <div class="card-body">
+
+                <h5>Date de la candidature : <%= candidature.date.getDate() %>/<%= candidature.date.getMonth() %>
+                    /<%= candidature.date.getFullYear() %></h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="nom" class="form-label fw-bold">Prénom :</label>
+                        <input type="text" class="form-control disabled" id="nom" name="nom" disabled
+                               value="<%= candidature.candidat.prenom %>">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="nom" class="form-label fw-bold">Nom :</label>
+                        <input type="text" class="form-control disabled" id="nom" name="nom" disabled
+                               value="<%= candidature.candidat.nom %>">
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label fw-bold">Adresse email :</label>
+                        <input type="text" class="form-control disabled" id="email" name="email" disabled
+                               value="<%= candidature.candidat.email %>">
+                    </div>
+                    <div class="col-md-6">
+
+                        <label for="telephone" class="form-label fw-bold">Téléphone :</label>
+                        <input type="text" class="form-control disabled" id="telephone" name="telephone" disabled
+                               value="<%= candidature.candidat.telephone %>">
+                    </div>
+                </div>
+
+
+                <!-- Affichage des informations soumises avec le formulaire -->
+
+                <br>
+                <h5>Informations soumises :</h5>
+                <div class="form-group">
+                    <label for="motivation" class="form-label">Parlez-nous de vous :</label>
+                    <textarea class="form-control disabled" id="motivation" name="motivation"
+                              rows="3" disabled><%= candidature.motivation %></textarea>
+                </div>
+                <br class="border-top">
+                <% candidature.pieces.forEach((piece) => {
+                %>
+                    <a href="/download/<%= piece.id %>" class="btn btn-primary">Télécharger le document
+                        : <%= piece.nom %></a>
+                <% }) %>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -4,14 +4,17 @@
     <div class="row col-9 m-auto">
         <h1 class="display-5 fw-bold lh-1 mb-3">Mes candidatures</h1>
         <% candidatures.forEach((candidature) => { %>
-        <div class="border-1 border p-2 my-2">
-            <h4 class=""><%= candidature.offre.ficheDePoste.typeMetier %> <span
-                        class="badge text-bg-secondary float-end"><%= candidature.offre.ficheDePoste.salaire %> €</span>
-            </h4>
-            <p><%= candidature.offre.ficheDePoste.description %></p>
-            <p>Organisation : Nom de l'<%= candidature.offre.ficheDePoste.siren %></p>
-            <p>Status : <span class="badge text-bg-secondary float-end"><%= candidature.statut %> €</span></p>
-        </div>
+            <div class="border-1 border p-2 my-2">
+                <h4 class=""><%= candidature.offre.ficheDePoste.typeMetier %> <span
+                            class="badge text-bg-secondary float-end"><%= candidature.offre.ficheDePoste.salaire %> €</span>
+                </h4>
+                <p><%= candidature.offre.ficheDePoste.description %></p>
+                <p>Organisation : Nom de l'<%= candidature.offre.ficheDePoste.siren %></p>
+                <p>Status : <span class="badge text-bg-secondary"><%= candidature.statut %> €</span></p>
+                <a class="btn btn-primary"
+                   href="/candidature/<%= candidature.candidat.email %>/<%= candidature.offre.numero %>">Voir la
+                    candidature</a>
+            </div>
         <% }) %>
     </div>
 </div>

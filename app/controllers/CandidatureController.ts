@@ -7,7 +7,7 @@ import {CandidatureRepository} from "../repository/CandidatureRepository";
 import {Candidature} from "../entity/Candidature";
 import {StatutCandidatureEnum} from "../utils/StatutCandidatureEnum";
 import {Piece} from "../entity/Piece";
-import {PieceRepository} from "../repository/FichierRepository";
+import {PieceRepository} from "../repository/PieceRepository";
 import {loggedInNoRedirection} from "../passport/passportFunctions";
 
 export class CandidatureController {
@@ -64,7 +64,12 @@ export class CandidatureController {
 
                         }
                     }
-                    res.render("candidater", {title: "Candidater", offer: offer, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
+                    res.render("candidater", {
+                        title: "Candidater",
+                        offer: offer,
+                        alerts: alerts,
+                        userLogged: loggedInNoRedirection(req, res)
+                    });
 
                 }
             )
@@ -73,12 +78,49 @@ export class CandidatureController {
             });
     }
 
+    static async getFile(req: express.Request, res: express.Response) {
+        let id = req.params.id;
+        //TODO vérifier que l'utilisateur est bien un candidat ou un recruteur et qu'il a le droit d'accéder au fichier
+        try {
+            const piece = await PieceRepository.getById(Number(id));
+            if (!piece) {
+                throw new Error("File not found");
+            }
+            res.download(piece.url);
+        } catch (err) {
+            res.statusCode = 404;
+            res.send("File not found");
+        }
+    }
+
+    static candidature(req: express.Request, res: express.Response) {
+        let email = req.params.email;
+        let offerNumber = req.params.numero;
+
+        CandidatureRepository.getById(email, offerNumber).then((candidature) => {
+            if (candidature) {
+                return res.render("candidature", {
+                    title: "Candidature",
+                    candidature: candidature,
+                    userLogged: loggedInNoRedirection(req, res)
+                });
+            }
+            return res.redirect("/");
+        }).catch((err) => {
+            return res.redirect("/");
+        });
+
+    }
 
     static candidatures(req: express.Request, res: express.Response) {
         //TODO Vérifier que l'utilisateur est bien un candidat
-        let user: User = new User('candidat1@example.com', 'Doe', 'John', '123456789', new Date(), true, 'password123', 'Candidat', 'En attente', null);
+        let user: User = req.user as User;
         CandidatureRepository.getByUser(user).then((candidatures) => {
-            res.render("candidatures", {title: "Mes candidatures", candidatures: candidatures, userLogged: loggedInNoRedirection(req, res)});
+            res.render("candidatures", {
+                title: "Mes candidatures",
+                candidatures: candidatures,
+                userLogged: loggedInNoRedirection(req, res)
+            });
 
         }).catch((err) => {
             console.log(err);
