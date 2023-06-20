@@ -3,7 +3,6 @@ import {CandidatureRepository} from "../repository/CandidatureRepository";
 import {Alert} from "../utils/Alert";
 import {loggedInNoRedirection} from "../passport/passportFunctions";
 import {OfferRepository} from "../repository/OfferRepository";
-import {loggedInNoRedirection} from "../passport/passportFunctions";
 
 export class RecruteurController {
     static index(req: express.Request, res: express.Response) {
