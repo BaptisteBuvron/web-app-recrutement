@@ -34,12 +34,21 @@
             </ul>
             <ul class="navbar-nav mb-2 my-lg-0">
                 <% if(typeof userLogged !== 'undefined' && userLogged){ %>
-                    <li class="m-2"><%= userLogged.nom %> <%= userLogged.prenom %> </li>
-                    <a href="/logout" class="btn btn-primary">Déconnexion</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= userLogged.nom %> <%= userLogged.prenom %>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
+                            <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
+                            <li><a class="dropdown-item" href="/administrer">Administrer</a></li>
+                            <li><a class="dropdown-item" href="/recruter">Recruter</a></li>
+                        </ul>
+                    </li>
                 <% } %>
             </ul>
         </div>
     </div>
 </nav>
+
 
 <%- include('alert.ejs') %>

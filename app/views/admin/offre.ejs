@@ -5,23 +5,48 @@
     <div class="card shadow-sm">
       <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Image création d'entreprise</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
       <div class="card-body">
-        <h4 class="mb-3">Offre</h4>
+        <h3 class="mb-3 text-center">Offre : <%= offer.ficheDePoste.typeMetier %></h3>
         <form class="needs-validation" novalidate="">
           <div class="row g-3">
-            <div class="col-sm-6">
-              <label for="offerName" class="form-label">Nom de l'offre</label>
-              <input type="text" class="form-control" value="<%= offer.ficheDePoste.typeMetier %>" readonly>
+          <div class="col-sm-6">
+              <h4 class="mb-3">Description</h4>
+              <p><%= offer.ficheDePoste.description %></p>
+          </div>
+            <hr class="my-4">
+            <h4 class="mb-0">Offre</h4>
+              <div class="col-sm-6">
+                 <label class="form-label">Date de validité</label>
+                 <input type="text" class="form-control" value="<%= offer.dateValidite %>" readonly>
+              </div>
+            <div class="col-md-6">
+              <label for="state" class="form-label">Publication</label>
+              <input type="text" class="form-control" value="<%= offer.etat %>" readonly>
             </div>
 
-            <div class="col-md-5">
+            <hr class="my-4">
+            <h4 class="">Organisation</h4>
+            <div class="col-md-6">
               <label for="entreprise" class="form-label">Entreprise</label>
               <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.nom %>" readonly>
             </div>
 
-            <div class="col-md-4">
-              <label for="state" class="form-label">Région</label>
+            <div class="col-md-6">
+              <label for="state" class="form-label">Siège</label>
               <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.siege %>" readonly>
             </div>
+
+            <div class="col-md-4">
+              <label for="state" class="form-label">Type</label>
+              <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.type %>" readonly>
+            </div>
+
+            <div class="col-md-4">
+              <label for="state" class="form-label">Siren</label>
+              <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.siren %>" readonly>
+            </div>
+
+
+
 
             <hr class="my-4">
             <div class="col-sm-6">
@@ -37,37 +62,40 @@
 
           <hr class="my-4">
 
-          <h4 class="mb-3">Publication</h4>
-          <input type="text" class="form-control" value="<%= offer.dateValidite %>" readonly>
-
-          <hr class="my-4">
-
           <h4 class="mb-3">Fiche de poste</h4>
 
 
           <div class="row g-3">
-              <div class="col-sm-6">
-                <label class="form-label">Responsable</label>
+              <div class="col-md-4">
+                <label class="form-label">Métier</label>
                 <input type="text" class="form-control" value="<%= offer.ficheDePoste.typeMetier %>" readonly>
               </div>
 
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <label class="form-label">Lieu</label>
-                <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.nom %>" readonly>
+                <input type="text" class="form-control" value="<%= offer.ficheDePoste.lieu %>" readonly>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label class="form-label">Télétravail</label>
-                <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.siege %>" readonly>
+                <input type="text" class="form-control" value="<%= offer.ficheDePoste.teletravail %> jours/semaine" readonly>
               </div>
 
               <div class="col-md-4">
-                 <label class="form-label">Heures</label>
-                 <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.siege %>" readonly>
+                 <label class="form-label">Heures/semaine</label>
+                 <input type="text" class="form-control" value="<%= offer.ficheDePoste.nbHeures %>" readonly>
               </div>
               <div class="col-md-4">
                   <label class="form-label">Salaire</label>
-                  <input type="text" class="form-control" value="<%= offer.ficheDePoste.organisation.siege %>" readonly>
+                  <input type="text" class="form-control" value="<%= offer.ficheDePoste.salaire %>" readonly>
+              </div>
+              <div class="col-sm-4">
+                  <label class="form-label">Responsable</label>
+                  <input type="text" class="form-control" value="<%= offer.ficheDePoste.responsable %>" readonly>
+               </div>
+               <div class="col-sm-4">
+                 <label class="form-label">Statut</label>
+                 <input type="text" class="form-control" value="<%= offer.ficheDePoste.status %>" readonly>
               </div>
             </div>
 
@@ -76,13 +104,30 @@
         <div class="d-flex gap-2 justify-content-center py-2">
           <a href="/admin/offres" class="btn btn-primary">Retour</a>
           <a href="/admin/modifierOffre/<%= offer.numero %>" class="btn btn-warning">Modifier</a>
-          <a href="#" class="btn btn-danger">Supprimer</a>
+          <a href="/admin/supprimerOffre/<%= offer.numero %>" class="btn btn-danger"data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Supprimer</a>
         </div>
 
         </form>
       </div>
     </div>
   </div>
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Êtes-vous sûr de vouloir supprimer cet offre ?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <a href="/admin/supprimerOffre/<%= offer.numero %>" class="btn btn-danger">Supprimer</a>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 </body>
 </html>

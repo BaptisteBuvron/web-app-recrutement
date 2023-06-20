@@ -110,6 +110,23 @@ export function loggedInNoRedirection(req:any, res:any) {
     }
 }
 
+// Middleware pour vérifier la connexion + le rôle de l'utilisateur pouvant être de 2 profils différents
+function checkRoleTwoProfile(role:any, role2:any) {
+    return function (req:any, res:any, next:any) {
+        if (req.isAuthenticated() && (req.user.role === role || req.user.role === role2)) {
+            return next();
+        }
+        let message;
+        if (!(req.isAuthenticated())) {
+            message ="Vous n'êtes pas connecté";
+        }
+        else if (!(req.user.role === role || req.user.role === role2)) {
+            message = "Vous n'avez pas les accès nécéssaires pour cet onglet";
+        }
+        res.redirect(`/login?message=${message}`);
+
+    };
+}
 
 // Middleware pour vérifier la connexion + le rôle de l'utilisateur
 function checkRole(role:any) {
@@ -133,5 +150,6 @@ module.exports = {
     passport,
     loggedIn,
     checkRole,
-    loggedInNoRedirection
+    loggedInNoRedirection,
+    checkRoleTwoProfile
 };

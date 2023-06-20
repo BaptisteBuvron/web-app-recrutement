@@ -95,8 +95,25 @@ export class FicheDePosteRepository {
         });
     }
 
-    update(id: number, entity: FicheDePoste): Promise<FicheDePoste | null> {
-        throw new Error("Method not implemented.");
+    static update(fiche: FicheDePoste): Promise<FicheDePoste> {
+        const query = `UPDATE FicheDePoste 
+                        SET  status = ?,
+                             responsable = ?,
+                             type_metier = ?,
+                             lieu = ?,
+                             teletravail = ?,
+                             nb_heures = ?,
+                             salaire = ?,
+                             description = ?
+                             WHERE numero = ?`;
+        return new Promise<FicheDePoste>((resolve, reject) => {
+            pool.query(query, [fiche.status, fiche.responsable, fiche.typeMetier, fiche.lieu, fiche.teletravail, fiche.nbHeures, fiche.salaire, fiche.description, fiche.id], (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(result);
+            });
+        });
     }
 
 }
