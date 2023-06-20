@@ -140,5 +140,48 @@ export class AdminController {
             res.render("admin/offre", {title: "Offre", offer: offer, userLogged: loggedInNoRedirection(req, res)});
         })
     }
+
+    static async modifierOffre(req: express.Request, res: express.Response) {
+        if (req.method === "POST") {
+            const alerts: Alert[] = [];
+            let user = new User(
+                req.body.email,
+                req.body.nom,
+                req.body.prenom,
+                req.body.telephone,
+                req.body.date_creation,
+                req.body.statut,
+                "",
+                req.body.role,
+                null,
+                null,
+                undefined,
+            );
+
+            await UserRepository.update(user).then((user: User) => {
+                let alert = new Alert("success", "L'utilisateur a été modifié");
+                alerts.push(alert);
+            })
+                .catch((err) => {
+                    let alert = new Alert("danger", "L'utilisateur n'a pas été modifié");
+                    alerts.push(alert);
+                    console.log(err);
+                });
+            UserRepository.getById(req.body.email).then((user: User) => {
+                console.log(user);
+                res.render("admin/utilisateur", {title: "Utilisateur", user: user, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
+            })
+        }else{
+            let email = req.params.email;
+            UserRepository.getById(email).then((user: User) => {
+                console.log(user);
+                res.render("admin/modifierUtilisateur", {
+                    title: "Modifier un utilisateur",
+                    user: user,
+                    userLogged: loggedInNoRedirection(req, res)
+                });
+            })
+        }
+    }
 }
 

@@ -23,12 +23,14 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/candidatures">Vos candidatures</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/devenir-recruteur">Devenir recruteur</a>
-                </li>
+                <% if(typeof userLogged !== 'undefined' && userLogged){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/candidatures">Vos candidatures</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/devenir-recruteur">Devenir recruteur</a>
+                    </li>
+                <% } %>
             </ul>
             <ul class="navbar-nav mb-2 my-lg-0">
                 <% if(typeof userLogged !== 'undefined' && userLogged){ %>
