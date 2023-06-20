@@ -53,7 +53,7 @@
 
             <div class="col-md-4">
               <label for="state" class="form-label fw-bold">Demande à rejoindre une organisation</label>
-              <input type="text" class="form-control" name="demande_organisation" value="<%= user.demande_organisation ? user.demande_organisation : 'Aucune' %>" readonly>
+              <input type="text" class="form-control bg-light" name="demande_organisation" value="<%= user.demande_organisation ? user.demande_organisation : 'Aucune' %>" readonly>
             </div>
           </div>
 
@@ -86,7 +86,7 @@
           <hr class="my-4">
 
           <div class="d-flex gap-2 justify-content-center py-2">
-            <a href="/admin/utilisateurs" class="btn btn-primary">Retour</a>
+            <a href="/admin/utilisateur/<%= user.email %>" class="btn btn-primary">Retour</a>
             <button type="submit" class="btn btn-warning">Valider la modification</button>
           </div>
         </form>

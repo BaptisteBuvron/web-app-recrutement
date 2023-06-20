@@ -4,8 +4,9 @@ import {OffreDePoste} from "../entity/OffreDePoste";
 import {UserRepository} from "../repository/UserRepository";
 import {User} from "../entity/User";
 import {loggedInNoRedirection} from "../passport/passportFunctions";
-import {OrganisationRepository} from "../repository/OrganisationRepository";
 import {Alert} from "../utils/Alert";
+import {OrganisationRepository} from "../repository/OrganisationRepository";
+import {Organisation} from "../entity/Organisation";
 
 export class AdminController {
     static index(req: express.Request, res: express.Response) {
@@ -14,8 +15,10 @@ export class AdminController {
 
     static utilisateurs(req: express.Request, res: express.Response) {
         UserRepository.getAll().then((users: User[]) => {
-            console.log(users);
-            res.render("admin/utilisateurs", { title: "Utilisateurs", users, userLogged: loggedInNoRedirection(req, res)});
+            OrganisationRepository.getAll().then((organisations : Organisation[]) => {
+                console.log(users);
+                res.render("admin/utilisateurs", { title: "Utilisateurs", organisations: organisations, users, userLogged: loggedInNoRedirection(req, res)});
+            });
         });
     }
 
@@ -70,10 +73,32 @@ export class AdminController {
         }
     }
 
+    static async supprimerUtilisateur(req: express.Request, res: express.Response) {
+        let email = req.params.email;
+        const alerts: Alert[] = [];
+
+        await UserRepository.supprimerUtilisateur(email).then((user: User) => {
+            let alert = new Alert("success", "L'utilisateur a bien été supprimé");
+            alerts.push(alert);
+        })
+            .catch((err) => {
+                let alert = new Alert("danger", "L'utilisateur n'a pas été supprimé");
+                alerts.push(alert);
+                console.log(err);
+            });
+
+        UserRepository.getAll().then((users: User[]) => {
+            res.render("admin/utilisateurs", { title: "Utilisateurs", users, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
+        });
+    }
+
     static demandes(req: express.Request, res: express.Response) {
         UserRepository.getRecruiterDemand().then((users: User[]) => {
-            //console.log(users);
-            res.render("admin/demandes", {title: "Demandes", users: users, userLogged: loggedInNoRedirection(req, res)});
+            UserRepository.getOldRecruiterDemand().then((oldUsers: User[]) => {
+                OrganisationRepository.getAll().then((organisations : Organisation[]) => {
+                    res.render("admin/demandes", {title: "Demandes", users: users, organisations: organisations, oldUsers: oldUsers, userLogged: loggedInNoRedirection(req, res)});
+                });
+            });
         });
     }
 

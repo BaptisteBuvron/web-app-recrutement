@@ -17,6 +17,7 @@ adminRouter.get("/utilisateurs", AdminController.utilisateurs);
 adminRouter.get("/utilisateur/:email", AdminController.utilisateur);
 adminRouter.get("/modifierUtilisateur/:email", AdminController.modifierUtilisateur);
 adminRouter.post("/modifierUtilisateur/:email", AdminController.modifierUtilisateur);
+adminRouter.get("/supprimerUtilisateur/:email", AdminController.supprimerUtilisateur);
 
 adminRouter.get("/demandes", AdminController.demandes);
 adminRouter.get("/demande/:email", AdminController.demande);

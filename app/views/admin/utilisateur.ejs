@@ -81,12 +81,29 @@
           <div class="d-flex gap-2 justify-content-center py-2">
             <a href="/admin/utilisateurs" class="btn btn-primary">Retour</a>
             <a href="/admin/modifierUtilisateur/<%= user.email %>" class="btn btn-warning">Modifier</a>
-            <a href="/admin/supprimerUtilisateur/<%= user.email %>" class="btn btn-danger">Supprimer</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Supprimer</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <a href="/admin/supprimerUtilisateur/<%= user.email %>" class="btn btn-danger">Supprimer</a>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 </body>
 </html>

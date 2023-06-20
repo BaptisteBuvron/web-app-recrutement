@@ -97,7 +97,7 @@ CREATE TABLE `Utilisateur`
             ((demande_organisation = 'En cours' OR demande_organisation = 'acceptation' OR role = 'Recruteur') AND
              siren IS NOT NULL)
             OR
-            ((demande_organisation = 'refus' OR role = 'Administrateur' OR role = 'Candidat') AND siren IS NULL)
+            ((demande_organisation = 'refus' OR role = 'Administrateur' OR role = 'Candidat'))
         )
 );
 
