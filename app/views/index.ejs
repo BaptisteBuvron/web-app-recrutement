@@ -20,7 +20,7 @@
             <h4>Filtres</h4>
             <hr>
             <h5>Salaire</h5>
-            <input type="range" class="form-range" id="salary" min="0" max="10000" step="100"
+            <input type="range" class="form-range" id="salary" min="0" max="100000" step="1000"
                    onmouseup="updateSalaryValue()">
             <p class="text-muted">Salaire minimum : <span id="salary-value"></span></p>
             <h5>Région</h5>
@@ -39,7 +39,7 @@
                 <% offers.forEach((offer) => { %>
                     <div class="border-1 border p-2 my-2">
                         <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span
-                                    class="badge text-bg-secondary float-end">45000 €</span>
+                                    class="badge text-bg-secondary float-end"><%= offer.ficheDePoste.salaire %> €</span>
                         </h4>
                         <p><%= offer.ficheDePoste.description %></p>
                         <p>Organisation : <%= offer.ficheDePoste.siren %></p>

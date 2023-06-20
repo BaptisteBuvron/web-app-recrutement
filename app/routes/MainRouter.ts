@@ -14,7 +14,6 @@ export const defaultRouter = Router();
 defaultRouter.use(
     session({
         genid: (req:any) => {
-            console.log("1. in genid req.sessionID: ", req.sessionID);
             return uuidv4();
         },
         store: new FileStore(),

@@ -40,7 +40,7 @@ function generateOfferPrototype(offer) {
 
     const h4 = document.createElement('h4');
     h4.className = '';
-    h4.innerHTML = `${offer.ficheDePoste.typeMetier} <span class="badge text-bg-secondary float-end">45000 €</span>`;
+    h4.innerHTML = `${offer.ficheDePoste.typeMetier} <span class="badge text-bg-secondary float-end">${offer.ficheDePoste.salaire} €</span>`;
 
     const p1 = document.createElement('p');
     p1.innerHTML = offer.ficheDePoste.description;
