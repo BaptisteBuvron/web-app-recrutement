@@ -6,11 +6,22 @@ const { passport, loggedIn, checkRole } = require("../passport/passportFunctions
 export const adminRouter = Router();
 adminRouter.use(passport.initialize());
 adminRouter.use(passport.session());
-adminRouter.get("/", checkRole("Administrateur"), AdminController.index);
-adminRouter.get("/utilisateurs", checkRole("Administrateur"), AdminController.utilisateurs);
-adminRouter.get("/demandes", checkRole("Administrateur"), AdminController.demandes);
-adminRouter.get("/accepterDemande/:email", checkRole("Administrateur"), AdminController.accepterDemande);
-adminRouter.get("/refuserDemande/:email", checkRole("Administrateur"), AdminController.refuserDemande);
-adminRouter.get("/offres", checkRole("Administrateur"), AdminController.offres);
-adminRouter.get("/offre/:numero", checkRole("Administrateur"), AdminController.offre);
+
+//Vérification de la connexion pour toutes les routes
+adminRouter.use(checkRole("Administrateur"));
+
+adminRouter.get("/", AdminController.index);
+adminRouter.get("/utilisateurs", AdminController.utilisateurs);
+adminRouter.get("/utilisateur/:email", AdminController.utilisateur);
+adminRouter.get("/modifierUtilisateur/:email", AdminController.modifierUtilisateur);
+adminRouter.post("/modifierUtilisateur/:email", AdminController.modifierUtilisateur);
+adminRouter.get("/supprimerUtilisateur/:email", AdminController.supprimerUtilisateur);
+
+adminRouter.get("/demandes", AdminController.demandes);
+adminRouter.get("/demande/:email", AdminController.demande);
+adminRouter.get("/accepterDemande/:email", AdminController.accepterDemande);
+adminRouter.get("/refuserDemande/:email", AdminController.refuserDemande);
+adminRouter.get("/offres", AdminController.offres);
+adminRouter.get("/offre/:numero", AdminController.offre);
+
 

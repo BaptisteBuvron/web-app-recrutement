@@ -31,8 +31,6 @@ function filterOffer() {
             offersDiv.append(...generateOffers(offers));
         }
     );
-
-
 }
 
 

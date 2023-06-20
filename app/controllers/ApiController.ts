@@ -2,6 +2,8 @@ import {OfferRepository} from "../repository/OfferRepository";
 import {OffreDePoste} from "../entity/OffreDePoste";
 import express from "express";
 import {FilterOffer} from "../utils/FilterOffer";
+import {UserRepository} from "../repository/UserRepository";
+import {User} from "../entity/User";
 
 export class ApiController {
     static getOffers(req: express.Request, res: express.Response) {

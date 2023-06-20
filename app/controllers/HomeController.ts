@@ -17,7 +17,7 @@ export class HomeController {
         //For testing mock getAll() method
         FicheDePosteRepository.getDistinctRegion().then((regions: string[]) => {
             OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-                res.render("index", {title: "Home", offers: offers, regions: regions, user: loggedInNoRedirection(req, res)});
+                res.render("index", {title: "Home", offers: offers, regions: regions, userLogged: loggedInNoRedirection(req, res)});
             });
         });
 
@@ -75,7 +75,7 @@ export class HomeController {
         }
 
         OrganisationRepository.getAll().then((organisations: Organisation[]) => {
-            res.render("demandeRecruteur", {title: "Recruteur", organisations: organisations, alerts: alerts, user: loggedInNoRedirection(req, res)});
+            res.render("demandeRecruteur", {title: "Recruteur", organisations: organisations, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
         });
     }
 }

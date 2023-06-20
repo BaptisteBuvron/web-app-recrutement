@@ -1,0 +1,98 @@
+<%- include('../partials/adminHeader.ejs') %>.
+
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row">
+    <div class="card shadow-sm">
+      <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Image création d'entreprise</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+      <div class="card-body">
+        <h3 class="mb-4 text-center">Modification d'Utilisateur</h3>
+        <form class="needs-validation mt-2"  method="post" novalidate="">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="offerName" class="form-label fw-bold">Nom</label>
+              <input type="text" class="form-control" name="nom" value="<%= user.nom %>" required>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="offerName" class="form-label fw-bold">Prénom</label>
+              <input type="text" class="form-control" name="prenom" value="<%= user.prenom %>" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="entreprise" class="form-label fw-bold">Courriel</label>
+              <input type="email" class="form-control bg-light" name="email" value="<%= user.email %>" readonly>
+            </div>
+
+            <div class="col-md-6">
+              <label for="state" class="form-label fw-bold">Téléphone</label>
+              <input type="tel" class="form-control" name="telephone" value="<%= user.telephone %>" required>
+            </div>
+
+            <div class="col-md-4">
+              <label for="state" class="form-label fw-bold">Date</label>
+              <input type="text" class="form-control bg-light" name="date_creation" value="<%= user.dateCreation %>" readonly>
+            </div>
+
+            <div class="col-md-4">
+                <label for="state" class="form-label fw-bold">Statut</label>
+                <select class="form-select" name="statut">
+                  <option value="1" <%= user.statut === 1 ? 'selected' : '' %>>Actif</option>
+                  <option value="0" <%= user.statut === 0 ? 'selected' : '' %>>Non actif</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="state" class="form-label fw-bold">Rôle</label>
+                <select class="form-select" name="role">
+                  <option value="Candidat" <%= user.role === 'Candidat' ? 'selected' : '' %>>Candidat</option>
+                  <option value="Recruteur" <%= user.role === 'Recruteur' ? 'selected' : '' %>>Recruteur</option>
+                  <option value="Administrateur" <%= user.role === 'Administrateur' ? 'selected' : '' %>>Administrateur</option>
+                </select>
+            </div>
+
+
+            <div class="col-md-4">
+              <label for="state" class="form-label fw-bold">Demande à rejoindre une organisation</label>
+              <input type="text" class="form-control bg-light" name="demande_organisation" value="<%= user.demande_organisation ? user.demande_organisation : 'Aucune' %>" readonly>
+            </div>
+          </div>
+
+          <% if (user.organisation.siren) { %>
+            <hr class="my-4">
+            <h3 class="mb-3 text-center">Organisation</h3>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="entreprise" class="form-label fw-bold">Entreprise</label>
+                <input type="text" class="form-control bg-light" name="nomEntreprise" value="<%= user.organisation.nom %>" readonly>
+              </div>
+
+              <div class="col-sm-4">
+                <label for="offerName" class="form-label fw-bold">Siège social</label>
+                <input type="text" class="form-control bg-light" name="siegeSocial" value="<%= user.organisation.siege %>" readonly>
+              </div>
+
+              <div class="col-sm-2">
+                <label for="offerName" class="form-label fw-bold">Type</label>
+                <input type="text" class="form-control bg-light" name="typeOrganisation" value="<%= user.organisation.type %>" readonly>
+              </div>
+
+              <div class="col-md-2">
+                <label for="entreprise" class="form-label fw-bold">Siren</label>
+                <input type="text" class="form-control bg-light" name="siren" value="<%= user.organisation.siren %>" readonly>
+              </div>
+            </div>
+          <% } %>
+
+          <hr class="my-4">
+
+          <div class="d-flex gap-2 justify-content-center py-2">
+            <a href="/admin/utilisateur/<%= user.email %>" class="btn btn-primary">Retour</a>
+            <button type="submit" class="btn btn-warning">Valider la modification</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

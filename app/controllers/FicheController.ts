@@ -14,7 +14,7 @@ export class FicheController {
             //TODO get the siren from the recruiter
             //random number 9 digits
 
-            let siren: string = req.user.siren as string;
+            let siren: string = req.user.organisation?.siren as string;
             let nbHeures: number = parseInt(req.body.nbHeures);
 
 
@@ -42,7 +42,7 @@ export class FicheController {
 
         }
         //TODO get the siren from the recruiter
-        res.render("fiche/creation", {title: "Créer une fiche de poste", alerts: alerts, user: loggedInNoRedirection(req, res)});
+        res.render("fiche/creation", {title: "Créer une fiche de poste", alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
 
     }
 }

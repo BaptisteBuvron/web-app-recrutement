@@ -6,12 +6,12 @@ const localStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 
 passport.serializeUser((user:User, done:any) => {
-    console.log("in serialize user: ", user);
+    //console.log("in serialize user: ", user);
     done(null, user);
 });
 
 passport.deserializeUser((user:User, done:any) => {
-    console.log("in deserialize user: ", user);
+    //console.log("in deserialize user: ", user);
     done(null, user);
 });
 
@@ -23,9 +23,15 @@ passport.use(
         async (req:any, email:string, password:string, done:any, res:any)=>{
             const { nom, prenom, telephone} = req.body;
             try{
-                if(password.length <= 6 || !email){
+                const regex = /^(?=.*[a-z].*[a-z])(?=.*[A-Z].*[A-Z])(?=.*\d.*\d)(?=.*[$@!%*?&#].*[$@!%*?&#])[A-Za-z\d$@!%*?&#]{12,}$/;
+
+                if(!email){
                     done(null, false, {
-                        message: "Veuillez saisir un mot de passe de 7 caractères minimum",
+                        message: "Veuillez saisir une adresse email",
+                    })
+                }else if(!regex.test(password)){
+                    done(null, false, {
+                        message: "Veuillez saisir un mot de passe de 12 caractères minimum comprenant des majuscules, des minuscules, des chiffres et des caractères spéciaux",
                     })
                 }else{
                     const hashedPass = await bcrypt.hash(password, 10);
@@ -60,18 +66,15 @@ passport.use(
                 }
                 UserRepository.getById(email)
                     .then(async(user) => {
-                        //console.log(user);
-                        //console.log(user.length==0);
-                        //console.log(!user[0]);
-                        if (!user[0]) {
+                        if (!user) {
                             return done(null, false, { message: "Vérifiez vos identifiants et mot de passe" });
                         }
-                        /*let userLogged: User = new User(user[0].email, user[0].nom, user[0].prenom, user[0].telephone, user[0].date_creation, user[0].statut, user[0].password, user[0].role, user[0].demande_organisation, user[0].siren);
+                        let userLogged: User = new User(user.email, user.nom, user.prenom, user.telephone, user.dateCreation, user.statut, user.passwordHash, user.role, user.demande_organisation, user.organisation);
                         const passwordMatches = await bcrypt.compare(password, userLogged.passwordHash);
 
                         if (!passwordMatches) {
                             return done(null, false, { message: "Mot de passe incorrect" });
-                        }*/
+                        }
 
                         return done(null, user, { message: "Vous êtes connecté!" });
                     })
