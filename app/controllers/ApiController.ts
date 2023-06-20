@@ -8,7 +8,10 @@ export class ApiController {
         //get filters from request
         let minSalary = req.query.salary;
         let region = req.query.region;
-        let filterOffer = new FilterOffer(Number(minSalary), region ? String(region) : undefined);
+        let filterOffer;
+        if (minSalary || region) {
+            filterOffer = new FilterOffer(Number(minSalary), region ? String(region) : undefined);
+        }
         OfferRepository.getAll(filterOffer).then((offers: OffreDePoste[]) => {
             res.json(offers);
         });

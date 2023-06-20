@@ -6,6 +6,8 @@ const { passport, loggedIn, checkRole } = require("../passport/passportFunctions
 export const recruterRouter = express.Router();
 recruterRouter.use(passport.initialize());
 recruterRouter.use(passport.session());
+
 recruterRouter.get("/", checkRole("Recruteur"), RecruteurController.index);
 recruterRouter.get("/candidatures", checkRole("Recruteur"), RecruteurController.candidatures);
+recruterRouter.get("/offres", RecruteurController.offres);
 

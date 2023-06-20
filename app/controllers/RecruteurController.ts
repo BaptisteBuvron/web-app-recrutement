@@ -2,6 +2,7 @@ import express from "express";
 import {CandidatureRepository} from "../repository/CandidatureRepository";
 import {Alert} from "../utils/Alert";
 import {loggedInNoRedirection} from "../passport/passportFunctions";
+import {OfferRepository} from "../repository/OfferRepository";
 
 export class RecruteurController {
     static index(req: express.Request, res: express.Response) {
@@ -22,4 +23,13 @@ export class RecruteurController {
             res.redirect("/recruteur");
         });
     }
+    
+    static offres(req: express.Request, res: express.Response) {
+          let siren = '123456';
+          let alerts: Alert[] = [];
+          OfferRepository.getBySiren(siren).then((offers) => {
+              res.render("recruteur/offres", {title: "Offres", offers: offers});
+          });
+      }
 }
+

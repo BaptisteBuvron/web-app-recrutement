@@ -29,15 +29,18 @@ export class OfferRepository {
                        FROM ${OfferRepository.tableName}
                                 LEFT JOIN FicheDePoste ON OffreDePoste.fiche = FicheDePoste.numero
                                 INNER JOIN Organisation ON Organisation.siren = FicheDePoste.siren`;
+        let params: (string | number | undefined)[] = [];
         if (filterOffer) {
-            query += ` WHERE FicheDePoste.salaire >= ${filterOffer.minSalary}`;
+            query += ` WHERE FicheDePoste.salaire >= ?`;
+            params.push(filterOffer.minSalary);
             if (filterOffer.region) {
-                query += ` AND FicheDePoste.lieu = '${filterOffer.region}'`;
+                query += ` AND FicheDePoste.lieu = ?'`;
+                params.push(filterOffer.region);
             }
         }
         return new Promise<[OffreDePoste]>(
             (resolve, reject) =>
-                pool.query(query, (err, result) => {
+                pool.query(query, params, (err, result) => {
                     if (err) {
                         return reject(err);
                     }
@@ -91,6 +94,29 @@ export class OfferRepository {
                 return resolve(entity);
             });
         });
+    }
+
+    static getBySiren(siren: string): Promise<OffreDePoste[]> {
+        const query = `SELECT *
+                       FROM ${OfferRepository.tableName}
+                                LEFT JOIN FicheDePoste ON FicheDePoste.numero = OffreDePoste.fiche
+                       WHERE FicheDePoste.siren = ?`;
+        return new Promise<OffreDePoste[]>(
+            (resolve, reject) => {
+                pool.query(query, siren, (err, result) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    let offers: OffreDePoste[] = [];
+                    for (let i = 0; i < result.length; i++) {
+                        let ficheDePoste = new FicheDePoste(result[i].fiche, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nbheure, result[i].salaire, result[i].description, result[i].siren);
+                        let offer = new OffreDePoste(result[i].numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, ficheDePoste);
+                        offers.push(offer);
+                    }
+                    return resolve(offers);
+                });
+            });
+
     }
 
     update(id: number, entity: OffreDePoste): Promise<OffreDePoste | null> {

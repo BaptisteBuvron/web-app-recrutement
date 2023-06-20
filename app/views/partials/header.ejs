@@ -31,11 +31,11 @@
                 </li>
             </ul>
             <ul class="navbar-nav mb-2 my-lg-0">
-            <% if(typeof user !== 'undefined' && user){ %>
-                 <li class="m-2"><%= user.nom%> <%= user.prenom%> </li>
-                 <a href="/logout" class="btn btn-primary">Déconnexion</a>
-            <% }%>
-            <ul>
+                <% if(typeof user !== 'undefined' && user){ %>
+                    <li class="m-2"><%= user.nom %> <%= user.prenom %> </li>
+                    <a href="/logout" class="btn btn-primary">Déconnexion</a>
+                <% } %>
+            </ul>
         </div>
     </div>
 </nav>
