@@ -34,7 +34,7 @@ export class OfferRepository {
             query += ` WHERE FicheDePoste.salaire >= ?`;
             params.push(filterOffer.minSalary);
             if (filterOffer.region) {
-                query += ` AND FicheDePoste.lieu = ?'`;
+                query += ` AND FicheDePoste.lieu = ?`;
                 params.push(filterOffer.region);
             }
         }
