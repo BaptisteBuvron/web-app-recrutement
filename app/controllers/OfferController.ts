@@ -79,4 +79,19 @@ export class OfferController {
             csrfToken: req.session.csrfSecret
         });
     }
+
+    public static offre(req: express.Request, res: express.Response) {
+        let id: number = parseInt(req.params.numero);
+        OfferRepository.getById(id).then((offer: OffreDePoste) => {
+            return res.render("offre/offre", {
+                title: "Offre",
+                offer: offer,
+                userLogged: loggedInNoRedirection(req, res),
+                csrfToken: req.session.csrfSecret
+            });
+        }).catch((err) => {
+            console.log(err);
+            return res.redirect("/offre/liste");
+        })
+    }
 }

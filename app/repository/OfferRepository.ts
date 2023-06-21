@@ -47,7 +47,7 @@ export class OfferRepository {
                     let ficheDePoste;
                     let organisation;
                     for (let i = 0; i < result.length; i++) {
-                        organisation = new Organisation(result[0].siren, result[0].nom, result[0].type, result[0].siege);
+                        organisation = new Organisation(result[i].siren, result[i].nom, result[i].type, result[i].siege);
                         ficheDePoste = new FicheDePoste(result[i].fiche_numero, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nb_heures, result[i].salaire, result[i].description, result[i].siren, organisation);
                         result[i] = new OffreDePoste(result[i].offre_numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, ficheDePoste);
                     }

@@ -14,7 +14,6 @@ export class CandidatureController {
     static candidater(req: express.Request, res: express.Response) {
 
         //TODO Vérifier que l'utilisateur est bien un candidat
-        let user: User = new User('tsoudar21@gmail.com', 'Tillai', 'Soudarsane', '0652645299', new Date('2020-10-10'), false, 'mdp', 'Candidat', "", null);
 
         let alerts: Alert[] = [];
         let numero: number = Number.parseInt(req.params.numero);
@@ -26,7 +25,7 @@ export class CandidatureController {
                             let alert = new Alert("danger", "La motivation doit faire plus de 20 caractères.");
                             alerts.push(alert);
                         } else {
-                            let user: User = new User('candidat1@example.com', 'Doe', 'John', '123456789', new Date(), true, 'password123', 'Candidat', 'En attente', null);
+                            let user: User = req.user as User;
                             let candidature: Candidature = new Candidature(new Date(), user, offer, StatutCandidatureEnum.EN_ATTENTE, req.body.motivation);
                             await CandidatureRepository.create(candidature).then(async (candidature) => {
                                     //upload file:

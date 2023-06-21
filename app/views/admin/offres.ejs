@@ -18,14 +18,16 @@
                             <option value="<%= region %>"><%= region %></option>
                         <% }) %>
                     </select>
-                </div>
+        </div>
         <div class="col-md-9">
             <h4>Offres d'emploi</h4>
-            <% offers.forEach((offer) => {%>
+            <% offers.forEach((offer) => { %>
                 <div class="border-1 border p-2 my-2">
-                    <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span class="badge text-bg-secondary float-end">45000 €</span></h4>
+                    <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span
+                                class="badge text-bg-secondary float-end"><%= offer.ficheDePoste.salaire %> €</span>
+                    </h4>
                     <p><%= offer.ficheDePoste.description %></p>
-                    <p>Organisation : <%= offer.ficheDePoste.siren %></p>
+                    <p>Organisation : <%= offer.ficheDePoste.organisation.nom %></p>
                     <a href="/admin/offre/<%= offer.numero %>" class="btn btn-primary">Détail</a>
                 </div>
             <% }) %>
