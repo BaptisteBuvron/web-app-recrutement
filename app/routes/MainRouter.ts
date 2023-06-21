@@ -72,17 +72,8 @@ defaultRouter.post(
                 return res.redirect(`/login?message=${info.message}`);
             }
             req.login(user, async () => {
-                let role = user.role;
-                let url;
-                if (role == "Administrateur") {
-                    url="admin";
-                } else if(role == "Recruteur"){
-                    url="recruteur";
-                }else{
-                    url="";
-                }
 
-                return res.redirect(`/${url}`);
+                return res.redirect(`/`);
             });
         })(req, res, next);
     }
