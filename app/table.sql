@@ -48,7 +48,7 @@ CREATE TABLE `FicheDePoste`
     `salaire`     int(11)     NOT NULL,
     `description` text        NOT NULL,
     `siren`       varchar(11) NOT NULL,
-    FOREIGN KEY (siren) REFERENCES Organisation (siren),
+    FOREIGN KEY (siren) REFERENCES Organisation (siren) ON DELETE CASCADE,
     PRIMARY KEY (numero)
 );
 
@@ -66,7 +66,7 @@ CREATE TABLE `OffreDePoste`
     `nb_piece`      int(11)     NOT NULL,
     `liste_piece`   text        NOT NULL,
     `fiche`         int(11)     NOT NULL,
-    FOREIGN KEY (fiche) REFERENCES FicheDePoste (numero),
+    FOREIGN KEY (fiche) REFERENCES FicheDePoste (numero) ON DELETE CASCADE,
     PRIMARY KEY (numero)
 );
 
@@ -125,9 +125,11 @@ CREATE TABLE `Candidature`
     `offre`            int(11)      NOT NULL,
     `statut`           ENUM ('En analyse', 'Acceptée', 'Refusée', 'En attente'),
     `motivation`       text         NOT NULL,
-    FOREIGN KEY (candidat) REFERENCES Utilisateur (email),
-    FOREIGN KEY (offre) REFERENCES OffreDePoste (numero),
+    FOREIGN KEY (candidat) REFERENCES Utilisateur (email) ON DELETE CASCADE,
+    FOREIGN KEY (offre) REFERENCES OffreDePoste (numero) ON DELETE CASCADE,
     PRIMARY KEY (candidat, offre)
+    ##cascade delete for candidat and offre
+
 );
 
 
@@ -145,15 +147,13 @@ CREATE TABLE `Piece`
     `url`      varchar(128) NOT NULL,
     `candidat` varchar(128) NOT NULL,
     `offre`    int(11)      NOT NULL,
-    FOREIGN KEY (candidat, offre) REFERENCES Candidature (candidat, offre),
+    FOREIGN KEY (candidat, offre) REFERENCES Candidature (candidat, offre) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
 
 --
 -- Déchargement des données de la table `Piece`
 --
-
-
 
 -- --------------------------------------------------------
 #Insertion des données
