@@ -71,8 +71,10 @@ export class OfferRepository {
                         if (result.length == 0 || err) {
                             return reject("Not found");
                         }
+                        result[0].date_validite = new Date(result[0].date_validite).toLocaleDateString('fr-FR')
+
                         let organisation = new Organisation(result[0].siren, result[0].nom, result[0].type, result[0].siege);
-                        let ficheDePoste = new FicheDePoste(result[0].fiche, result[0].status, result[0].responsable, result[0].type_metier, result[0].lieu, result[0].teletravail, result[0].nbheure, result[0].salaire, result[0].description, result[0].siren, organisation);
+                        let ficheDePoste = new FicheDePoste(result[0].fiche, result[0].status, result[0].responsable, result[0].type_metier, result[0].lieu, result[0].teletravail, result[0].nb_heures, result[0].salaire, result[0].description, result[0].siren, organisation);
                         let offer = new OffreDePoste(result[0].numero, result[0].etat, result[0].date_validite, result[0].nb_piece, result[0].liste_piece, ficheDePoste);
                         return resolve(offer);
                     }
@@ -121,12 +123,36 @@ export class OfferRepository {
 
     }
 
-    update(id: number, entity: OffreDePoste): Promise<OffreDePoste | null> {
-        throw new Error("Method not implemented.");
+    static update(offre: OffreDePoste): Promise<OffreDePoste> {
+        const query = `UPDATE OffreDePoste
+                       SET  etat = ?,
+                            date_validite = ?,
+                            nb_piece = ?,
+                            liste_piece = ?
+                       WHERE numero = ?`;
+        return new Promise<OffreDePoste>(
+            (resolve, reject) => {
+                pool.query(query, [offre.etat, offre.dateValidite, offre.nbPiece, offre.listePiece, offre.numero], (err, result) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(result);
+                });
+            });
     }
 
-    delete(id: number): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    static supprimer(id: number): Promise<boolean> {
+        const query = `DELETE FROM OffreDePoste
+                       WHERE numero = ?`;
+        return new Promise<boolean>(
+            (resolve, reject) => {
+                pool.query(query, [id], (err, result) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(result);
+                });
+            });
     }
 
 }

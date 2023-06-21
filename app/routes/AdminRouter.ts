@@ -23,5 +23,8 @@ adminRouter.get("/accepterDemande/:email", AdminController.accepterDemande);
 adminRouter.get("/refuserDemande/:email", AdminController.refuserDemande);
 adminRouter.get("/offres", AdminController.offres);
 adminRouter.get("/offre/:numero", AdminController.offre);
+adminRouter.get("/modifierOffre/:numero", AdminController.modifierOffre);
+adminRouter.post("/modifierOffre/:numero", AdminController.modifierOffre);
+adminRouter.get("/supprimerOffre/:numero", AdminController.supprimerOffre);
 
 

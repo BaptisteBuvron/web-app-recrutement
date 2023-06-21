@@ -23,21 +23,36 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/candidatures">Vos candidatures</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/devenir-recruteur">Devenir recruteur</a>
-                </li>
+                <% if(typeof userLogged !== 'undefined' && userLogged && userLogged.role === 'Candidat'){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/candidatures">Vos candidatures</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/devenir-recruteur">Devenir recruteur</a>
+                    </li>
+                <% } %>
             </ul>
             <ul class="navbar-nav mb-2 my-lg-0">
                 <% if(typeof userLogged !== 'undefined' && userLogged){ %>
-                    <li class="m-2"><%= userLogged.nom %> <%= userLogged.prenom %> </li>
-                    <a href="/logout" class="btn btn-primary">Déconnexion</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= userLogged.nom %> <%= userLogged.prenom %>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
+                            <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
+                            <% if(userLogged.role === 'Administrateur'){ %>
+                            <li><a class="dropdown-item" href="/admin">Administrer</a></li>
+                            <% } %>
+                            <% if(userLogged.role === 'Recruteur'){ %>
+                            <li><a class="dropdown-item" href="/recruteur">Recruter</a></li>
+                            <% } %>
+                        </ul>
+                    </li>
                 <% } %>
             </ul>
         </div>
     </div>
 </nav>
+
 
 <%- include('alert.ejs') %>

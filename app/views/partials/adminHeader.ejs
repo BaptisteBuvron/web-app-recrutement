@@ -30,17 +30,24 @@
                     <a class="nav-link <%= (title == 'Demandes') ? 'active' : '' %>" href="/admin/demandes">Demandes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <%= (title == 'Offres') ? 'active' : '' %>" href="/admin/offres">Offres
+                    <a class="nav-link <%= (title == 'Offres') ? 'active' : '' %>" href="/admin/offres">Gestion des offres
                         d'emploi</a>
                 </li>
             </ul>
         </div>
-        <ul class="navbar-nav mb-2 my-lg-0">
-            <% if(typeof userLogged !== 'undefined' && userLogged){ %>
-                <li class="m-2"><%= userLogged.nom %> <%= userLogged.prenom %> </li>
-                <a href="/logout" class="btn btn-primary">Déconnexion</a>
-            <% } %>
-        </ul>
+            <ul class="navbar-nav mb-2 my-lg-0">
+                <% if(typeof userLogged !== 'undefined' && userLogged){ %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= userLogged.nom %> <%= userLogged.prenom %>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
+                            <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
+                            <li><a class="dropdown-item" href="/admin">Espace candidat</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+            </ul>
     </div>
 </nav>
 <%- include('alert.ejs') %>

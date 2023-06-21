@@ -1,51 +1,66 @@
-<%- include('../partials/adminHeader.ejs') %>.
+<%- include('../partials/adminHeader.ejs') %>
 
 <div class="container col-xxl-8 px-4 py-5">
   <div class="row">
     <div class="card shadow-sm">
-      <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Image création d'entreprise</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
       <div class="card-body">
         <h3 class="mb-4 text-center">Informations Utilisateur</h3>
         <form class="needs-validation mt-2" novalidate="">
           <div class="row g-3">
             <div class="col-sm-6">
-              <label class="form-label fw-bold">Nom</label>
-              <p><%= user.nom %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Nom</label>
+                <input type="text" class="form-control" value="<%= user.nom %>" readonly>
+              </div>
             </div>
 
             <div class="col-sm-6">
-              <label class="form-label fw-bold">Prénom</label>
-              <p><%= user.prenom %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Prénom</label>
+                <input type="text" class="form-control" value="<%= user.prenom %>" readonly>
+              </div>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-bold">Courriel</label>
-              <p><%= user.email %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Courriel</label>
+                <input type="text" class="form-control" value="<%= user.email %>" readonly>
+              </div>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-bold">Téléphone</label>
-              <p><%= user.telephone %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Téléphone</label>
+                <input type="text" class="form-control" value="<%= user.telephone %>" readonly>
+              </div>
             </div>
 
             <div class="col-md-4">
-              <label class="form-label fw-bold">Date</label>
-              <p><%= user.dateCreation %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Date</label>
+                <input type="text" class="form-control" value="<%= user.dateCreation %>" readonly>
+              </div>
             </div>
 
             <div class="col-md-4">
-              <label class="form-label fw-bold">Statut</label>
-              <p class="<%= user.statut === 1 ? 'text-success' : 'text-danger' %>"><%= user.statut === 1 ? 'Actif' : 'Inactif' %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Statut</label>
+                <input type="text" class="form-control <%= user.statut === 1 ? 'text-success' : 'text-danger' %>" value="<%= user.statut === 1 ? 'Actif' : 'Inactif' %>" readonly>
+              </div>
             </div>
 
             <div class="col-md-4">
-              <label class="form-label fw-bold">Rôle</label>
-              <p><%= user.role %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Rôle</label>
+                <input type="text" class="form-control" value="<%= user.role %>" readonly>
+              </div>
             </div>
 
             <div class="col-md-4">
-              <label class="form-label fw-bold">Demande à rejoindre une organisation</label>
-              <p><%= user.demande_organisation ? user.demande_organisation : 'Aucune' %></p>
+              <div class="mb-3">
+                <label class="form-label fw-bold">Demande à rejoindre une organisation</label>
+                <input type="text" class="form-control" value="<%= user.demande_organisation ? user.demande_organisation : 'Aucune' %>" readonly>
+              </div>
             </div>
           </div>
 
@@ -54,26 +69,33 @@
             <h3 class="mb-3 text-center">Organisation</h3>
             <div class="row g-3">
               <div class="col-md-4">
-                <label class="form-label fw-bold">Entreprise</label>
-                <p><%= user.organisation.nom %></p>
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Entreprise</label>
+                  <input type="text" class="form-control" value="<%= user.organisation.nom %>" readonly>
+                </div>
               </div>
 
-                <div class="col-sm-4">
+              <div class="col-sm-4">
+                <div class="mb-3">
                   <label class="form-label fw-bold">Siège social</label>
-                  <p><%= user.organisation.siege %></p>
+                  <input type="text" class="form-control" value="<%= user.organisation.siege %>" readonly>
                 </div>
+              </div>
 
-                <div class="col-sm-2">
+              <div class="col-sm-2">
+                <div class="mb-3">
                   <label class="form-label fw-bold">Type</label>
-                  <p><%= user.organisation.type %></p>
+                  <input type="text" class="form-control" value="<%= user.organisation.type %>" readonly>
                 </div>
+              </div>
 
-                <div class="col-md-2">
+              <div class="col-md-2">
+                <div class="mb-3">
                   <label class="form-label fw-bold">Siren</label>
-                  <p><%= user.organisation.siren %></p>
+                  <input type="text" class="form-control" value="<%= user.organisation.siren %>" readonly>
                 </div>
+              </div>
             </div>
-
           <% } %>
 
           <hr class="my-4">
@@ -87,23 +109,24 @@
       </div>
     </div>
   </div>
+
   <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-            <a href="/admin/supprimerUtilisateur/<%= user.email %>" class="btn btn-danger">Supprimer</a>
-          </div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <a href="/admin/supprimerUtilisateur/<%= user.email %>" class="btn btn-danger">Supprimer</a>
         </div>
       </div>
     </div>
+  </div>
 </div>
 </body>
 </html>
