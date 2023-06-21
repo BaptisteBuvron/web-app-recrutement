@@ -1,6 +1,7 @@
 import {User} from "./User";
 import {OffreDePoste} from "./OffreDePoste";
 import {StatutCandidatureEnum} from "../utils/StatutCandidatureEnum";
+import {Piece} from "./Piece";
 
 /**
  * Candidature
@@ -15,13 +16,15 @@ export class Candidature {
     offre: OffreDePoste;
     statut: StatutCandidatureEnum;
     motivation: string;
+    pieces: Piece[] | undefined;
 
-    constructor(date: Date, candidat: User, offre: OffreDePoste, status: StatutCandidatureEnum, motivation: string) {
+    constructor(date: Date, candidat: User, offre: OffreDePoste, status: StatutCandidatureEnum, motivation: string, pieces?: Piece[]) {
         this.date = date;
         this.candidat = candidat;
         this.offre = offre;
         this.statut = status;
         this.motivation = motivation;
+        this.pieces = pieces;
     }
 
 }

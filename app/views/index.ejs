@@ -42,7 +42,7 @@
                                     class="badge text-bg-secondary float-end"><%= offer.ficheDePoste.salaire %> €</span>
                         </h4>
                         <p><%= offer.ficheDePoste.description %></p>
-                        <p>Organisation : <%= offer.ficheDePoste.siren %></p>
+                        <p>Organisation : <%= offer.ficheDePoste.organisation.nom %></p>
                         <a href="/canditature/<%= offer.numero %>" class="btn btn-primary">Postuler</a>
                     </div>
                 <% }) %>
