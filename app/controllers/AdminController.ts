@@ -22,7 +22,6 @@ export class AdminController {
     static utilisateurs(req: express.Request, res: express.Response) {
         UserRepository.getAll().then((users: User[]) => {
             OrganisationRepository.getAll().then((organisations : Organisation[]) => {
-                console.log(users);
                 res.render("admin/utilisateurs", { title: "Utilisateurs", organisations: organisations, users, userLogged: loggedInNoRedirection(req, res)});
             });
         });
@@ -31,7 +30,6 @@ export class AdminController {
     static utilisateur(req: express.Request, res: express.Response) {
         let email = req.params.email;
         UserRepository.getById(email).then((user: User) => {
-            console.log(user);
             res.render("admin/utilisateur", {title: "Utilisateur", user: user, userLogged: loggedInNoRedirection(req, res)});
         })
     }
@@ -63,13 +61,11 @@ export class AdminController {
                     console.log(err);
                 });
             UserRepository.getById(req.body.email).then((user: User) => {
-                console.log(user);
                 res.render("admin/utilisateur", {title: "Utilisateur", user: user, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
             })
         }else{
             let email = req.params.email;
             UserRepository.getById(email).then((user: User) => {
-                console.log(user);
                 res.render("admin/modifierUtilisateur", {
                     title: "Modifier un utilisateur",
                     user: user,
@@ -111,7 +107,6 @@ export class AdminController {
     static demande(req: express.Request, res: express.Response) {
         let email = req.params.email;
         UserRepository.getById(email).then((user: User) => {
-            console.log(user);
             res.render("admin/demande", {title: "Demande", user: user, userLogged: loggedInNoRedirection(req, res)});
         })
     }
@@ -127,7 +122,6 @@ export class AdminController {
     static async accepterDemande(req: express.Request, res: express.Response) {
         let email = req.params.email;
         await UserRepository.setDemandAccepted(email).then((email) => {
-            console.log(email);
         });
         res.redirect("/admin/demandes");
     }
@@ -135,7 +129,6 @@ export class AdminController {
     static async refuserDemande(req: express.Request, res: express.Response) {
         let email = req.params.email;
         await UserRepository.setDemandRefused(email).then((email) => {
-            console.log(email);
         });
         res.redirect("/admin/demandes");
     }
@@ -151,7 +144,6 @@ export class AdminController {
     static offre(req: express.Request, res: express.Response) {
         let numero = req.params.numero;
         OfferRepository.getById(Number.parseInt(numero)).then((offer: OffreDePoste) => {
-            console.log(offer);
             res.render("admin/offre", {title: "Offre", offer: offer, userLogged: loggedInNoRedirection(req, res)});
         })
     }
@@ -212,7 +204,6 @@ export class AdminController {
             });
 
             OfferRepository.getById(Number.parseInt(idOffre)).then((offer: OffreDePoste) => {
-                console.log(offer);
                 res.render("admin/offre", {title: "Offre", offer: offer, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
             })
         }else{
@@ -227,7 +218,6 @@ export class AdminController {
         const alerts: Alert[] = [];
         let numero = req.params.numero;
         await OfferRepository.supprimer(Number.parseInt(numero)).then((suppression: boolean) => {
-            console.log(suppression);
             let alert = new Alert("success", "L'offre a été supprimée");
             alerts.push(alert);
         }).catch((err) => {
@@ -236,7 +226,6 @@ export class AdminController {
             alerts.push(alert);
         });
         OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-            console.log(offers);
             res.render("admin/offres", {title: "Offres", alerts: alerts, offers: offers, userLogged: loggedInNoRedirection(req, res)});
         });
     }

@@ -18,7 +18,6 @@ export class UserRepository {
                     if (err) {
                         return reject(err);
                     }
-                    console.log(result);
                     let organisation = new Organisation(
                         result[0].siren,
                         result[0].organisation,
@@ -39,7 +38,6 @@ export class UserRepository {
                         undefined
                     );
 
-                    console.log(user);
                     return resolve(user);
                     }
                 )
@@ -59,7 +57,6 @@ export class UserRepository {
 
                     let organisation;
                     let user;
-                    console.log(result)
                     for (let i = 0; i < result.length; i++) {
                         organisation = new Organisation(
                             result[i].siren,
@@ -82,7 +79,6 @@ export class UserRepository {
                         );
                         result[i] = user;
                     }
-                    console.log(result)
 
                     return resolve(result);
                     }
@@ -174,10 +170,8 @@ export class UserRepository {
                             return reject(err);
                         }
                         if(result[0]){
-                            console.log(result[0]);
                             let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
                             result[0].organisation = organisation;
-                            console.log(result);
                         }
                         return resolve(result);
                     }
@@ -198,10 +192,8 @@ export class UserRepository {
                             return reject(err);
                         }
                         if(result[0]){
-                            console.log(result[0]);
                             let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
                             result[0].organisation = organisation;
-                            console.log(result);
                         }
                         return resolve(result);
                     }

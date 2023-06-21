@@ -6,10 +6,11 @@
         <% offers.forEach((offer) => { %>
             <div class="border-1 border p-2 my-2">
                 <h4 class=""><%= offer.ficheDePoste.typeMetier %> <span
-                            class="badge text-bg-secondary float-end">45000 €</span>
+                            class="badge text-bg-secondary float-end"><%= offer.ficheDePoste.salaire %> €</span>
                 </h4>
                 <p><%= offer.ficheDePoste.description %></p>
                 <p>Organisation : <%= offer.ficheDePoste.organisation.nom %></p>
+                <a href="/offre/<%= offer.numero %>" class="btn btn-secondary">Voir l'offre</a>
             </div>
         <% }) %>
     </div>
