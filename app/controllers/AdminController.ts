@@ -225,9 +225,7 @@ export class AdminController {
             let alert = new Alert("danger", "L'offre n'a été supprimée");
             alerts.push(alert);
         });
-        OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-            res.render("admin/offres", {title: "Offres", alerts: alerts, offers: offers, userLogged: loggedInNoRedirection(req, res)});
-        });
+        res.redirect("/admin/offres");
     }
 }
 

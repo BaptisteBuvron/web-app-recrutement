@@ -8,86 +8,117 @@ const db = pool;
 export class UserRepository {
     static tableName = "Utilisateur";
 
-    static getById(email:string): Promise<User> {
-        const query = `SELECT u.email, u.nom, u.prenom, u.telephone, DATE_FORMAT(u.date_creation, '%d-%m-%Y') as date_creation, u.statut, u.password, u.role, u.demande_organisation, o.siren, o.nom as organisation, o.type, o.siege
-                       FROM ${UserRepository.tableName} u LEFT JOIN ${OrganisationRepository.tableName} o using (siren)
+    static getById(email: string): Promise<User> {
+        const query = `SELECT u.email,
+                              u.nom,
+                              u.prenom,
+                              u.telephone,
+                              DATE_FORMAT(u.date_creation, '%d-%m-%Y') as date_creation,
+                              u.statut,
+                              u.password,
+                              u.role,
+                              u.demande_organisation,
+                              o.siren,
+                              o.nom                                    as organisation,
+                              o.type,
+                              o.siege
+                       FROM ${UserRepository.tableName} u
+                                LEFT JOIN ${OrganisationRepository.tableName} o using (siren)
                        WHERE u.email = ?`;
         return new Promise<User>(
             (resolve, reject) =>
-                pool.query(query,[email], (err, result) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    let organisation = new Organisation(
-                        result[0].siren,
-                        result[0].organisation,
-                        result[0].type,
-                        result[0].siege
-                    );
-                    let user = new User(
-                        result[0].email,
-                        result[0].nom,
-                        result[0].prenom,
-                        result[0].telephone,
-                        result[0].date_creation,
-                        result[0].statut,
-                        result[0].password,
-                        result[0].role,
-                        result[0].demande_organisation,
-                        organisation,
-                        undefined
-                    );
+                pool.query(query, [email], (err, result) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        if (result.length === 0) {
+                            return reject(new Error("User not found"));
+                        }
+                        let organisation = new Organisation(
+                            result[0].siren,
+                            result[0].organisation,
+                            result[0].type,
+                            result[0].siege
+                        );
+                        let user = new User(
+                            result[0].email,
+                            result[0].nom,
+                            result[0].prenom,
+                            result[0].telephone,
+                            result[0].date_creation,
+                            result[0].statut,
+                            result[0].password,
+                            result[0].role,
+                            result[0].demande_organisation,
+                            organisation,
+                            undefined
+                        );
 
-                    return resolve(user);
+                        return resolve(user);
                     }
                 )
         );
     }
 
     static getAll(): Promise<[User]> {
-        const query = `SELECT u.email, u.nom, u.prenom, u.telephone, DATE_FORMAT(u.date_creation, '%d-%m-%Y') as date_creation, u.statut, u.password, u.role, u.demande_organisation, o.siren, o.nom as organisation, o.type, o.siege
-                       FROM ${UserRepository.tableName} u LEFT JOIN ${OrganisationRepository.tableName} o using (siren)`;
+        const query = `SELECT u.email,
+                              u.nom,
+                              u.prenom,
+                              u.telephone,
+                              DATE_FORMAT(u.date_creation, '%d-%m-%Y') as date_creation,
+                              u.statut,
+                              u.password,
+                              u.role,
+                              u.demande_organisation,
+                              o.siren,
+                              o.nom                                    as organisation,
+                              o.type,
+                              o.siege
+                       FROM ${UserRepository.tableName} u
+                                LEFT JOIN ${OrganisationRepository.tableName} o using (siren)`;
 
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
-                    if (err) {
-                        return reject(err);
-                    }
+                        if (err) {
+                            return reject(err);
+                        }
 
-                    let organisation;
-                    let user;
-                    for (let i = 0; i < result.length; i++) {
-                        organisation = new Organisation(
-                            result[i].siren,
-                            result[i].organisation,
-                            result[i].type,
-                            result[i].siege
-                        );
-                        user = new User(
-                            result[i].email,
-                            result[i].nom,
-                            result[i].prenom,
-                            result[i].telephone,
-                            result[i].date_creation,
-                            result[i].statut,
-                            result[i].password,
-                            result[i].role,
-                            result[i].demande_organisation,
-                            organisation,
-                            undefined
-                        );
-                        result[i] = user;
-                    }
+                        let organisation;
+                        let user;
+                        for (let i = 0; i < result.length; i++) {
+                            organisation = new Organisation(
+                                result[i].siren,
+                                result[i].organisation,
+                                result[i].type,
+                                result[i].siege
+                            );
+                            user = new User(
+                                result[i].email,
+                                result[i].nom,
+                                result[i].prenom,
+                                result[i].telephone,
+                                result[i].date_creation,
+                                result[i].statut,
+                                result[i].password,
+                                result[i].role,
+                                result[i].demande_organisation,
+                                organisation,
+                                undefined
+                            );
+                            result[i] = user;
+                        }
 
-                    return resolve(result);
+                        return resolve(result);
                     }
                 )
         );
     }
 
     static create(entity: User): Promise<User> {
-        const query = `INSERT INTO ${UserRepository.tableName} (email, nom, prenom, telephone, date_creation, statut, password, role, demande_organisation, siren) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const query = `INSERT INTO ${UserRepository.tableName} (email, nom, prenom, telephone, date_creation, statut,
+                                                                password, role, demande_organisation, siren)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         return new Promise<User>((resolve, reject) => {
             pool.query(query, [entity.email, entity.nom, entity.prenom, entity.telephone, entity.dateCreation, entity.statut, entity.passwordHash, entity.role, entity.demande_organisation, entity.organisation?.siren], (err, result) => {
                 if (err) {
@@ -98,13 +129,13 @@ export class UserRepository {
         });
     }
 
-    static update(user : User): Promise<User> {
+    static update(user: User): Promise<User> {
         const query = `UPDATE ${UserRepository.tableName}
-                       SET nom = ?,
-                           prenom = ?,
+                       SET nom       = ?,
+                           prenom    = ?,
                            telephone = ?,
-                           statut = ?,
-                           role = ? 
+                           statut    = ?,
+                           role      = ?
                        WHERE email = ?`;
         return new Promise<User>(
             (resolve, reject) =>
@@ -118,8 +149,9 @@ export class UserRepository {
         );
     }
 
-    static supprimerUtilisateur(email:string): Promise<User> {
-        const query = `DELETE FROM ${UserRepository.tableName}
+    static supprimerUtilisateur(email: string): Promise<User> {
+        const query = `DELETE
+                       FROM ${UserRepository.tableName}
                        WHERE email = ?`;
         return new Promise<User>(
             (resolve, reject) =>
@@ -141,15 +173,15 @@ export class UserRepository {
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
-                        if (err) {
-                            return reject(err);
-                        }
-                        if(result[0]){
-                            console.log(result[0]);
-                            let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
-                            result[0].organisation = organisation;
-                            console.log(result);
-                        }
+                    if (err) {
+                        return reject(err);
+                    }
+                    if (result[0]) {
+                        console.log(result[0]);
+                        let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
+                        result[0].organisation = organisation;
+                        console.log(result);
+                    }
                         return resolve(result);
                     }
                 )
@@ -160,19 +192,19 @@ export class UserRepository {
         const query = `SELECT u.email, u.nom, u.prenom, o.siren, o.nom as organisation, o.type, o.siege
                        FROM ${UserRepository.tableName} u
                                 INNER JOIN ${OrganisationRepository.tableName} o using (siren)
-                       WHERE u.demande_organisation = 'En cours' 
-                       OR u.demande_organisation = 'refus'
-                       OR u.demande_organisation = 'acceptation'`;
+                       WHERE u.demande_organisation = 'En cours'
+                          OR u.demande_organisation = 'refus'
+                          OR u.demande_organisation = 'acceptation'`;
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
-                        if (err) {
-                            return reject(err);
-                        }
-                        if(result[0]){
-                            let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
-                            result[0].organisation = organisation;
-                        }
+                    if (err) {
+                        return reject(err);
+                    }
+                    if (result[0]) {
+                        let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
+                        result[0].organisation = organisation;
+                    }
                         return resolve(result);
                     }
                 )
@@ -180,21 +212,28 @@ export class UserRepository {
     }
 
     static getOldRecruiterDemand(): Promise<[User]> {
-        const query = `SELECT u.email, u.nom, u.prenom, u.demande_organisation, o.siren, o.nom as organisation, o.type, o.siege
+        const query = `SELECT u.email,
+                              u.nom,
+                              u.prenom,
+                              u.demande_organisation,
+                              o.siren,
+                              o.nom as organisation,
+                              o.type,
+                              o.siege
                        FROM ${UserRepository.tableName} u
                                 INNER JOIN ${OrganisationRepository.tableName} o using (siren)
                        WHERE u.demande_organisation = 'refus'
-                       OR u.demande_organisation = 'acceptation'`;
+                          OR u.demande_organisation = 'acceptation'`;
         return new Promise<[User]>(
             (resolve, reject) =>
                 pool.query(query, (err, result) => {
-                        if (err) {
-                            return reject(err);
-                        }
-                        if(result[0]){
-                            let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
-                            result[0].organisation = organisation;
-                        }
+                    if (err) {
+                        return reject(err);
+                    }
+                    if (result[0]) {
+                        let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
+                        result[0].organisation = organisation;
+                    }
                         return resolve(result);
                     }
                 )

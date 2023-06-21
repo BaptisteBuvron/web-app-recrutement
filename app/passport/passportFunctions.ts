@@ -80,6 +80,7 @@ passport.use(
                     })
                     .catch((err) => {
                         console.log(err);
+                        return done(null, false, {message: "Erreur lors de la connexion"});
                     });
             } catch (error) {
                 return done(error);
