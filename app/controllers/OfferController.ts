@@ -13,14 +13,12 @@ export class OfferController {
     public static async creation(req: express.Request, res: express.Response) {
 
         const alerts: Alert[] = [];
-        console.log(req.method);
 
         if (req.method === "POST") {
 
             let csrfToken = req.body._csrf;
             if (!csrfValidation(req, csrfToken)) {
                 alerts.push(new Alert("danger", "Erreur CSRF"));
-                //TODO message d'erreur
                 return res.redirect("/logout");
             }
             //TODO validation data
@@ -48,7 +46,6 @@ export class OfferController {
                     nbPiece,
                     listePiece,
                     ficheDePoste);
-                //TODO save the ficheDePoste in the database
                 await OfferRepository.create(offreDePoste).then((offreDePoste) => {
                     let alert = new Alert("success", "L'offre a été créée.");
                     alerts.push(alert);
@@ -67,20 +64,19 @@ export class OfferController {
 
         }
         //TODO selectionner seulement les fiches de postes de l'organisation du recruteur
-        let ficheDePostes: FicheDePoste[] = await FicheDePosteRepository.getAll();
+        let siren: string = req.user.organisation?.siren as string;
+        let ficheDePostes: FicheDePoste[] = await FicheDePosteRepository.getBySiren(siren);
         if (ficheDePostes.length === 0) {
             let alert = new Alert("danger", "Vous n'avez pas encore créé de fiche de poste.");
             alerts.push(alert);
             return res.redirect("/fiche-de-poste/creation");
         }
-        FicheDePosteRepository.getAll().then((ficheDePostes) => {
-            return res.render("offre/creation", {
-                title: "Créer une offre",
-                ficheDePostes: ficheDePostes,
-                alerts: alerts,
-                userLogged: loggedInNoRedirection(req, res),
-                csrfToken: req.session.csrfSecret
-            });
+        return res.render("offre/creation", {
+            title: "Créer une offre",
+            ficheDePostes: ficheDePostes,
+            alerts: alerts,
+            userLogged: loggedInNoRedirection(req, res),
+            csrfToken: req.session.csrfSecret
         });
     }
 }

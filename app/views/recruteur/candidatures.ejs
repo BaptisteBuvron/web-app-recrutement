@@ -9,8 +9,11 @@
                             class="badge text-bg-secondary float-end"><%= candidature.offre.ficheDePoste.salaire %> €</span>
                 </h4>
                 <p><%= candidature.offre.ficheDePoste.description %></p>
-                <p>Organisation : Nom de l'<%= candidature.offre.ficheDePoste.siren %></p>
-                <p>Status : <span class="badge text-bg-secondary float-end"><%= candidature.statut %> €</span></p>
+                <p>Organisation : <%= candidature.offre.ficheDePoste.organisation.nom %></p>
+                <p>Status : <span class="badge text-bg-secondary"><%= candidature.statut %> €</span></p>
+                <a class="btn btn-primary"
+                   href="/candidature/<%= candidature.candidat.email %>/<%= candidature.offre.numero %>">Etudier la
+                    candidature</a>
             </div>
         <% }) %>
     </div>

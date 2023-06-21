@@ -100,6 +100,7 @@ export class OfferRepository {
         const query = `SELECT *
                        FROM ${OfferRepository.tableName}
                                 LEFT JOIN FicheDePoste ON FicheDePoste.numero = OffreDePoste.fiche
+                                LEFT JOIN Organisation O on FicheDePoste.siren = O.siren
                        WHERE FicheDePoste.siren = ?`;
         return new Promise<OffreDePoste[]>(
             (resolve, reject) => {
@@ -109,7 +110,8 @@ export class OfferRepository {
                     }
                     let offers: OffreDePoste[] = [];
                     for (let i = 0; i < result.length; i++) {
-                        let ficheDePoste = new FicheDePoste(result[i].fiche, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nbheure, result[i].salaire, result[i].description, result[i].siren);
+                        let organisation = new Organisation(result[i].siren, result[i].nom, result[i].type, result[i].siege);
+                        let ficheDePoste = new FicheDePoste(result[i].fiche, result[i].status, result[i].responsable, result[i].type_metier, result[i].lieu, result[i].teletravail, result[i].nbheure, result[i].salaire, result[i].description, result[i].siren, organisation);
                         let offer = new OffreDePoste(result[i].numero, result[i].etat, result[i].date_validite, result[i].nb_piece, result[i].liste_piece, ficheDePoste);
                         offers.push(offer);
                     }

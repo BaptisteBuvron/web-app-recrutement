@@ -21,16 +21,17 @@ function filterOffer() {
     }
     let filter = "salary=" + salary + region;
     //Get all the offers from the /api/offers route and adding the filter parameters
-    fetch("/api/offers?" + filter).then(r => r.json()).then(offers => {
-            let offersDiv = document.getElementById("offers");
-            if (offers.length === 0) {
-                offersDiv.innerHTML = "Aucune offre ne correspond à vos critères";
-                return;
+    fetch("/api/offers?" + filter).then(r => r.json())
+        .then(offers => {
+                let offersDiv = document.getElementById("offers");
+                if (offers.length === 0) {
+                    offersDiv.innerHTML = "Aucune offre ne correspond à vos critères";
+                    return;
+                }
+                offersDiv.innerHTML = "";
+                offersDiv.append(...generateOffers(offers));
             }
-            offersDiv.innerHTML = "";
-            offersDiv.append(...generateOffers(offers));
-        }
-    );
+        );
 }
 
 
@@ -46,7 +47,7 @@ function generateOfferPrototype(offer) {
     p1.innerHTML = offer.ficheDePoste.description;
 
     const p2 = document.createElement('p');
-    p2.innerHTML = `Organisation: ${offer.ficheDePoste.siren}`;
+    p2.innerHTML = `Organisation: ${offer.ficheDePoste.organisation.nom}`;
 
     const a = document.createElement('a');
     a.href = `/canditature/${offer.numero}`;

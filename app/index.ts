@@ -8,6 +8,7 @@ import {ficheRouter} from "./routes/FicheRouter";
 import bodyParser from "body-parser";
 import {recruterRouter} from "./routes/RecruterRouter";
 import {apiRouter} from "./routes/ApiRouter";
+
 const {passport} = require("./passport/passportFunctions");
 
 dotenv.config();
@@ -33,6 +34,6 @@ app.use("/api", apiRouter);
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`web-app-recrutement listening on port ${port}`)
 });
 
