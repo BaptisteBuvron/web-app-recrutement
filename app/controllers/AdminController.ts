@@ -12,7 +12,11 @@ import {FicheDePosteRepository} from "../repository/FicheDePosteRepository";
 
 export class AdminController {
     static index(req: express.Request, res: express.Response) {
-        res.render("admin/index", { title: "Home", userLogged: loggedInNoRedirection(req, res)});
+        FicheDePosteRepository.getDistinctRegion().then((regions: string[]) => {
+            OfferRepository.getAll().then((offers: OffreDePoste[]) => {
+                res.render("admin/index", {title: "Home", offers: offers, regions: regions, userLogged: loggedInNoRedirection(req, res)});
+            });
+        });
     }
 
     static utilisateurs(req: express.Request, res: express.Response) {
@@ -129,9 +133,10 @@ export class AdminController {
     }
 
     static offres(req: express.Request, res: express.Response) {
-        OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-            console.log(offers);
-            res.render("admin/offres", {title: "Offres", offers: offers, userLogged: loggedInNoRedirection(req, res)});
+        FicheDePosteRepository.getDistinctRegion().then((regions: string[]) => {
+            OfferRepository.getAll().then((offers: OffreDePoste[]) => {
+                res.render("admin/offres", {title: "Offres", offers: offers, regions: regions, userLogged: loggedInNoRedirection(req, res)});
+            });
         });
     }
 

@@ -4,26 +4,21 @@
 <div class="container col-xxl-8 px-4 py-5">
     <div class="row">
         <div class="col-md-3">
-            <h4>Filtres</h4>
-            <hr>
-            <h5>Région</h5>
-            <select class="form-select" id="region">
-                <option value="">Toutes les régions</option>
-                <option value="Paris">Paris</option>
-                <option value="Lyon">Lyon</option>
-                <option value="Marseille">Marseille</option>
-            </select>
-            <h5 class="mt-3">Entreprise</h5>
-            <select class="form-select" id="entreprise">
-                <option value="">Toutes les Entreprises</option>
-                <option value="Carrefour">Carrefour</option>
-                <option value="Renault">Renault</option>
-                <option value="Orpi">Orpi</option>
-            </select>
-            <h5 class="mt-4">Salaire</h5>
-            <input type="range" class="form-range" id="salary" min="0" max="100000" step="1000" oninput="updateSalaryValue()">
-            <p class="text-muted">Salaire minimum : <span id="salary-value"></span></p>
-        </div>
+                    <h4>Filtres</h4>
+                    <hr>
+                    <h5>Salaire</h5>
+                    <input type="range" class="form-range" id="salary" min="0" max="100000" step="1000"
+                           onmouseup="updateSalaryValue()">
+                    <p class="text-muted">Salaire minimum : <span id="salary-value"></span></p>
+                    <h5>Région</h5>
+                    <select class="form-select" id="region" name="region" onchange="updateRegionValue()">
+                        <option value="all">Toutes les régions</option>
+                        <% regions.forEach((region) => {
+                        %>
+                            <option value="<%= region %>"><%= region %></option>
+                        <% }) %>
+                    </select>
+                </div>
         <div class="col-md-9">
             <h4>Offres d'emploi</h4>
             <% offers.forEach((offer) => {%>
@@ -38,5 +33,6 @@
     </div>
 </div>
 
+<script src="js/filter.js"></script>
 </body>
 </html>
