@@ -99,7 +99,7 @@ export class AdminController {
     }
 
     static demandes(req: express.Request, res: express.Response) {
-        UserRepository.getRecruiterDemand().then((users: User[]) => {
+        UserRepository.getNewRecruiterDemand().then((users: User[]) => {
             UserRepository.getOldRecruiterDemand().then((oldUsers: User[]) => {
                 OrganisationRepository.getAll().then((organisations : Organisation[]) => {
                     res.render("admin/demandes", {title: "Demandes", users: users, organisations: organisations, oldUsers: oldUsers, userLogged: loggedInNoRedirection(req, res)});
@@ -113,6 +113,14 @@ export class AdminController {
         UserRepository.getById(email).then((user: User) => {
             console.log(user);
             res.render("admin/demande", {title: "Demande", user: user, userLogged: loggedInNoRedirection(req, res)});
+        })
+    }
+
+    static ancienneDemande(req: express.Request, res: express.Response) {
+        let email = req.params.email;
+        UserRepository.getById(email).then((user: User) => {
+            console.log(user);
+            res.render("admin/ancienneDemande", {title: "Demande", user: user, userLogged: loggedInNoRedirection(req, res)});
         })
     }
 
