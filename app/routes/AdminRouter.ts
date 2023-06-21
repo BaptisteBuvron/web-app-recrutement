@@ -19,6 +19,7 @@ adminRouter.get("/supprimerUtilisateur/:email", AdminController.supprimerUtilisa
 
 adminRouter.get("/demandes", AdminController.demandes);
 adminRouter.get("/demande/:email", AdminController.demande);
+adminRouter.get("/ancienneDemande/:email", AdminController.ancienneDemande);
 adminRouter.get("/accepterDemande/:email", AdminController.accepterDemande);
 adminRouter.get("/refuserDemande/:email", AdminController.refuserDemande);
 adminRouter.get("/offres", AdminController.offres);

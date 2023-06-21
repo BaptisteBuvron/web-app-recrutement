@@ -137,6 +137,29 @@ export class UserRepository {
         );
     }
 
+    static getNewRecruiterDemand(): Promise<[User]> {
+        const query = `SELECT u.email, u.nom, u.prenom, o.siren, o.nom as organisation, o.type, o.siege
+                       FROM ${UserRepository.tableName} u
+                                INNER JOIN ${OrganisationRepository.tableName} o using (siren)
+                       WHERE u.demande_organisation = 'En cours'`;
+        return new Promise<[User]>(
+            (resolve, reject) =>
+                pool.query(query, (err, result) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        if(result[0]){
+                            console.log(result[0]);
+                            let organisation = new Organisation(result[0].siren, result[0].organisation, result[0].type, result[0].siege);
+                            result[0].organisation = organisation;
+                            console.log(result);
+                        }
+                        return resolve(result);
+                    }
+                )
+        );
+    }
+
     static getRecruiterDemand(): Promise<[User]> {
         const query = `SELECT u.email, u.nom, u.prenom, o.siren, o.nom as organisation, o.type, o.siege
                        FROM ${UserRepository.tableName} u

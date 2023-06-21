@@ -90,7 +90,7 @@
                                         <td><%= user.prenom %></td>
                                         <td><%= user.organisation.nom %></td>
                                         <td>
-                                            <a href="/admin/demande/<%= user.email %>"
+                                            <a href="/admin/ancienneDemande/<%= user.email %>"
                                                class="btn btn-outline-primary btn-sm">Détails</a>
                                         </td>
                                         <td class="<%= user.demande_organisation === 'acceptation' ? 'text-success' : (user.demande_organisation === 'refus' ? 'text-danger' : '') %>">
