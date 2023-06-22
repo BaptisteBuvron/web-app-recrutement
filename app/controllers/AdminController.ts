@@ -254,6 +254,7 @@ export class AdminController {
                     res.render("offre/offre", {
                         title: "Offre",
                         offer: offer,
+                        alerts: alerts,
                         userLogged: loggedInNoRedirection(req, res)
                     });
                 }

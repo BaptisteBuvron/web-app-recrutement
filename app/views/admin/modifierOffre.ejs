@@ -1,6 +1,6 @@
 <% if (user) { %>
   <% if (user.role === 'Administrateur') { %>
-    <%- include('partials/adminHeader.ejs') %>
+    <%- include('../partials/adminHeader.ejs') %>
   <% } else { %>
     <%- include('../partials/recruteurHeader.ejs') %>
   <% } %>
