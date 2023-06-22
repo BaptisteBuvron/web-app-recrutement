@@ -14,15 +14,25 @@ export class AdminController {
     static index(req: express.Request, res: express.Response) {
         FicheDePosteRepository.getDistinctRegion().then((regions: string[]) => {
             OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-                res.render("admin/index", {title: "Home", offers: offers, regions: regions, userLogged: loggedInNoRedirection(req, res)});
+                res.render("admin/index", {
+                    title: "Home",
+                    offers: offers,
+                    regions: regions,
+                    userLogged: loggedInNoRedirection(req, res)
+                });
             });
         });
     }
 
     static utilisateurs(req: express.Request, res: express.Response) {
         UserRepository.getAll().then((users: User[]) => {
-            OrganisationRepository.getAll().then((organisations : Organisation[]) => {
-                res.render("admin/utilisateurs", { title: "Utilisateurs", organisations: organisations, users, userLogged: loggedInNoRedirection(req, res)});
+            OrganisationRepository.getAll().then((organisations: Organisation[]) => {
+                res.render("admin/utilisateurs", {
+                    title: "Utilisateurs",
+                    organisations: organisations,
+                    users,
+                    userLogged: loggedInNoRedirection(req, res)
+                });
             });
         });
     }
@@ -30,7 +40,11 @@ export class AdminController {
     static utilisateur(req: express.Request, res: express.Response) {
         let email = req.params.email;
         UserRepository.getById(email).then((user: User) => {
-            res.render("admin/utilisateur", {title: "Utilisateur", user: user, userLogged: loggedInNoRedirection(req, res)});
+            res.render("admin/utilisateur", {
+                title: "Utilisateur",
+                user: user,
+                userLogged: loggedInNoRedirection(req, res)
+            });
         })
     }
 
@@ -61,9 +75,14 @@ export class AdminController {
                     console.log(err);
                 });
             UserRepository.getById(req.body.email).then((user: User) => {
-                res.render("admin/utilisateur", {title: "Utilisateur", user: user, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
+                res.render("admin/utilisateur", {
+                    title: "Utilisateur",
+                    user: user,
+                    alerts: alerts,
+                    userLogged: loggedInNoRedirection(req, res)
+                });
             })
-        }else{
+        } else {
             let email = req.params.email;
             UserRepository.getById(email).then((user: User) => {
                 res.render("admin/modifierUtilisateur", {
@@ -90,15 +109,26 @@ export class AdminController {
             });
 
         UserRepository.getAll().then((users: User[]) => {
-            res.render("admin/utilisateurs", { title: "Utilisateurs", users, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
+            res.render("admin/utilisateurs", {
+                title: "Utilisateurs",
+                users,
+                alerts: alerts,
+                userLogged: loggedInNoRedirection(req, res)
+            });
         });
     }
 
     static demandes(req: express.Request, res: express.Response) {
         UserRepository.getNewRecruiterDemand().then((users: User[]) => {
             UserRepository.getOldRecruiterDemand().then((oldUsers: User[]) => {
-                OrganisationRepository.getAll().then((organisations : Organisation[]) => {
-                    res.render("admin/demandes", {title: "Demandes", users: users, organisations: organisations, oldUsers: oldUsers, userLogged: loggedInNoRedirection(req, res)});
+                OrganisationRepository.getAll().then((organisations: Organisation[]) => {
+                    res.render("admin/demandes", {
+                        title: "Demandes",
+                        users: users,
+                        organisations: organisations,
+                        oldUsers: oldUsers,
+                        userLogged: loggedInNoRedirection(req, res)
+                    });
                 });
             });
         });
@@ -115,7 +145,11 @@ export class AdminController {
         let email = req.params.email;
         UserRepository.getById(email).then((user: User) => {
             console.log(user);
-            res.render("admin/ancienneDemande", {title: "Demande", user: user, userLogged: loggedInNoRedirection(req, res)});
+            res.render("admin/ancienneDemande", {
+                title: "Demande",
+                user: user,
+                userLogged: loggedInNoRedirection(req, res)
+            });
         })
     }
 
@@ -136,7 +170,12 @@ export class AdminController {
     static offres(req: express.Request, res: express.Response) {
         FicheDePosteRepository.getDistinctRegion().then((regions: string[]) => {
             OfferRepository.getAll().then((offers: OffreDePoste[]) => {
-                res.render("admin/offres", {title: "Offres", offers: offers, regions: regions, userLogged: loggedInNoRedirection(req, res)});
+                res.render("admin/offres", {
+                    title: "Offres",
+                    offers: offers,
+                    regions: regions,
+                    userLogged: loggedInNoRedirection(req, res)
+                });
             });
         });
     }
@@ -204,12 +243,29 @@ export class AdminController {
             });
 
             OfferRepository.getById(Number.parseInt(idOffre)).then((offer: OffreDePoste) => {
-                res.render("admin/offre", {title: "Offre", offer: offer, alerts: alerts, userLogged: loggedInNoRedirection(req, res)});
+                if (req.user.role == 'Administrateur') {
+                    res.render("admin/offre", {
+                        title: "Offre",
+                        offer: offer,
+                        alerts: alerts,
+                        userLogged: loggedInNoRedirection(req, res)
+                    });
+                } else {
+                    res.render("offre/offre", {
+                        title: "Offre",
+                        offer: offer,
+                        userLogged: loggedInNoRedirection(req, res)
+                    });
+                }
             })
-        }else{
+        } else {
             let numero = req.params.numero;
             OfferRepository.getById(Number.parseInt(numero)).then((offer: OffreDePoste) => {
-                res.render("admin/modifierOffre", {title: "Modifier une offre", offer: offer, userLogged: loggedInNoRedirection(req, res)});
+                res.render("admin/modifierOffre", {
+                    title: "Modifier une offre",
+                    offer: offer,
+                    userLogged: loggedInNoRedirection(req, res)
+                });
             })
         }
     }
@@ -225,7 +281,11 @@ export class AdminController {
             let alert = new Alert("danger", "L'offre n'a été supprimée");
             alerts.push(alert);
         });
-        res.redirect("/admin/offres");
+        if (req.user.role == "Administrateur") {
+            res.redirect("/admin/offres");
+        } else {
+            res.redirect("/recruteur/offres");
+        }
     }
 }
 

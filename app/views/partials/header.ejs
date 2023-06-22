@@ -35,17 +35,18 @@
             <ul class="navbar-nav mb-2 my-lg-0">
                 <% if(typeof userLogged !== 'undefined' && userLogged){ %>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenuDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             <%= userLogged.nom %> <%= userLogged.prenom %>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userMenuDropdown">
-                            <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
                             <% if(userLogged.role === 'Administrateur'){ %>
-                            <li><a class="dropdown-item" href="/admin">Administrer</a></li>
+                                <li><a class="dropdown-item" href="/admin">Administrer</a></li>
                             <% } %>
                             <% if(userLogged.role === 'Recruteur'){ %>
-                            <li><a class="dropdown-item" href="/recruteur">Recruter</a></li>
+                                <li><a class="dropdown-item" href="/recruteur">Recruter</a></li>
                             <% } %>
+                            <li><a class="dropdown-item" href="/logout">Déconnexion</a></li>
                         </ul>
                     </li>
                 <% } %>

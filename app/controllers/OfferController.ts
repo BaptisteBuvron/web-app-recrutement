@@ -86,8 +86,7 @@ export class OfferController {
             return res.render("offre/offre", {
                 title: "Offre",
                 offer: offer,
-                userLogged: loggedInNoRedirection(req, res),
-                csrfToken: req.session.csrfSecret
+                userLogged: loggedInNoRedirection(req, res)
             });
         }).catch((err) => {
             console.log(err);

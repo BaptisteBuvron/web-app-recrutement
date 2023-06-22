@@ -4,6 +4,8 @@
     <% } else { %>
         <%- include('../partials/header.ejs') %>
     <% } %>
+<% } else { %>
+    <%- include('../partials/header.ejs') %>
 <% } %>
 
 <div class="container col-xxl-8 px-4 py-5">
@@ -117,10 +119,38 @@
 
                     <hr class="my-4">
 
+                    <% if (user) { %>
+                        <% if (user.role === 'Recruteur') { %>
+                            <div class="d-flex gap-2 justify-content-center py-2">
+                                <a href="/recruteur/modifierOffre/<%= offer.numero %>"
+                                   class="btn btn-warning">Modifier</a>
+                                <a href="/recruteur/supprimerOffre/<%= offer.numero %>" class="btn btn-danger"
+                                   data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Supprimer</a>
+                            </div>
+                    <% } } %>
 
                 </form>
             </div>
         </div>
     </div>
-    </body>
-    </html>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer cette offre ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <a href="/recruteur/supprimerOffre/<%= offer.numero %>" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
