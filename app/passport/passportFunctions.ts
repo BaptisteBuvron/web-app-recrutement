@@ -75,6 +75,9 @@ passport.use(
                         if (!passwordMatches) {
                             return done(null, false, { message: "Mot de passe incorrect" });
                         }
+                        if (userLogged.statut == false) {
+                            return done(null, false, { message: "Compte désactivé" });
+                        }
 
                         return done(null, user, { message: "Vous êtes connecté!" });
                     })
