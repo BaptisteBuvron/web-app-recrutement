@@ -5,7 +5,7 @@
 Application Express.js avec TypeScript pour le système de recrutement dans le cadre de l'UV AI16.
 
 
-## Etudiants
+## Étudiants
 * [Baptiste Buvron](https://github.com/BaptisteBuvron)
 * [Soudarsane Tillai](https://github.com/darsane21)
 
@@ -16,7 +16,11 @@ git clone https://github.com/BaptisteBuvron/web-app-recrutement.git
 cd web-app-recrutement
 ```
 
-## Configuration de la base de données
+## Base de données
+Ce projet utilise un fichier `docker-compose.yml` pour gérer la base de données avec Docker. Vous pouvez trouver le fichier [ici](app/docker/docker-compose.yaml).
+
+
+### Configuration de la base de données
 1. Créer un fichier `.env` à la racine du projet.
 2. Ajouter les paramètres suivants dans le fichier `.env` :
 ```
@@ -37,5 +41,13 @@ npm install
 npm run dev
 ```
 
+
+## Intégration continue
+Ce projet utilise une intégration continue avec GitHub Actions. À chaque merge et pull request, le projet est automatiquement compilé et testé. Vous pouvez consulter le statut de la dernière construction en cliquant sur le badge ci-dessous :
+[![Build result](https://github.com/BaptisteBuvron/SeeISS/actions/workflows/build.yml/badge.svg)](https://github.com/BaptisteBuvron/web-app-recrutement/actions/workflows/node.js.yml)
+
+
 ## License
 Ce projet est sous license GNU General Public License (GPL). Veuillez consulter le fichier [LICENSE](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text) pour plus d'informations.
+
+---
