@@ -7,7 +7,7 @@ import {createCSRFToken} from "../middlewares/CSRFMiddlewares";
 const {v4: uuidv4} = require("uuid");
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
-const {passport, checkRole} = require("../passport/passportFunctions");
+const {passport, checkRole, checkRoleTwoProfile} = require("../passport/passportFunctions");
 
 export const defaultRouter = Router();
 
@@ -60,8 +60,8 @@ defaultRouter.post("/canditature/:numero", checkRole("Candidat"), upload.fields(
     {name: 'cv', maxCount: 1},
     {name: 'lettre', maxCount: 1}
 ]), CandidatureController.candidater);
-defaultRouter.get("/candidature/:email/:numero", CandidatureController.candidature);
-defaultRouter.get("/download/:id", CandidatureController.getFile);
+defaultRouter.get("/candidature/:email/:numero", checkRoleTwoProfile("Candidat", "Recruteur"), CandidatureController.candidature);
+defaultRouter.get("/download/:id", checkRoleTwoProfile("Candidat", "Recruteur"), CandidatureController.getFile);
 
 
 defaultRouter.post(

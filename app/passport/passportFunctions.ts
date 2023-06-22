@@ -97,7 +97,7 @@ function loggedIn() {
             next();
         } else {
             let message = "Vous n'êtes pas connecté";
-            res.redirect(`/login?message=${message}`, {title: "Connexion"});
+            res.redirect(`/login?message=${message}`);
         }
     };
 }

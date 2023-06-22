@@ -8,4 +8,4 @@ offerRouter.use(passport.initialize());
 offerRouter.use(passport.session());
 offerRouter.get("/creation", checkRole("Recruteur"), OfferController.creation);
 offerRouter.post("/creation", checkRole("Recruteur"), OfferController.creation);
-offerRouter.get("/:numero", OfferController.offre);
+offerRouter.get("/:numero", loggedIn(), OfferController.offre);
