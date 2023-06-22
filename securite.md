@@ -38,6 +38,10 @@ fournis. Les valeurs des paramètres sont stockées dans un tableau `params`, et
 valeurs sont remplacées par les placeholders correspondants. Ainsi, les paramètres ne sont pas interprétés comme du code
 SQL potentiellement malveillant.
 
+```
+http://localhost:8000/api/offers?salary=1000&region="OR 1=1;"
+```
+
 ## Avantages de l'utilisation de placeholders
 
 L'utilisation de placeholders présente plusieurs avantages en termes de sécurité :
