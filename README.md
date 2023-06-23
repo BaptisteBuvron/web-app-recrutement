@@ -9,6 +9,8 @@ Application Express.js avec TypeScript pour le système de recrutement dans le c
 * [Baptiste Buvron](https://github.com/BaptisteBuvron)
 * [Soudarsane Tillai](https://github.com/darsane21)
 
+## Raport de sécurité
+Le rapport de sécurité est disponible [ici](securite.md)
 
 ## Clonage du projet
 ```
